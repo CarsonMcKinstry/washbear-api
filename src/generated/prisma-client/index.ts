@@ -100,10 +100,16 @@ export interface ClientConstructor<T> {
  */
 
 export type UserOrderByInput =
+  | "avatar_ASC"
+  | "avatar_DESC"
+  | "email_ASC"
+  | "email_DESC"
   | "id_ASC"
   | "id_DESC"
   | "name_ASC"
   | "name_DESC"
+  | "password_ASC"
+  | "password_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -112,18 +118,55 @@ export type UserOrderByInput =
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
 export interface UserCreateInput {
+  avatar?: String;
+  email?: String;
   name: String;
+  password?: String;
 }
 
 export interface UserUpdateInput {
+  avatar?: String;
+  email?: String;
   name?: String;
+  password?: String;
 }
 
 export interface UserUpdateManyMutationInput {
+  avatar?: String;
+  email?: String;
   name?: String;
+  password?: String;
 }
 
 export interface UserWhereInput {
+  avatar?: String;
+  avatar_not?: String;
+  avatar_in?: String[] | String;
+  avatar_not_in?: String[] | String;
+  avatar_lt?: String;
+  avatar_lte?: String;
+  avatar_gt?: String;
+  avatar_gte?: String;
+  avatar_contains?: String;
+  avatar_not_contains?: String;
+  avatar_starts_with?: String;
+  avatar_not_starts_with?: String;
+  avatar_ends_with?: String;
+  avatar_not_ends_with?: String;
+  email?: String;
+  email_not?: String;
+  email_in?: String[] | String;
+  email_not_in?: String[] | String;
+  email_lt?: String;
+  email_lte?: String;
+  email_gt?: String;
+  email_gte?: String;
+  email_contains?: String;
+  email_not_contains?: String;
+  email_starts_with?: String;
+  email_not_starts_with?: String;
+  email_ends_with?: String;
+  email_not_ends_with?: String;
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -152,6 +195,20 @@ export interface UserWhereInput {
   name_not_starts_with?: String;
   name_ends_with?: String;
   name_not_ends_with?: String;
+  password?: String;
+  password_not?: String;
+  password_in?: String[] | String;
+  password_not_in?: String[] | String;
+  password_lt?: String;
+  password_lte?: String;
+  password_gt?: String;
+  password_gte?: String;
+  password_contains?: String;
+  password_not_contains?: String;
+  password_starts_with?: String;
+  password_not_starts_with?: String;
+  password_ends_with?: String;
+  password_not_ends_with?: String;
   AND?: UserWhereInput[] | UserWhereInput;
   OR?: UserWhereInput[] | UserWhereInput;
   NOT?: UserWhereInput[] | UserWhereInput;
@@ -169,7 +226,8 @@ export interface UserSubscriptionWhereInput {
 }
 
 export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
+  email: String;
+  id?: ID_Input;
 }>;
 
 export interface NodeNode {
@@ -209,22 +267,31 @@ export interface BatchPayloadSubscription
 }
 
 export interface UserPreviousValues {
+  avatar?: String;
+  email?: String;
   id: ID_Output;
   name: String;
+  password?: String;
 }
 
 export interface UserPreviousValuesPromise
   extends Promise<UserPreviousValues>,
     Fragmentable {
+  avatar: () => Promise<String>;
+  email: () => Promise<String>;
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  password: () => Promise<String>;
 }
 
 export interface UserPreviousValuesSubscription
   extends Promise<AsyncIterator<UserPreviousValues>>,
     Fragmentable {
+  avatar: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
 }
 
 export interface UserEdge {
@@ -267,20 +334,29 @@ export interface UserSubscriptionPayloadSubscription
 }
 
 export interface User {
+  avatar?: String;
+  email?: String;
   id: ID_Output;
   name: String;
+  password?: String;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
+  avatar: () => Promise<String>;
+  email: () => Promise<String>;
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  password: () => Promise<String>;
 }
 
 export interface UserSubscription
   extends Promise<AsyncIterator<User>>,
     Fragmentable {
+  avatar: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
 }
 
 export interface UserConnection {}
@@ -325,17 +401,17 @@ export interface PageInfoSubscription
 }
 
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
-
-export type Long = string;
-
-/*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
 export type ID_Input = string | number;
 export type ID_Output = string;
+
+export type Long = string;
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
 
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
