@@ -46,5 +46,12 @@ export const signUp: Middleware = async (ctx) => {
 
 export const login: Middleware = async (ctx, next) => {
 
-  return passport.authenticate('local', authRedirect(ctx))(ctx, next);
+  return passport.authenticate('local', (err, user) => {
+    if (err) { return ctx.throw(403, err); }
+
+    const userJwt = jwt.sign(user, (process.env.SIGNATURE as string));
+    ctx.body = {
+      access_token: userJwt,
+    };
+  })(ctx, next);
 };
