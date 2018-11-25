@@ -3,5 +3,6 @@ type User {
   email: String @unique
   id: ID! @unique
   name: String!
-  password: String 
+  password: String
+  facebookId: String @unique
 }

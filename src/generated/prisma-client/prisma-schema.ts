@@ -51,6 +51,7 @@ type User {
   id: ID!
   name: String!
   password: String
+  facebookId: String
 }
 
 type UserConnection {
@@ -64,6 +65,7 @@ input UserCreateInput {
   email: String
   name: String!
   password: String
+  facebookId: String
 }
 
 type UserEdge {
@@ -82,6 +84,8 @@ enum UserOrderByInput {
   name_DESC
   password_ASC
   password_DESC
+  facebookId_ASC
+  facebookId_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -94,6 +98,7 @@ type UserPreviousValues {
   id: ID!
   name: String!
   password: String
+  facebookId: String
 }
 
 type UserSubscriptionPayload {
@@ -119,6 +124,7 @@ input UserUpdateInput {
   email: String
   name: String
   password: String
+  facebookId: String
 }
 
 input UserUpdateManyMutationInput {
@@ -126,6 +132,7 @@ input UserUpdateManyMutationInput {
   email: String
   name: String
   password: String
+  facebookId: String
 }
 
 input UserWhereInput {
@@ -199,6 +206,20 @@ input UserWhereInput {
   password_not_starts_with: String
   password_ends_with: String
   password_not_ends_with: String
+  facebookId: String
+  facebookId_not: String
+  facebookId_in: [String!]
+  facebookId_not_in: [String!]
+  facebookId_lt: String
+  facebookId_lte: String
+  facebookId_gt: String
+  facebookId_gte: String
+  facebookId_contains: String
+  facebookId_not_contains: String
+  facebookId_starts_with: String
+  facebookId_not_starts_with: String
+  facebookId_ends_with: String
+  facebookId_not_ends_with: String
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
@@ -207,5 +228,6 @@ input UserWhereInput {
 input UserWhereUniqueInput {
   email: String
   id: ID
+  facebookId: String
 }
 `

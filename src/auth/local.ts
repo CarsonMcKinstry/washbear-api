@@ -7,7 +7,7 @@ import { prisma, User } from '../generated/prisma-client/index';
 import { getPayload } from '../utils';
 import passport from './passport';
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
 }
 
@@ -45,11 +45,14 @@ export const signUp: Middleware = async (ctx) => {
 };
 
 export const login: Middleware = async (ctx, next) => {
+  const encodedRedirectURL = ctx.cookies.get('r');
+  const redirectURL = new Buffer(encodedRedirectURL, 'base64').toString('utf-8');
   return passport.authenticate('local', (err, user) => {
     if (err) { return ctx.throw(403, err); }
 
-    return ctx.body = {
-      access_token: jwt.sign(user, (process.env.SIGNATURE as string)),
-    };
+    const userJwt = jwt.sign(user, (process.env.SIGNATURE as string));
+    const finalRedirect = `${redirectURL}?access_token=${userJwt}`;
+
+    ctx.redirect(finalRedirect);
   })(ctx, next);
 };

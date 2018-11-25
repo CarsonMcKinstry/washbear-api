@@ -110,6 +110,8 @@ export type UserOrderByInput =
   | "name_DESC"
   | "password_ASC"
   | "password_DESC"
+  | "facebookId_ASC"
+  | "facebookId_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -122,6 +124,7 @@ export interface UserCreateInput {
   email?: String;
   name: String;
   password?: String;
+  facebookId?: String;
 }
 
 export interface UserUpdateInput {
@@ -129,6 +132,7 @@ export interface UserUpdateInput {
   email?: String;
   name?: String;
   password?: String;
+  facebookId?: String;
 }
 
 export interface UserUpdateManyMutationInput {
@@ -136,6 +140,7 @@ export interface UserUpdateManyMutationInput {
   email?: String;
   name?: String;
   password?: String;
+  facebookId?: String;
 }
 
 export interface UserWhereInput {
@@ -209,6 +214,20 @@ export interface UserWhereInput {
   password_not_starts_with?: String;
   password_ends_with?: String;
   password_not_ends_with?: String;
+  facebookId?: String;
+  facebookId_not?: String;
+  facebookId_in?: String[] | String;
+  facebookId_not_in?: String[] | String;
+  facebookId_lt?: String;
+  facebookId_lte?: String;
+  facebookId_gt?: String;
+  facebookId_gte?: String;
+  facebookId_contains?: String;
+  facebookId_not_contains?: String;
+  facebookId_starts_with?: String;
+  facebookId_not_starts_with?: String;
+  facebookId_ends_with?: String;
+  facebookId_not_ends_with?: String;
   AND?: UserWhereInput[] | UserWhereInput;
   OR?: UserWhereInput[] | UserWhereInput;
   NOT?: UserWhereInput[] | UserWhereInput;
@@ -228,6 +247,7 @@ export interface UserSubscriptionWhereInput {
 export type UserWhereUniqueInput = AtLeastOne<{
   email: String;
   id?: ID_Input;
+  facebookId?: String;
 }>;
 
 export interface NodeNode {
@@ -272,6 +292,7 @@ export interface UserPreviousValues {
   id: ID_Output;
   name: String;
   password?: String;
+  facebookId?: String;
 }
 
 export interface UserPreviousValuesPromise
@@ -282,6 +303,7 @@ export interface UserPreviousValuesPromise
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   password: () => Promise<String>;
+  facebookId: () => Promise<String>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -292,6 +314,7 @@ export interface UserPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
+  facebookId: () => Promise<AsyncIterator<String>>;
 }
 
 export interface UserEdge {
@@ -339,6 +362,7 @@ export interface User {
   id: ID_Output;
   name: String;
   password?: String;
+  facebookId?: String;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
@@ -347,6 +371,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   password: () => Promise<String>;
+  facebookId: () => Promise<String>;
 }
 
 export interface UserSubscription
@@ -357,6 +382,7 @@ export interface UserSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
+  facebookId: () => Promise<AsyncIterator<String>>;
 }
 
 export interface UserConnection {}

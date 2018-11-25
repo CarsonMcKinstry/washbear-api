@@ -9,7 +9,7 @@ import authRouter from './auth';
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 
-if (nodeEnv === 'development') {
+if (nodeEnv !== 'production') {
   dotenv.config();
 }
 

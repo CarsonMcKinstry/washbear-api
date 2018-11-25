@@ -1,13 +1,14 @@
 {
     "defaultSeverity": "error",
     "extends": [
-        "tslint:recommended"
+        "tslint:recommended",
+        "tslint-no-circular-imports",
     ],
     "jsRules": {},
     "rules": {
         "quotemark": false,
         "no-console": false,
-        "interface-name": false
+        "interface-name": false,
     },
     "rulesDirectory": [],
     "linterOptions": {
