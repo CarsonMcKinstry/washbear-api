@@ -1,10 +1,15 @@
 import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { Middleware } from 'koa';
 import md5 from 'md5';
 import { prisma, User } from '../generated/prisma-client/index';
 import { getPayload } from '../utils';
 import passport from './passport';
+
+if (process.env.NODE_ENV === 'development') {
+  dotenv.config();
+}
 
 export const signUp: Middleware = async (ctx) => {
   const body: { email?: string, password?: string, name?: string} = ctx.request.body || {};
@@ -35,7 +40,7 @@ export const signUp: Middleware = async (ctx) => {
   const jwtUser = getPayload(newUser);
 
   return ctx.body = {
-    access_token: jwt.sign(jwtUser, 'password123'),
+    access_token: jwt.sign(jwtUser, (process.env.SIGNATURE as string)),
   };
 };
 
@@ -44,7 +49,7 @@ export const login: Middleware = async (ctx, next) => {
     if (err) { return ctx.throw(403, err); }
 
     return ctx.body = {
-      access_token: jwt.sign(user, 'password123'),
+      access_token: jwt.sign(user, (process.env.SIGNATURE as string)),
     };
   })(ctx, next);
 };
