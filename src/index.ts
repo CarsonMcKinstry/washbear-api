@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { default as Koa, Middleware } from 'koa';
+import { default as Koa } from 'koa';
 
 import cors from '@koa/cors';
 import bodyParser from 'koa-bodyparser';
@@ -20,24 +20,6 @@ const port = process.env.PORT || 4000;
 app.use(logger());
 app.use(cors());
 app.use(bodyParser());
-
-const addRedirectCookie: Middleware = (ctx, next) => {
-  let { query: { r } } = ctx;
-  if (!r) {
-    return next();
-  }
-
-  if (!r.match(/^https?:\/\//)) {
-    r = `http://${r}`;
-  }
-  const encodedRedirectURL = new Buffer(r).toString('base64');
-  ctx.cookies.set('r', encodedRedirectURL, {
-    maxAge: 60 * 60 * 1000,
-  });
-  return next();
-};
-
-app.use(addRedirectCookie);
 
 app.use(authRouter.routes());
 

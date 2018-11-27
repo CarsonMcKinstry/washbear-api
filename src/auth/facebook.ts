@@ -1,12 +1,54 @@
-import { Middleware } from 'koa';
-import passport from './passport';
-import jwt from 'jsonwebtoken';
-import { authRedirect } from '../utils';
+import dotenv from 'dotenv';
+import {
+  Strategy,
+  VerifyFunction,
+} from 'passport-facebook';
+import { prisma, User } from '../generated/prisma-client/index';
+import { getPayload } from '../utils';
 
-export const startFacebookAuth: Middleware = async (ctx, next) => {
-  return passport.authenticate('facebook')(ctx, next);
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
+
+const facebookHandler: VerifyFunction = async (
+  accessToken,
+  refreshToken,
+  profile,
+  done,
+) => {
+  const {
+    _json : {
+      id,
+      name,
+      picture: {
+        url,
+      },
+    },
+  } = profile;
+  try {
+    const userExists = await prisma.$exists.user({ facebookId: id });
+
+    if (!userExists) {
+      const user: User = await prisma.createUser({
+        avatar: url,
+        facebookId: id,
+        name,
+      });
+
+      return done(null, getPayload(user));
+    }
+
+    const existingUser: User = await prisma.user({ facebookId: id });
+
+    return done(null, getPayload(existingUser));
+  } catch (err) {
+    return done(err, null);
+  }
 };
 
-export const facebookCallback: Middleware = (ctx, next) => {
-  return passport.authenticate('facebook', authRedirect(ctx))(ctx, next);
-};
+export const facebookStrategy = new Strategy({
+  callbackURL: (process.env.FACEBOOK_CALLBACK as string),
+  clientID: (process.env.FACEBOOK_APP_ID as string),
+  clientSecret: (process.env.FACEBOOK_APP_SECRET as string),
+  profileFields: ['id', 'displayName', 'name', 'picture.type(large)'],
+}, facebookHandler);
