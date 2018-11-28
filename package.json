@@ -33,8 +33,10 @@
     "@types/passport-facebook": "^2.1.8",
     "@types/passport-local": "^1.0.33",
     "@types/passport-twitter": "^1.0.34",
+    "apollo-server-koa": "^2.2.3",
     "bcryptjs": "^2.4.3",
     "graphql": "^14.0.2",
+    "graphql-import": "^0.7.1",
     "koa": "^2.6.2",
     "koa-bodyparser": "^4.2.1",
     "koa-logger": "^3.2.0",
@@ -50,6 +52,7 @@
   },
   "scripts": {
     "start": "ts-node ./src/index.ts",
-    "dev": "nodemon  --watch 'src/**/*' -e ts --exec yarn start"
+    "dev": "nodemon  --watch 'src/**/*' -e ts --exec yarn start",
+    "deploy:schema": "prisma deploy -e .env"
   }
 }

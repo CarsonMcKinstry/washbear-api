@@ -9,6 +9,7 @@
         "quotemark": false,
         "no-console": false,
         "interface-name": false,
+        "trailing-comma": true
     },
     "rulesDirectory": [],
     "linterOptions": {
