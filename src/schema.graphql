@@ -5,7 +5,7 @@ type Query {
   user(id: ID!): User
   users: [User!]!
   post(id: ID!): Post
-  posts: [Post!]!
+  posts: [Post!]
 }
 
 type User {
@@ -14,6 +14,6 @@ type User {
   facebookId: String
   id: ID!
   name: String!
-  posts: [Post!]!
-  bookmarks: [Bookmark!]!
+  posts: [Post!]
+  bookmarks: [Bookmark!]
 }

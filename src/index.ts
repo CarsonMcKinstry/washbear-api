@@ -30,7 +30,7 @@ const app = new Koa();
 
 const port = process.env.PORT || 4000;
 
-app.use(logger());
+// app.use(logger());
 app.use(cors());
 app.use(bodyParser());
 

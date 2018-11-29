@@ -1,35 +1,32 @@
-import { User, UserWhereInput } from '../generated/prisma-client';
-import { ApolloContext, Resolver } from "../types";
-import { getUserId } from '../utils';
+import { omit } from 'lodash/fp';
 
-export const me: Resolver<User, undefined, undefined, ApolloContext> = async (
-  _, __, context
-) => {
+// import { User, UserWhereInput, Post } from '../generated/prisma-client';
+// import { ApolloContext, Resolver } from "../types";
+import { getUserId } from '../utils';
+import { QueryToMeResolver, QueryToUserResolver, QueryToUsersResolver, QueryToPostsResolver } from '../schema';
+import { ApolloContext } from '../types';
+
+export const me: QueryToMeResolver = async (_, __, context: ApolloContext) => {
   const id = getUserId(context);
   const user = await context.db.user({ id });
-  return user;
+
+  return omit(['password'], user);
 }
 
-export const user: Resolver<
-  User,
-  undefined,
-  UserWhereInput,
-  ApolloContext
-> = async (
-  _, args, context
-) => {
+export const user: QueryToUserResolver = async (_, args, context: ApolloContext) => {
   const { id } = args;
   const user = await context.db.user({ id });
 
-  return user;
+  return omit(['password'], user);
 }
 
-export const users: Resolver<
-  User[],
-  undefined,
-  UserWhereInput,
-  ApolloContext
-> = async (_, args, context) => {
+export const users: QueryToUsersResolver = async (_, args, context: ApolloContext) => {
   const queriedUsers = await context.db.users();
-  return queriedUsers;
+  return queriedUsers.map(omit(['password']));
+}
+
+export const posts: QueryToPostsResolver = async (_, __, context: ApolloContext) => {
+  const queriedPosts = await context.db.posts();
+
+  return queriedPosts;
 }
