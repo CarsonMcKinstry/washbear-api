@@ -1,7 +1,11 @@
+# import Post, Bookmark from './generated/prisma.graphql'
+
 type Query {
   me: User
   user(id: ID!): User
   users: [User!]!
+  post(id: ID!): Post
+  posts: [Post!]!
 }
 
 type User {
@@ -10,4 +14,6 @@ type User {
   facebookId: String
   id: ID!
   name: String!
+  posts: [Post!]!
+  bookmarks: [Bookmark!]!
 }

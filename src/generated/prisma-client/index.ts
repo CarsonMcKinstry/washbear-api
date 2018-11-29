@@ -255,7 +255,11 @@ export type PostOrderByInput =
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | "updatedAt_DESC"
+  | "startsAt_ASC"
+  | "startsAt_DESC"
+  | "endsAt_ASC"
+  | "endsAt_DESC";
 
 export type PhotoOrderByInput =
   | "url_ASC"
@@ -337,6 +341,8 @@ export interface UserCreateWithoutPostsInput {
 export interface PostUpdateInput {
   poster?: UserUpdateOneRequiredWithoutPostsInput;
   title?: String;
+  startsAt?: DateTimeInput;
+  endsAt?: DateTimeInput;
   geolocation?: GeolocationUpdateOneInput;
   bookmarks?: BookmarkUpdateManyWithoutPostInput;
   photos?: PhotoUpdateManyInput;
@@ -355,6 +361,8 @@ export interface UserCreateInput {
 export interface PostCreateInput {
   poster: UserCreateOneWithoutPostsInput;
   title: String;
+  startsAt: DateTimeInput;
+  endsAt: DateTimeInput;
   geolocation?: GeolocationCreateOneInput;
   bookmarks?: BookmarkCreateManyWithoutPostInput;
   photos?: PhotoCreateManyInput;
@@ -494,6 +502,22 @@ export interface PostWhereInput {
   updatedAt_lte?: DateTimeInput;
   updatedAt_gt?: DateTimeInput;
   updatedAt_gte?: DateTimeInput;
+  startsAt?: DateTimeInput;
+  startsAt_not?: DateTimeInput;
+  startsAt_in?: DateTimeInput[] | DateTimeInput;
+  startsAt_not_in?: DateTimeInput[] | DateTimeInput;
+  startsAt_lt?: DateTimeInput;
+  startsAt_lte?: DateTimeInput;
+  startsAt_gt?: DateTimeInput;
+  startsAt_gte?: DateTimeInput;
+  endsAt?: DateTimeInput;
+  endsAt_not?: DateTimeInput;
+  endsAt_in?: DateTimeInput[] | DateTimeInput;
+  endsAt_not_in?: DateTimeInput[] | DateTimeInput;
+  endsAt_lt?: DateTimeInput;
+  endsAt_lte?: DateTimeInput;
+  endsAt_gt?: DateTimeInput;
+  endsAt_gte?: DateTimeInput;
   geolocation?: GeolocationWhereInput;
   bookmarks_every?: BookmarkWhereInput;
   bookmarks_some?: BookmarkWhereInput;
@@ -531,6 +555,8 @@ export interface GeolocationUpdateDataInput {
 
 export interface PostCreateWithoutPosterInput {
   title: String;
+  startsAt: DateTimeInput;
+  endsAt: DateTimeInput;
   geolocation?: GeolocationCreateOneInput;
   bookmarks?: BookmarkCreateManyWithoutPostInput;
   photos?: PhotoCreateManyInput;
@@ -816,6 +842,8 @@ export interface UserCreateOneWithoutPostsInput {
 export interface PostCreateWithoutBookmarksInput {
   poster: UserCreateOneWithoutPostsInput;
   title: String;
+  startsAt: DateTimeInput;
+  endsAt: DateTimeInput;
   geolocation?: GeolocationCreateOneInput;
   photos?: PhotoCreateManyInput;
 }
@@ -831,6 +859,8 @@ export interface BookmarkCreateWithoutUserInput {
 
 export interface PostUpdateWithoutPosterDataInput {
   title?: String;
+  startsAt?: DateTimeInput;
+  endsAt?: DateTimeInput;
   geolocation?: GeolocationUpdateOneInput;
   bookmarks?: BookmarkUpdateManyWithoutPostInput;
   photos?: PhotoUpdateManyInput;
@@ -858,6 +888,8 @@ export interface GeolocationUpsertNestedInput {
 
 export interface PostUpdateManyMutationInput {
   title?: String;
+  startsAt?: DateTimeInput;
+  endsAt?: DateTimeInput;
 }
 
 export interface NodeNode {
@@ -1238,6 +1270,8 @@ export interface Post {
   title: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
+  startsAt: DateTimeOutput;
+  endsAt: DateTimeOutput;
 }
 
 export interface PostPromise extends Promise<Post>, Fragmentable {
@@ -1246,6 +1280,8 @@ export interface PostPromise extends Promise<Post>, Fragmentable {
   title: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
+  startsAt: () => Promise<DateTimeOutput>;
+  endsAt: () => Promise<DateTimeOutput>;
   geolocation: <T = GeolocationPromise>() => T;
   bookmarks: <T = FragmentableArray<Bookmark>>(
     args?: {
@@ -1279,6 +1315,8 @@ export interface PostSubscription
   title: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  startsAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  endsAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   geolocation: <T = GeolocationSubscription>() => T;
   bookmarks: <T = Promise<AsyncIterator<BookmarkSubscription>>>(
     args?: {
@@ -1504,6 +1542,8 @@ export interface PostPreviousValues {
   title: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
+  startsAt: DateTimeOutput;
+  endsAt: DateTimeOutput;
 }
 
 export interface PostPreviousValuesPromise
@@ -1513,6 +1553,8 @@ export interface PostPreviousValuesPromise
   title: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
+  startsAt: () => Promise<DateTimeOutput>;
+  endsAt: () => Promise<DateTimeOutput>;
 }
 
 export interface PostPreviousValuesSubscription
@@ -1522,6 +1564,8 @@ export interface PostPreviousValuesSubscription
   title: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  startsAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  endsAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface BookmarkEdge {

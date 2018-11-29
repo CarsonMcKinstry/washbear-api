@@ -416,6 +416,8 @@ type Post {
   title: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  startsAt: DateTime!
+  endsAt: DateTime!
   geolocation: Geolocation
   bookmarks(where: BookmarkWhereInput, orderBy: BookmarkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Bookmark!]
   photos(where: PhotoWhereInput, orderBy: PhotoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Photo!]
@@ -430,6 +432,8 @@ type PostConnection {
 input PostCreateInput {
   poster: UserCreateOneWithoutPostsInput!
   title: String!
+  startsAt: DateTime!
+  endsAt: DateTime!
   geolocation: GeolocationCreateOneInput
   bookmarks: BookmarkCreateManyWithoutPostInput
   photos: PhotoCreateManyInput
@@ -448,12 +452,16 @@ input PostCreateOneWithoutBookmarksInput {
 input PostCreateWithoutBookmarksInput {
   poster: UserCreateOneWithoutPostsInput!
   title: String!
+  startsAt: DateTime!
+  endsAt: DateTime!
   geolocation: GeolocationCreateOneInput
   photos: PhotoCreateManyInput
 }
 
 input PostCreateWithoutPosterInput {
   title: String!
+  startsAt: DateTime!
+  endsAt: DateTime!
   geolocation: GeolocationCreateOneInput
   bookmarks: BookmarkCreateManyWithoutPostInput
   photos: PhotoCreateManyInput
@@ -473,6 +481,10 @@ enum PostOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  startsAt_ASC
+  startsAt_DESC
+  endsAt_ASC
+  endsAt_DESC
 }
 
 type PostPreviousValues {
@@ -480,6 +492,8 @@ type PostPreviousValues {
   title: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  startsAt: DateTime!
+  endsAt: DateTime!
 }
 
 type PostSubscriptionPayload {
@@ -503,6 +517,8 @@ input PostSubscriptionWhereInput {
 input PostUpdateInput {
   poster: UserUpdateOneRequiredWithoutPostsInput
   title: String
+  startsAt: DateTime
+  endsAt: DateTime
   geolocation: GeolocationUpdateOneInput
   bookmarks: BookmarkUpdateManyWithoutPostInput
   photos: PhotoUpdateManyInput
@@ -510,6 +526,8 @@ input PostUpdateInput {
 
 input PostUpdateManyMutationInput {
   title: String
+  startsAt: DateTime
+  endsAt: DateTime
 }
 
 input PostUpdateManyWithoutPosterInput {
@@ -523,6 +541,8 @@ input PostUpdateManyWithoutPosterInput {
 
 input PostUpdateWithoutPosterDataInput {
   title: String
+  startsAt: DateTime
+  endsAt: DateTime
   geolocation: GeolocationUpdateOneInput
   bookmarks: BookmarkUpdateManyWithoutPostInput
   photos: PhotoUpdateManyInput
@@ -585,6 +605,22 @@ input PostWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
+  startsAt: DateTime
+  startsAt_not: DateTime
+  startsAt_in: [DateTime!]
+  startsAt_not_in: [DateTime!]
+  startsAt_lt: DateTime
+  startsAt_lte: DateTime
+  startsAt_gt: DateTime
+  startsAt_gte: DateTime
+  endsAt: DateTime
+  endsAt_not: DateTime
+  endsAt_in: [DateTime!]
+  endsAt_not_in: [DateTime!]
+  endsAt_lt: DateTime
+  endsAt_lte: DateTime
+  endsAt_gt: DateTime
+  endsAt_gte: DateTime
   geolocation: GeolocationWhereInput
   bookmarks_every: BookmarkWhereInput
   bookmarks_some: BookmarkWhereInput
