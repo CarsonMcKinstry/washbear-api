@@ -37,6 +37,7 @@
     "bcryptjs": "^2.4.3",
     "graphql": "^14.0.2",
     "graphql-import": "^0.7.1",
+    "graphql-schema-typescript": "^1.2.8",
     "koa": "^2.6.2",
     "koa-bodyparser": "^4.2.1",
     "koa-logger": "^3.2.0",
@@ -53,6 +54,7 @@
   "scripts": {
     "start": "ts-node ./src/index.ts",
     "dev": "nodemon  --watch 'src/**/*' -e ts --exec yarn start",
-    "deploy:schema": "prisma deploy -e .env"
+    "deploy:schema": "prisma deploy -e .env",
+    "types": "ts-node ./bin/getTypes.ts"
   }
 }
