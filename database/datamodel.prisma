@@ -5,4 +5,45 @@ type User {
   name: String!
   password: String
   facebookId: String @unique
+  bookmarks: [Bookmark!]!
+  posts: [Post!]!
 }
+
+type Post {
+  id: ID! @unique
+  poster: User!
+  title: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  geolocation: Geolocation
+  bookmarks: [Bookmark!]!
+  photos: [Photo!]!
+}
+
+type Geolocation {
+  lat: Float!
+  long: Float!
+}
+
+type Bookmark {
+  user: User!
+  post: Post!
+}
+
+type Photo {
+  url: String!
+  poster: User!
+  title: String
+  description: String
+  price: Int
+  currency: CurrencyEnum
+}
+
+enum CurrencyEnum {
+  USD
+  EUR
+  CAD
+  GBP
+  AUD
+}
+
