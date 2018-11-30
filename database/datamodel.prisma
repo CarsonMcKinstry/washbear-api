@@ -33,6 +33,7 @@ type Bookmark {
 }
 
 type Photo {
+  post: Post!
   url: String!
   poster: User!
   title: String

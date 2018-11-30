@@ -260,6 +260,7 @@ type PageInfo {
 }
 
 type Photo {
+  post: Post!
   url: String!
   poster: User!
   title: String
@@ -275,6 +276,7 @@ type PhotoConnection {
 }
 
 input PhotoCreateInput {
+  post: PostCreateOneWithoutPhotosInput!
   url: String!
   poster: UserCreateOneInput!
   title: String
@@ -283,8 +285,17 @@ input PhotoCreateInput {
   currency: CurrencyEnum
 }
 
-input PhotoCreateManyInput {
-  create: [PhotoCreateInput!]
+input PhotoCreateManyWithoutPostInput {
+  create: [PhotoCreateWithoutPostInput!]
+}
+
+input PhotoCreateWithoutPostInput {
+  url: String!
+  poster: UserCreateOneInput!
+  title: String
+  description: String
+  price: Int
+  currency: CurrencyEnum
 }
 
 type PhotoEdge {
@@ -337,10 +348,6 @@ input PhotoSubscriptionWhereInput {
   NOT: [PhotoSubscriptionWhereInput!]
 }
 
-input PhotoUpdateManyInput {
-  create: [PhotoCreateInput!]
-}
-
 input PhotoUpdateManyMutationInput {
   url: String
   title: String
@@ -349,7 +356,12 @@ input PhotoUpdateManyMutationInput {
   currency: CurrencyEnum
 }
 
+input PhotoUpdateManyWithoutPostInput {
+  create: [PhotoCreateWithoutPostInput!]
+}
+
 input PhotoWhereInput {
+  post: PostWhereInput
   url: String
   url_not: String
   url_in: [String!]
@@ -436,7 +448,7 @@ input PostCreateInput {
   endsAt: DateTime!
   geolocation: GeolocationCreateOneInput
   bookmarks: BookmarkCreateManyWithoutPostInput
-  photos: PhotoCreateManyInput
+  photos: PhotoCreateManyWithoutPostInput
 }
 
 input PostCreateManyWithoutPosterInput {
@@ -449,13 +461,27 @@ input PostCreateOneWithoutBookmarksInput {
   connect: PostWhereUniqueInput
 }
 
+input PostCreateOneWithoutPhotosInput {
+  create: PostCreateWithoutPhotosInput
+  connect: PostWhereUniqueInput
+}
+
 input PostCreateWithoutBookmarksInput {
   poster: UserCreateOneWithoutPostsInput!
   title: String!
   startsAt: DateTime!
   endsAt: DateTime!
   geolocation: GeolocationCreateOneInput
-  photos: PhotoCreateManyInput
+  photos: PhotoCreateManyWithoutPostInput
+}
+
+input PostCreateWithoutPhotosInput {
+  poster: UserCreateOneWithoutPostsInput!
+  title: String!
+  startsAt: DateTime!
+  endsAt: DateTime!
+  geolocation: GeolocationCreateOneInput
+  bookmarks: BookmarkCreateManyWithoutPostInput
 }
 
 input PostCreateWithoutPosterInput {
@@ -464,7 +490,7 @@ input PostCreateWithoutPosterInput {
   endsAt: DateTime!
   geolocation: GeolocationCreateOneInput
   bookmarks: BookmarkCreateManyWithoutPostInput
-  photos: PhotoCreateManyInput
+  photos: PhotoCreateManyWithoutPostInput
 }
 
 type PostEdge {
@@ -521,7 +547,7 @@ input PostUpdateInput {
   endsAt: DateTime
   geolocation: GeolocationUpdateOneInput
   bookmarks: BookmarkUpdateManyWithoutPostInput
-  photos: PhotoUpdateManyInput
+  photos: PhotoUpdateManyWithoutPostInput
 }
 
 input PostUpdateManyMutationInput {
@@ -545,7 +571,7 @@ input PostUpdateWithoutPosterDataInput {
   endsAt: DateTime
   geolocation: GeolocationUpdateOneInput
   bookmarks: BookmarkUpdateManyWithoutPostInput
-  photos: PhotoUpdateManyInput
+  photos: PhotoUpdateManyWithoutPostInput
 }
 
 input PostUpdateWithWhereUniqueWithoutPosterInput {

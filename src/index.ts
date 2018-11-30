@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import { default as Koa } from 'koa';
 import { ApolloServer, gql } from 'apollo-server-koa';
 import { importSchema } from 'graphql-import';
+import fs from 'fs';
 
 import cors from '@koa/cors';
 import bodyParser from 'koa-bodyparser';
@@ -20,11 +21,12 @@ if (nodeEnv !== 'production') {
 
 const typeDefs = importSchema('./src/schema.graphql');
 
+
 const server = new ApolloServer({
   context,
   resolvers,
-  typeDefs: gql`${typeDefs}`,
-})
+  typeDefs: gql(typeDefs.replace('scalar Upload', '')),
+});
 
 const app = new Koa();
 

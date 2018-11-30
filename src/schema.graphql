@@ -1,4 +1,7 @@
 # import Post, Bookmark from './generated/prisma.graphql'
+# import GeolocationCreateInput, CurrencyEnum from './generated/prisma.graphql'
+
+scalar Upload
 
 type Query {
   me: User
@@ -6,6 +9,17 @@ type Query {
   users: [User!]!
   post(id: ID!): Post
   posts: [Post!]
+}
+
+type Mutation {
+  post(
+    title: String!
+    description: String!
+    startsAt: DateTime!
+    endsAt: DateTime!
+    geolocation: GeolocationCreateInput
+    photos: [CreatePhotoInput]
+  ): Post!
 }
 
 type User {
@@ -16,4 +30,13 @@ type User {
   name: String!
   posts: [Post!]
   bookmarks: [Bookmark!]
+}
+
+input CreatePhotoInput {
+  url: String
+  file: Upload
+  title: String
+  description: String
+  price: Int
+  currency: CurrencyEnum
 }
