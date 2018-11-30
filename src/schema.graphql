@@ -12,7 +12,7 @@ type Query {
 }
 
 type Mutation {
-  post(
+  createPost(
     title: String!
     description: String!
     startsAt: DateTime!
