@@ -4,6 +4,7 @@ import { Prisma } from './generated/prisma-client/';
 export interface ApolloContext {
   ctx: Context;
   db: Prisma;
+  user: AuthPayload;
 }
 
 export type ContextFn = (req: Context) => ApolloContext;

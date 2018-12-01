@@ -19,7 +19,7 @@ export type UploadFn = (
   userId: string,
   postTitle: string,
   file: File
-) => Promise<string | Error>;
+) => Promise<string>;
 
 const bucket = 'photos.washbear.app';
 
@@ -34,7 +34,7 @@ export const uploadFile: UploadFn = async (userId, postTitle, file) => {
   }
 
   const [name, extension] = file.filename.split('.');
-
+  
   const hashedName = md5(name);
   const hashedTitle = md5(postTitle);
 
@@ -59,6 +59,7 @@ export const uploadFile: UploadFn = async (userId, postTitle, file) => {
 
     return putObject.Location;
   } catch (err) {
-    return err;
+    console.log(err);
+    throw err;
   }
 }

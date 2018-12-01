@@ -8,8 +8,10 @@ import {
 } from '../schema';
 
 export const me: QueryToMeResolver = async (_, __, context: ApolloContext) => {
-  const id = getUserId(context);
-  const user = await context.db.user({ id });
+  if (!context.user) {
+    throw new Error('You must be authenticated to do that');
+  }
+  const user = await context.db.user({ id: context.user.id });
 
   return omit(['password'], user);
 }

@@ -260,9 +260,9 @@ type PageInfo {
 }
 
 type Photo {
-  post: Post!
   url: String!
-  poster: User!
+  postedBy: User!
+  post: Post!
   title: String
   description: String
   price: Int
@@ -276,9 +276,9 @@ type PhotoConnection {
 }
 
 input PhotoCreateInput {
-  post: PostCreateOneWithoutPhotosInput!
   url: String!
-  poster: UserCreateOneInput!
+  postedBy: UserCreateOneInput!
+  post: PostCreateOneWithoutPhotosInput!
   title: String
   description: String
   price: Int
@@ -291,7 +291,7 @@ input PhotoCreateManyWithoutPostInput {
 
 input PhotoCreateWithoutPostInput {
   url: String!
-  poster: UserCreateOneInput!
+  postedBy: UserCreateOneInput!
   title: String
   description: String
   price: Int
@@ -361,7 +361,6 @@ input PhotoUpdateManyWithoutPostInput {
 }
 
 input PhotoWhereInput {
-  post: PostWhereInput
   url: String
   url_not: String
   url_in: [String!]
@@ -376,7 +375,8 @@ input PhotoWhereInput {
   url_not_starts_with: String
   url_ends_with: String
   url_not_ends_with: String
-  poster: UserWhereInput
+  postedBy: UserWhereInput
+  post: PostWhereInput
   title: String
   title_not: String
   title_in: [String!]
@@ -424,7 +424,7 @@ input PhotoWhereInput {
 
 type Post {
   id: ID!
-  poster: User!
+  postedBy: User!
   title: String!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -442,7 +442,7 @@ type PostConnection {
 }
 
 input PostCreateInput {
-  poster: UserCreateOneWithoutPostsInput!
+  postedBy: UserCreateOneWithoutPostsInput!
   title: String!
   startsAt: DateTime!
   endsAt: DateTime!
@@ -451,8 +451,8 @@ input PostCreateInput {
   photos: PhotoCreateManyWithoutPostInput
 }
 
-input PostCreateManyWithoutPosterInput {
-  create: [PostCreateWithoutPosterInput!]
+input PostCreateManyWithoutPostedByInput {
+  create: [PostCreateWithoutPostedByInput!]
   connect: [PostWhereUniqueInput!]
 }
 
@@ -467,7 +467,7 @@ input PostCreateOneWithoutPhotosInput {
 }
 
 input PostCreateWithoutBookmarksInput {
-  poster: UserCreateOneWithoutPostsInput!
+  postedBy: UserCreateOneWithoutPostsInput!
   title: String!
   startsAt: DateTime!
   endsAt: DateTime!
@@ -476,7 +476,7 @@ input PostCreateWithoutBookmarksInput {
 }
 
 input PostCreateWithoutPhotosInput {
-  poster: UserCreateOneWithoutPostsInput!
+  postedBy: UserCreateOneWithoutPostsInput!
   title: String!
   startsAt: DateTime!
   endsAt: DateTime!
@@ -484,7 +484,7 @@ input PostCreateWithoutPhotosInput {
   bookmarks: BookmarkCreateManyWithoutPostInput
 }
 
-input PostCreateWithoutPosterInput {
+input PostCreateWithoutPostedByInput {
   title: String!
   startsAt: DateTime!
   endsAt: DateTime!
@@ -541,7 +541,7 @@ input PostSubscriptionWhereInput {
 }
 
 input PostUpdateInput {
-  poster: UserUpdateOneRequiredWithoutPostsInput
+  postedBy: UserUpdateOneRequiredWithoutPostsInput
   title: String
   startsAt: DateTime
   endsAt: DateTime
@@ -556,16 +556,16 @@ input PostUpdateManyMutationInput {
   endsAt: DateTime
 }
 
-input PostUpdateManyWithoutPosterInput {
-  create: [PostCreateWithoutPosterInput!]
+input PostUpdateManyWithoutPostedByInput {
+  create: [PostCreateWithoutPostedByInput!]
   delete: [PostWhereUniqueInput!]
   connect: [PostWhereUniqueInput!]
   disconnect: [PostWhereUniqueInput!]
-  update: [PostUpdateWithWhereUniqueWithoutPosterInput!]
-  upsert: [PostUpsertWithWhereUniqueWithoutPosterInput!]
+  update: [PostUpdateWithWhereUniqueWithoutPostedByInput!]
+  upsert: [PostUpsertWithWhereUniqueWithoutPostedByInput!]
 }
 
-input PostUpdateWithoutPosterDataInput {
+input PostUpdateWithoutPostedByDataInput {
   title: String
   startsAt: DateTime
   endsAt: DateTime
@@ -574,15 +574,15 @@ input PostUpdateWithoutPosterDataInput {
   photos: PhotoUpdateManyWithoutPostInput
 }
 
-input PostUpdateWithWhereUniqueWithoutPosterInput {
+input PostUpdateWithWhereUniqueWithoutPostedByInput {
   where: PostWhereUniqueInput!
-  data: PostUpdateWithoutPosterDataInput!
+  data: PostUpdateWithoutPostedByDataInput!
 }
 
-input PostUpsertWithWhereUniqueWithoutPosterInput {
+input PostUpsertWithWhereUniqueWithoutPostedByInput {
   where: PostWhereUniqueInput!
-  update: PostUpdateWithoutPosterDataInput!
-  create: PostCreateWithoutPosterInput!
+  update: PostUpdateWithoutPostedByDataInput!
+  create: PostCreateWithoutPostedByInput!
 }
 
 input PostWhereInput {
@@ -600,7 +600,7 @@ input PostWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  poster: UserWhereInput
+  postedBy: UserWhereInput
   title: String
   title_not: String
   title_in: [String!]
@@ -711,7 +711,7 @@ input UserCreateInput {
   password: String
   facebookId: String
   bookmarks: BookmarkCreateManyWithoutUserInput
-  posts: PostCreateManyWithoutPosterInput
+  posts: PostCreateManyWithoutPostedByInput
 }
 
 input UserCreateOneInput {
@@ -735,7 +735,7 @@ input UserCreateWithoutBookmarksInput {
   name: String!
   password: String
   facebookId: String
-  posts: PostCreateManyWithoutPosterInput
+  posts: PostCreateManyWithoutPostedByInput
 }
 
 input UserCreateWithoutPostsInput {
@@ -805,7 +805,7 @@ input UserUpdateInput {
   password: String
   facebookId: String
   bookmarks: BookmarkUpdateManyWithoutUserInput
-  posts: PostUpdateManyWithoutPosterInput
+  posts: PostUpdateManyWithoutPostedByInput
 }
 
 input UserUpdateManyMutationInput {

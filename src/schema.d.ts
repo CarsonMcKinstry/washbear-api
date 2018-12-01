@@ -31,7 +31,7 @@ export interface GQLUser {
 
 export interface GQLPost {
   id: string;
-  poster: GQLUser;
+  postedBy: GQLUser;
   title: string;
   createdAt: GQLDateTime;
   updatedAt: GQLDateTime;
@@ -168,7 +168,7 @@ export interface GQLPostWhereInput {
   id_not_starts_with?: string;
   id_ends_with?: string;
   id_not_ends_with?: string;
-  poster?: GQLUserWhereInput;
+  postedBy?: GQLUserWhereInput;
   title?: string;
   title_not?: string;
   title_in?: Array<string>;
@@ -250,7 +250,6 @@ export interface GQLGeolocationWhereInput {
 }
 
 export interface GQLPhotoWhereInput {
-  post?: GQLPostWhereInput;
   url?: string;
   url_not?: string;
   url_in?: Array<string>;
@@ -265,7 +264,8 @@ export interface GQLPhotoWhereInput {
   url_not_starts_with?: string;
   url_ends_with?: string;
   url_not_ends_with?: string;
-  poster?: GQLUserWhereInput;
+  postedBy?: GQLUserWhereInput;
+  post?: GQLPostWhereInput;
   title?: string;
   title_not?: string;
   title_in?: Array<string>;
@@ -353,9 +353,9 @@ export enum GQLPhotoOrderByInput {
 }
 
 export interface GQLPhoto {
-  post: GQLPost;
   url: string;
-  poster: GQLUser;
+  postedBy: GQLUser;
+  post: GQLPost;
   title?: string;
   description?: string;
   price?: number;
@@ -483,7 +483,7 @@ export interface UserToBookmarksResolver<TParent = any, TResult = any> {
 
 export interface GQLPostTypeResolver<TParent = any> {
   id?: PostToIdResolver<TParent>;
-  poster?: PostToPosterResolver<TParent>;
+  postedBy?: PostToPostedByResolver<TParent>;
   title?: PostToTitleResolver<TParent>;
   createdAt?: PostToCreatedAtResolver<TParent>;
   updatedAt?: PostToUpdatedAtResolver<TParent>;
@@ -498,7 +498,7 @@ export interface PostToIdResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
-export interface PostToPosterResolver<TParent = any, TResult = any> {
+export interface PostToPostedByResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
@@ -579,24 +579,24 @@ export interface BookmarkToPostResolver<TParent = any, TResult = any> {
 }
 
 export interface GQLPhotoTypeResolver<TParent = any> {
-  post?: PhotoToPostResolver<TParent>;
   url?: PhotoToUrlResolver<TParent>;
-  poster?: PhotoToPosterResolver<TParent>;
+  postedBy?: PhotoToPostedByResolver<TParent>;
+  post?: PhotoToPostResolver<TParent>;
   title?: PhotoToTitleResolver<TParent>;
   description?: PhotoToDescriptionResolver<TParent>;
   price?: PhotoToPriceResolver<TParent>;
   currency?: PhotoToCurrencyResolver<TParent>;
 }
 
-export interface PhotoToPostResolver<TParent = any, TResult = any> {
-  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
-}
-
 export interface PhotoToUrlResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
-export interface PhotoToPosterResolver<TParent = any, TResult = any> {
+export interface PhotoToPostedByResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface PhotoToPostResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
@@ -635,7 +635,6 @@ export interface GQLMutationTypeResolver<TParent = any> {
 
 export interface MutationToCreatePostArgs {
   title: string;
-  description: string;
   startsAt: GQLDateTime;
   endsAt: GQLDateTime;
   geolocation?: GQLGeolocationCreateInput;

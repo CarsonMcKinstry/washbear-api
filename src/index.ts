@@ -5,6 +5,7 @@ import { importSchema } from 'graphql-import';
 import cors from '@koa/cors';
 import bodyParser from 'koa-bodyparser';
 import logger from 'koa-logger';
+import attachUser from './auth/attachUser';
 
 import authRouter from './auth';
 
@@ -26,11 +27,13 @@ const app = new Koa();
 
 const port = env.port || 4000;
 
-app.use(logger());
+// app.use(logger());
 app.use(cors());
 app.use(bodyParser());
 
 app.use(authRouter.routes());
+
+app.use(attachUser);
 
 server.applyMiddleware({ app });
 server.installSubscriptionHandlers(app.listen(port, () =>

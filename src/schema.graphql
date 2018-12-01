@@ -4,7 +4,7 @@
 scalar Upload
 
 type Query {
-  me: User @isAuthenticated
+  me: User
   userProfile(id: ID!): User
   users: [User!]!
   post(id: ID!): Post
@@ -17,14 +17,13 @@ type Feed {
 }
 
 type Mutation {
-  createPost(
+  createPost (
     title: String!
-    description: String!
     startsAt: DateTime!
     endsAt: DateTime!
     geolocation: GeolocationCreateInput
     photos: [CreatePhotoInput]
-  ): Post! @isAuthenticated
+  ): Post!
 }
 
 type User {
