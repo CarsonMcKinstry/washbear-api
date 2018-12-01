@@ -5,10 +5,15 @@ scalar Upload
 
 type Query {
   me: User
-  user(id: ID!): User
+  userProfile(id: ID!): User
   users: [User!]!
   post(id: ID!): Post
-  posts: [Post!]
+  feed: Feed!
+}
+
+type Feed {
+  posts: [Post!]!
+  count: Int!
 }
 
 type Mutation {

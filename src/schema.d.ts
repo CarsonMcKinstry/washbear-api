@@ -13,10 +13,10 @@ import { GraphQLResolveInfo, GraphQLScalarType } from 'graphql';
  *******************************/
 export interface GQLQuery {
   me?: GQLUser;
-  user?: GQLUser;
+  userProfile?: GQLUser;
   users: Array<GQLUser>;
   post?: GQLPost;
-  posts?: Array<GQLPost>;
+  feed: GQLFeed;
 }
 
 export interface GQLUser {
@@ -362,6 +362,11 @@ export interface GQLPhoto {
   currency?: GQLCurrencyEnum;
 }
 
+export interface GQLFeed {
+  posts: Array<GQLPost>;
+  count: number;
+}
+
 export interface GQLMutation {
   createPost: GQLPost;
 }
@@ -400,26 +405,27 @@ export interface GQLResolver {
   Geolocation?: GQLGeolocationTypeResolver;
   Bookmark?: GQLBookmarkTypeResolver;
   Photo?: GQLPhotoTypeResolver;
+  Feed?: GQLFeedTypeResolver;
   Mutation?: GQLMutationTypeResolver;
   Upload?: GraphQLScalarType;
 }
 export interface GQLQueryTypeResolver<TParent = any> {
   me?: QueryToMeResolver<TParent>;
-  user?: QueryToUserResolver<TParent>;
+  userProfile?: QueryToUserProfileResolver<TParent>;
   users?: QueryToUsersResolver<TParent>;
   post?: QueryToPostResolver<TParent>;
-  posts?: QueryToPostsResolver<TParent>;
+  feed?: QueryToFeedResolver<TParent>;
 }
 
 export interface QueryToMeResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
-export interface QueryToUserArgs {
+export interface QueryToUserProfileArgs {
   id: string;
 }
-export interface QueryToUserResolver<TParent = any, TResult = any> {
-  (parent: TParent, args: QueryToUserArgs, context: any, info: GraphQLResolveInfo): TResult;
+export interface QueryToUserProfileResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: QueryToUserProfileArgs, context: any, info: GraphQLResolveInfo): TResult;
 }
 
 export interface QueryToUsersResolver<TParent = any, TResult = any> {
@@ -433,7 +439,7 @@ export interface QueryToPostResolver<TParent = any, TResult = any> {
   (parent: TParent, args: QueryToPostArgs, context: any, info: GraphQLResolveInfo): TResult;
 }
 
-export interface QueryToPostsResolver<TParent = any, TResult = any> {
+export interface QueryToFeedResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
@@ -607,6 +613,19 @@ export interface PhotoToPriceResolver<TParent = any, TResult = any> {
 }
 
 export interface PhotoToCurrencyResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface GQLFeedTypeResolver<TParent = any> {
+  posts?: FeedToPostsResolver<TParent>;
+  count?: FeedToCountResolver<TParent>;
+}
+
+export interface FeedToPostsResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface FeedToCountResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
