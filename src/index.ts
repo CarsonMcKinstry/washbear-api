@@ -1,7 +1,6 @@
 import { default as Koa } from 'koa';
 import { ApolloServer, gql } from 'apollo-server-koa';
 import { importSchema } from 'graphql-import';
-import fs from 'fs';
 
 import cors from '@koa/cors';
 import bodyParser from 'koa-bodyparser';
@@ -11,14 +10,15 @@ import authRouter from './auth';
 
 import context from './context';
 import resolvers from './resolvers';
-import env from './env';
-
 const typeDefs = importSchema('./src/schema.graphql');
+import schemaDirectives from './directives';
 
+import env from './env';
 
 const server = new ApolloServer({
   context,
   resolvers,
+  schemaDirectives,
   typeDefs: gql(typeDefs.replace('scalar Upload', '')),
 });
 
