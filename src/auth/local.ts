@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs';
-import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { Middleware } from 'koa';
 import md5 from 'md5';
@@ -7,9 +6,7 @@ import { prisma, User } from '../generated/prisma-client/index';
 import { getPayload, authRedirect } from '../utils';
 import passport from './passport';
 
-if (process.env.NODE_ENV !== 'production') {
-  dotenv.config();
-}
+import env from '../env';
 
 export const signUp: Middleware = async (ctx) => {
   const body: { email?: string, password?: string, name?: string} = ctx.request.body || {};
@@ -40,7 +37,7 @@ export const signUp: Middleware = async (ctx) => {
   const jwtUser = getPayload(newUser);
 
   return ctx.body = {
-    access_token: jwt.sign(jwtUser, (process.env.SIGNATURE as string)),
+    access_token: jwt.sign(jwtUser, env.signature),
   };
 };
 
@@ -49,7 +46,7 @@ export const login: Middleware = async (ctx, next) => {
   return passport.authenticate('local', (err, user) => {
     if (err) { return ctx.throw(403, err); }
 
-    const userJwt = jwt.sign(user, (process.env.SIGNATURE as string));
+    const userJwt = jwt.sign(user, env.signature);
     ctx.body = {
       access_token: userJwt,
     };

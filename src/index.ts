@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import { default as Koa } from 'koa';
 import { ApolloServer, gql } from 'apollo-server-koa';
 import { importSchema } from 'graphql-import';
@@ -12,12 +11,7 @@ import authRouter from './auth';
 
 import context from './context';
 import resolvers from './resolvers';
-
-const nodeEnv = process.env.NODE_ENV || 'development';
-
-if (nodeEnv !== 'production') {
-  dotenv.config();
-}
+import env from './env';
 
 const typeDefs = importSchema('./src/schema.graphql');
 
@@ -30,9 +24,9 @@ const server = new ApolloServer({
 
 const app = new Koa();
 
-const port = process.env.PORT || 4000;
+const port = env.port || 4000;
 
-// app.use(logger());
+app.use(logger());
 app.use(cors());
 app.use(bodyParser());
 

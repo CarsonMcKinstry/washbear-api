@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import {
   Strategy,
   VerifyFunction,
@@ -6,9 +5,7 @@ import {
 import { prisma, User } from '../generated/prisma-client/index';
 import { getPayload } from '../utils';
 
-if (process.env.NODE_ENV !== 'production') {
-  dotenv.config();
-}
+import env from '../env';
 
 const facebookHandler: VerifyFunction = async (
   accessToken,
@@ -47,8 +44,8 @@ const facebookHandler: VerifyFunction = async (
 };
 
 export const facebookStrategy = new Strategy({
-  callbackURL: (process.env.FACEBOOK_CALLBACK as string),
-  clientID: (process.env.FACEBOOK_APP_ID as string),
-  clientSecret: (process.env.FACEBOOK_APP_SECRET as string),
+  callbackURL: env.facebookCallback,
+  clientID: env.facebookAppId,
+  clientSecret: env.facebookAppSecret,
   profileFields: ['id', 'displayName', 'name', 'picture.type(large)'],
 }, facebookHandler);

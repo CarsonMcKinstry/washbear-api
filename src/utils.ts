@@ -2,12 +2,9 @@ import { pick } from 'lodash/fp';
 import { User } from './generated/prisma-client/';
 import { Context } from 'koa';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 import { ApolloContext, AuthPayload } from './types';
 
-if (process.env.NODE_ENV !== 'prduction') {
-  dotenv.config();
-}
+import env from './env';
 
 export const getPayload = (user: User) => pick([
   'email',
@@ -21,7 +18,7 @@ export const authRedirect = (ctx: Context) => (err: Error | null, user: User) =>
   const redirectURL = new Buffer(encodedRedirectURL, 'base64').toString('utf-8');
   if (err) { return ctx.throw(403, err); }
 
-  const userJwt = jwt.sign(user, (process.env.SIGNATURE as string));
+  const userJwt = jwt.sign(user, env.signature);
   const finalRedirect = `${redirectURL}?access_token=${userJwt}`;
 
   ctx.redirect(finalRedirect);
@@ -34,7 +31,7 @@ export function getUserId(context: ApolloContext) {
 
   if (Authorization) {
     const token = Authorization.replace('Bearer ', '');
-    const decodedJwt = (jwt.verify(token, (process.env.SIGNATURE as string)) as AuthPayload);
+    const decodedJwt = (jwt.verify(token, env.signature) as AuthPayload);
     if (!decodedJwt.id) { throw new Error('Not authorized'); }
     return decodedJwt.id;
   }
@@ -47,7 +44,7 @@ export function verifyAuthorization(context: ApolloContext) {
 
   if (Authorization) {
     const token = Authorization.replace('Bearer ', '');
-    const decodedJwt = (jwt.verify(token, (process.env.SIGNATURE as string)) as AuthPayload);
+    const decodedJwt = (jwt.verify(token, env.signature) as AuthPayload);
     if (!decodedJwt.id) { throw new Error('Not authorized'); }
     return true;
   }

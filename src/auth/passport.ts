@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs';
-import dotenv from 'dotenv';
 import passport from 'koa-passport';
 import {
   Strategy as LocalStrategy,
@@ -8,10 +7,6 @@ import {
 import { prisma, User } from '../generated/prisma-client/index';
 import { getPayload } from '../utils';
 import { facebookStrategy } from './facebook';
-
-if (process.env.NODE_ENV !== 'production') {
-  dotenv.config();
-}
 
 const localHandler: LocalVerifyFunction = async (email, password, next) => {
 
