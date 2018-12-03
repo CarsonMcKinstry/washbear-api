@@ -34,13 +34,7 @@ export const createPost: MutationToCreatePostResolver = async (_: any, args, con
     endsAt,
     photos = [],
     geolocation,
-    /**
-     * TODO:
-     * We'll add tags as soon as this is resolved
-     * https://github.com/prisma/prisma/issues/1275
-     * Current behaviour: scalar lists are a bit screwy
-     */
-    // tags = []
+    tags = []
   } = args;
   
   const formatedPhotos = await Promise.all(photos.map(photo => formatPhoto(context.user!.id, title, photo)));
@@ -59,14 +53,14 @@ export const createPost: MutationToCreatePostResolver = async (_: any, args, con
     photos: {
       create: formatedPhotos
     },
-    // tags: {
-    //   set: compose(
-    //     concat(tags),
-    //     split(' '),
-    //     toLower,
-    //     deburr,
-    //   )(title)
-    // }
+    tags: {
+      set: compose(
+        concat(tags),
+        split(' '),
+        toLower,
+        deburr,
+      )(title)
+    }
   });
 
   const newGeolocation = await context.db.createGeolocation({

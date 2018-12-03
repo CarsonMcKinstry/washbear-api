@@ -442,6 +442,7 @@ type Post {
   geolocation: Geolocation
   bookmarks(where: BookmarkWhereInput, orderBy: BookmarkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Bookmark!]
   photos(where: PhotoWhereInput, orderBy: PhotoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Photo!]
+  tags: [String!]!
 }
 
 type PostConnection {
@@ -459,6 +460,7 @@ input PostCreateInput {
   geolocation: GeolocationCreateOneWithoutPostInput
   bookmarks: BookmarkCreateManyWithoutPostInput
   photos: PhotoCreateManyWithoutPostInput
+  tags: PostCreatetagsInput
 }
 
 input PostCreateManyWithoutPostedByInput {
@@ -481,6 +483,10 @@ input PostCreateOneWithoutPhotosInput {
   connect: PostWhereUniqueInput
 }
 
+input PostCreatetagsInput {
+  set: [String!]
+}
+
 input PostCreateWithoutBookmarksInput {
   postedBy: UserCreateOneWithoutPostsInput!
   title: String!
@@ -489,6 +495,7 @@ input PostCreateWithoutBookmarksInput {
   endsAt: DateTime!
   geolocation: GeolocationCreateOneWithoutPostInput
   photos: PhotoCreateManyWithoutPostInput
+  tags: PostCreatetagsInput
 }
 
 input PostCreateWithoutGeolocationInput {
@@ -499,6 +506,7 @@ input PostCreateWithoutGeolocationInput {
   endsAt: DateTime!
   bookmarks: BookmarkCreateManyWithoutPostInput
   photos: PhotoCreateManyWithoutPostInput
+  tags: PostCreatetagsInput
 }
 
 input PostCreateWithoutPhotosInput {
@@ -509,6 +517,7 @@ input PostCreateWithoutPhotosInput {
   endsAt: DateTime!
   geolocation: GeolocationCreateOneWithoutPostInput
   bookmarks: BookmarkCreateManyWithoutPostInput
+  tags: PostCreatetagsInput
 }
 
 input PostCreateWithoutPostedByInput {
@@ -519,6 +528,7 @@ input PostCreateWithoutPostedByInput {
   geolocation: GeolocationCreateOneWithoutPostInput
   bookmarks: BookmarkCreateManyWithoutPostInput
   photos: PhotoCreateManyWithoutPostInput
+  tags: PostCreatetagsInput
 }
 
 type PostEdge {
@@ -551,6 +561,7 @@ type PostPreviousValues {
   updatedAt: DateTime!
   startsAt: DateTime!
   endsAt: DateTime!
+  tags: [String!]!
 }
 
 type PostSubscriptionPayload {
@@ -580,6 +591,7 @@ input PostUpdateInput {
   geolocation: GeolocationUpdateOneWithoutPostInput
   bookmarks: BookmarkUpdateManyWithoutPostInput
   photos: PhotoUpdateManyWithoutPostInput
+  tags: PostUpdatetagsInput
 }
 
 input PostUpdateManyMutationInput {
@@ -587,6 +599,7 @@ input PostUpdateManyMutationInput {
   title_normalized: String
   startsAt: DateTime
   endsAt: DateTime
+  tags: PostUpdatetagsInput
 }
 
 input PostUpdateManyWithoutPostedByInput {
@@ -598,6 +611,10 @@ input PostUpdateManyWithoutPostedByInput {
   upsert: [PostUpsertWithWhereUniqueWithoutPostedByInput!]
 }
 
+input PostUpdatetagsInput {
+  set: [String!]
+}
+
 input PostUpdateWithoutPostedByDataInput {
   title: String
   title_normalized: String
@@ -606,6 +623,7 @@ input PostUpdateWithoutPostedByDataInput {
   geolocation: GeolocationUpdateOneWithoutPostInput
   bookmarks: BookmarkUpdateManyWithoutPostInput
   photos: PhotoUpdateManyWithoutPostInput
+  tags: PostUpdatetagsInput
 }
 
 input PostUpdateWithWhereUniqueWithoutPostedByInput {

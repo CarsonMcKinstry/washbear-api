@@ -20,12 +20,6 @@ type Bookmark {
   post: Post!
 }
 
-"""
-TODO:
-we'll use tags once this has been resolved
-https://github.com/prisma/prisma/issues/1275
-Current behaviour: scalar lists are a bit screwy
-"""
 type Post {
   id: ID! @unique
   postedBy: User!
@@ -38,7 +32,7 @@ type Post {
   geolocation: Geolocation @relation(name: "PostGeolocation", onDelete: CASCADE)
   bookmarks: [Bookmark!]!
   photos: [Photo!]!
-  # tags: [String!]!
+  tags: [String!]!
 }
 
 type Photo {

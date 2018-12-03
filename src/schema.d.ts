@@ -33,6 +33,7 @@ export interface GQLPost {
   id: string;
   postedBy: GQLUser;
   title: string;
+  title_normalized: string;
   createdAt: GQLDateTime;
   updatedAt: GQLDateTime;
   startsAt: GQLDateTime;
@@ -185,6 +186,20 @@ export interface GQLPostWhereInput {
   title_not_starts_with?: string;
   title_ends_with?: string;
   title_not_ends_with?: string;
+  title_normalized?: string;
+  title_normalized_not?: string;
+  title_normalized_in?: Array<string>;
+  title_normalized_not_in?: Array<string>;
+  title_normalized_lt?: string;
+  title_normalized_lte?: string;
+  title_normalized_gt?: string;
+  title_normalized_gte?: string;
+  title_normalized_contains?: string;
+  title_normalized_not_contains?: string;
+  title_normalized_starts_with?: string;
+  title_normalized_not_starts_with?: string;
+  title_normalized_ends_with?: string;
+  title_normalized_not_ends_with?: string;
   createdAt?: GQLDateTime;
   createdAt_not?: GQLDateTime;
   createdAt_in?: Array<GQLDateTime>;
@@ -370,6 +385,8 @@ export enum GQLPostOrderByInput {
   id_DESC = 'id_DESC',
   title_ASC = 'title_ASC',
   title_DESC = 'title_DESC',
+  title_normalized_ASC = 'title_normalized_ASC',
+  title_normalized_DESC = 'title_normalized_DESC',
   createdAt_ASC = 'createdAt_ASC',
   createdAt_DESC = 'createdAt_DESC',
   updatedAt_ASC = 'updatedAt_ASC',
@@ -513,6 +530,7 @@ export interface GQLPostTypeResolver<TParent = any> {
   id?: PostToIdResolver<TParent>;
   postedBy?: PostToPostedByResolver<TParent>;
   title?: PostToTitleResolver<TParent>;
+  title_normalized?: PostToTitle_normalizedResolver<TParent>;
   createdAt?: PostToCreatedAtResolver<TParent>;
   updatedAt?: PostToUpdatedAtResolver<TParent>;
   startsAt?: PostToStartsAtResolver<TParent>;
@@ -532,6 +550,10 @@ export interface PostToPostedByResolver<TParent = any, TResult = any> {
 }
 
 export interface PostToTitleResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface PostToTitle_normalizedResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
