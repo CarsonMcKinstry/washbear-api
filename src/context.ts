@@ -4,10 +4,18 @@ import { ApolloContext, AuthPayload } from './types';
 import jwt from 'jsonwebtoken';
 import env from './env';
 
+const getUser = (context: Context): AuthPayload | null => {
+  const authHeader = context.request.get('Authorization');
+
+  if (!authHeader) return null;
+
+  return <AuthPayload>jwt.verify(authHeader.replace('Bearer ', ''), env.signature);
+}
+
 const context = (req: { ctx: Context }): ApolloContext => ({
   ctx: req.ctx,
   db: prisma,
-  user: (jwt.verify(req.ctx.request.get('Authorization').replace('Bearer ', ''), env.signature) as AuthPayload)
+  user: getUser(req.ctx)
 });
 
 export default context;
