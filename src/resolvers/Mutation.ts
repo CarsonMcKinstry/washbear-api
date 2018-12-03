@@ -1,25 +1,7 @@
-import { Post, PhotoCreateWithoutPostInput } from '../generated/prisma-client';
-import { Resolver, ApolloContext } from '../types';
-import { getUserId } from '../utils';
+import { PhotoCreateWithoutPostInput } from '../generated/prisma-client';
+import { ApolloContext } from '../types';
 import { MutationToCreatePostResolver, GQLCreatePhotoInput, GQLPhoto } from '../schema';
-import { Prisma } from '../generated/prisma-client';
-import fs from 'fs';
-import path from 'path';
 import { uploadFile } from '../aws';
-
-// async function createPhoto(photo: GQLCreatePhotoInput, db: Prisma, userId: string) {
-//   const { url, file, ...rest } = photo;
-
-//   if (url) {
-//     return db.createPhoto({
-//       url,
-//       ...rest,
-//       postedBy: {
-//         connect: { id: userId }
-//       }
-//     });
-//   }
-// }
 
 async function formatPhoto (userId: string, postTitle: string, photo: GQLCreatePhotoInput | null): Promise<PhotoCreateWithoutPostInput> {
   const { url, file, title, description, price, currency } = <GQLCreatePhotoInput>photo;
@@ -40,13 +22,6 @@ async function formatPhoto (userId: string, postTitle: string, photo: GQLCreateP
   return newPost;
 }
 
-// url?: string;
-// file?: GQLUpload;
-// title?: string;
-// description?: string;
-// price?: number;
-// currency?: GQLCurrencyEnum;
-
 export const createPost: MutationToCreatePostResolver = async (_: any, args, context: ApolloContext) => {
   if (!context.user) {
     throw new Error('You must be authenticated to do that');
@@ -56,12 +31,13 @@ export const createPost: MutationToCreatePostResolver = async (_: any, args, con
     title,
     startsAt,
     endsAt,
-    photos = []
+    photos = [],
+    geolocation
   } = args;
+  
+  const formatedPhotos = await Promise.all(photos.map(photo => formatPhoto(context.user!.id, title, photo)));
 
-  const formatedPhotos = await Promise.all(photos.map(photo => formatPhoto(context.user.id, title, photo)));
-
-  const post = context.db.createPost({
+  const post = await context.db.createPost({
     title: title,
     startsAt: startsAt,
     endsAt: endsAt,
@@ -72,6 +48,16 @@ export const createPost: MutationToCreatePostResolver = async (_: any, args, con
       create: formatedPhotos
     }
   });
+  console.log(post);
+  const newGeolocation = await context.db.createGeolocation({
+    post: { connect: { id: post.id }},
+    lat: geolocation ? geolocation.lat : 0.0,
+    long: geolocation ? geolocation.long : 0.0,
+  });
+  console.log(newGeolocation);
 
-  return post;
+  return {
+    ...post,
+    geolocation: newGeolocation
+  };
 }
