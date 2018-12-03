@@ -2,6 +2,7 @@ import { PhotoCreateWithoutPostInput } from '../generated/prisma-client';
 import { ApolloContext } from '../types';
 import { MutationToCreatePostResolver, GQLCreatePhotoInput, GQLPhoto } from '../schema';
 import { uploadFile } from '../aws';
+import { split, deburr, compose, toLower, concat } from 'lodash/fp';
 
 async function formatPhoto (userId: string, postTitle: string, photo: GQLCreatePhotoInput | null): Promise<PhotoCreateWithoutPostInput> {
   const { url, file, title, description, price, currency } = <GQLCreatePhotoInput>photo;
@@ -32,13 +33,24 @@ export const createPost: MutationToCreatePostResolver = async (_: any, args, con
     startsAt,
     endsAt,
     photos = [],
-    geolocation
+    geolocation,
+    /**
+     * TODO:
+     * We'll add tags as soon as this is resolved
+     * https://github.com/prisma/prisma/issues/1275
+     * Current behaviour: scalar lists are a bit screwy
+     */
+    // tags = []
   } = args;
   
   const formatedPhotos = await Promise.all(photos.map(photo => formatPhoto(context.user!.id, title, photo)));
 
   const post = await context.db.createPost({
     title: title,
+    title_normalized: compose(
+      deburr,
+      toLower
+    )(title),
     startsAt: startsAt,
     endsAt: endsAt,
     postedBy: {
@@ -46,15 +58,23 @@ export const createPost: MutationToCreatePostResolver = async (_: any, args, con
     },
     photos: {
       create: formatedPhotos
-    }
+    },
+    // tags: {
+    //   set: compose(
+    //     concat(tags),
+    //     split(' '),
+    //     toLower,
+    //     deburr,
+    //   )(title)
+    // }
   });
-  console.log(post);
+
   const newGeolocation = await context.db.createGeolocation({
     post: { connect: { id: post.id }},
     lat: geolocation ? geolocation.lat : 0.0,
     long: geolocation ? geolocation.long : 0.0,
   });
-  console.log(newGeolocation);
+
 
   return {
     ...post,

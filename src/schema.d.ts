@@ -40,6 +40,7 @@ export interface GQLPost {
   geolocation?: GQLGeolocation;
   bookmarks?: Array<GQLBookmark>;
   photos?: Array<GQLPhoto>;
+  tags: Array<string>;
 }
 
 export type GQLDateTime = any;
@@ -519,6 +520,7 @@ export interface GQLPostTypeResolver<TParent = any> {
   geolocation?: PostToGeolocationResolver<TParent>;
   bookmarks?: PostToBookmarksResolver<TParent>;
   photos?: PostToPhotosResolver<TParent>;
+  tags?: PostToTagsResolver<TParent>;
 }
 
 export interface PostToIdResolver<TParent = any, TResult = any> {
@@ -577,6 +579,10 @@ export interface PostToPhotosArgs {
 }
 export interface PostToPhotosResolver<TParent = any, TResult = any> {
   (parent: TParent, args: PostToPhotosArgs, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface PostToTagsResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
 export interface GQLGeolocationTypeResolver<TParent = any> {
@@ -671,6 +677,7 @@ export interface MutationToCreatePostArgs {
   endsAt: GQLDateTime;
   geolocation?: GQLGeolocationCreateWithoutPostInput;
   photos?: Array<GQLCreatePhotoInput | null>;
+  tags?: Array<string>;
 }
 export interface MutationToCreatePostResolver<TParent = any, TResult = any> {
   (parent: TParent, args: MutationToCreatePostArgs, context: any, info: GraphQLResolveInfo): TResult;

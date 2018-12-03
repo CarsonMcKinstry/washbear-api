@@ -43,7 +43,7 @@ export const uploadFile: UploadFn = async (userId, postTitle, file) => {
     accessKeyId: env.awsAccessKeyId,
     secretAccessKey: env.awsSecretAccessKey,
     s3BucketEndpoint: true,
-    maxRetries: 0
+    maxRetries: 10
   });
 
   const params = {

@@ -434,6 +434,7 @@ type Post {
   id: ID!
   postedBy: User!
   title: String!
+  title_normalized: String!
   createdAt: DateTime!
   updatedAt: DateTime!
   startsAt: DateTime!
@@ -441,7 +442,6 @@ type Post {
   geolocation: Geolocation
   bookmarks(where: BookmarkWhereInput, orderBy: BookmarkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Bookmark!]
   photos(where: PhotoWhereInput, orderBy: PhotoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Photo!]
-  tags: [String!]!
 }
 
 type PostConnection {
@@ -453,12 +453,12 @@ type PostConnection {
 input PostCreateInput {
   postedBy: UserCreateOneWithoutPostsInput!
   title: String!
+  title_normalized: String!
   startsAt: DateTime!
   endsAt: DateTime!
   geolocation: GeolocationCreateOneWithoutPostInput
   bookmarks: BookmarkCreateManyWithoutPostInput
   photos: PhotoCreateManyWithoutPostInput
-  tags: PostCreatetagsInput
 }
 
 input PostCreateManyWithoutPostedByInput {
@@ -481,48 +481,44 @@ input PostCreateOneWithoutPhotosInput {
   connect: PostWhereUniqueInput
 }
 
-input PostCreatetagsInput {
-  set: [String!]
-}
-
 input PostCreateWithoutBookmarksInput {
   postedBy: UserCreateOneWithoutPostsInput!
   title: String!
+  title_normalized: String!
   startsAt: DateTime!
   endsAt: DateTime!
   geolocation: GeolocationCreateOneWithoutPostInput
   photos: PhotoCreateManyWithoutPostInput
-  tags: PostCreatetagsInput
 }
 
 input PostCreateWithoutGeolocationInput {
   postedBy: UserCreateOneWithoutPostsInput!
   title: String!
+  title_normalized: String!
   startsAt: DateTime!
   endsAt: DateTime!
   bookmarks: BookmarkCreateManyWithoutPostInput
   photos: PhotoCreateManyWithoutPostInput
-  tags: PostCreatetagsInput
 }
 
 input PostCreateWithoutPhotosInput {
   postedBy: UserCreateOneWithoutPostsInput!
   title: String!
+  title_normalized: String!
   startsAt: DateTime!
   endsAt: DateTime!
   geolocation: GeolocationCreateOneWithoutPostInput
   bookmarks: BookmarkCreateManyWithoutPostInput
-  tags: PostCreatetagsInput
 }
 
 input PostCreateWithoutPostedByInput {
   title: String!
+  title_normalized: String!
   startsAt: DateTime!
   endsAt: DateTime!
   geolocation: GeolocationCreateOneWithoutPostInput
   bookmarks: BookmarkCreateManyWithoutPostInput
   photos: PhotoCreateManyWithoutPostInput
-  tags: PostCreatetagsInput
 }
 
 type PostEdge {
@@ -535,6 +531,8 @@ enum PostOrderByInput {
   id_DESC
   title_ASC
   title_DESC
+  title_normalized_ASC
+  title_normalized_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -548,11 +546,11 @@ enum PostOrderByInput {
 type PostPreviousValues {
   id: ID!
   title: String!
+  title_normalized: String!
   createdAt: DateTime!
   updatedAt: DateTime!
   startsAt: DateTime!
   endsAt: DateTime!
-  tags: [String!]!
 }
 
 type PostSubscriptionPayload {
@@ -576,19 +574,19 @@ input PostSubscriptionWhereInput {
 input PostUpdateInput {
   postedBy: UserUpdateOneRequiredWithoutPostsInput
   title: String
+  title_normalized: String
   startsAt: DateTime
   endsAt: DateTime
   geolocation: GeolocationUpdateOneWithoutPostInput
   bookmarks: BookmarkUpdateManyWithoutPostInput
   photos: PhotoUpdateManyWithoutPostInput
-  tags: PostUpdatetagsInput
 }
 
 input PostUpdateManyMutationInput {
   title: String
+  title_normalized: String
   startsAt: DateTime
   endsAt: DateTime
-  tags: PostUpdatetagsInput
 }
 
 input PostUpdateManyWithoutPostedByInput {
@@ -600,18 +598,14 @@ input PostUpdateManyWithoutPostedByInput {
   upsert: [PostUpsertWithWhereUniqueWithoutPostedByInput!]
 }
 
-input PostUpdatetagsInput {
-  set: [String!]
-}
-
 input PostUpdateWithoutPostedByDataInput {
   title: String
+  title_normalized: String
   startsAt: DateTime
   endsAt: DateTime
   geolocation: GeolocationUpdateOneWithoutPostInput
   bookmarks: BookmarkUpdateManyWithoutPostInput
   photos: PhotoUpdateManyWithoutPostInput
-  tags: PostUpdatetagsInput
 }
 
 input PostUpdateWithWhereUniqueWithoutPostedByInput {
@@ -655,6 +649,20 @@ input PostWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
+  title_normalized: String
+  title_normalized_not: String
+  title_normalized_in: [String!]
+  title_normalized_not_in: [String!]
+  title_normalized_lt: String
+  title_normalized_lte: String
+  title_normalized_gt: String
+  title_normalized_gte: String
+  title_normalized_contains: String
+  title_normalized_not_contains: String
+  title_normalized_starts_with: String
+  title_normalized_not_starts_with: String
+  title_normalized_ends_with: String
+  title_normalized_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]

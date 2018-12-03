@@ -22,6 +22,12 @@ type Query {
   ): Feed!
 }
 
+"""
+TODO:
+we'll use tags once this has been resolved
+https://github.com/prisma/prisma/issues/1275
+Current behaviour: scalar lists are a bit screwy
+"""
 type Mutation {
   createPost (
     title: String!
@@ -29,6 +35,7 @@ type Mutation {
     endsAt: DateTime!
     geolocation: GeolocationCreateWithoutPostInput
     photos: [CreatePhotoInput]
+    # tags: [String!]
   ): Post!
 }
 

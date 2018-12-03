@@ -61,6 +61,23 @@ export const feed: QueryToFeedResolver = async (_, args, context: ApolloContext)
   let OR: PostWhereInput[] = [];
   let AND: PostWhereInput[] = [];
 
+  if (q) {
+    OR = [
+      ...OR,
+      {
+        title_normalized_contains: q
+      },
+      {
+        photos_some: {
+          OR: [
+            { title_contains: q },
+            { description_contains: q}
+          ]
+        }
+      }
+    ]
+  }
+
   if (args.startsAt) {
     AND = [
       ...AND,
@@ -82,8 +99,14 @@ export const feed: QueryToFeedResolver = async (_, args, context: ApolloContext)
       long_gte: geoBounds.longMin,
       long_lte: geoBounds.longMax,
     },
-    OR,
-    AND,
+  }
+
+  if (OR.length > 0) {
+    where.OR = OR;
+  }
+
+  if (AND.length > 0) {
+    where.AND = AND;
   }
 
   const queriedPosts = await context.db.posts({ 
@@ -92,8 +115,6 @@ export const feed: QueryToFeedResolver = async (_, args, context: ApolloContext)
     first,
     orderBy
   });
-
-  console.log(queriedPosts);
 
   const postsCount = await context.db.postsConnection({ where }).aggregate().count();
 

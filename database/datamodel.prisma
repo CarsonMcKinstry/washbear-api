@@ -10,7 +10,7 @@ type User {
 }
 
 type Geolocation {
-  post: Post!
+  post: Post! @relation(name: "PostGeolocation")
   lat: Float!
   long: Float!
 }
@@ -20,18 +20,25 @@ type Bookmark {
   post: Post!
 }
 
+"""
+TODO:
+we'll use tags once this has been resolved
+https://github.com/prisma/prisma/issues/1275
+Current behaviour: scalar lists are a bit screwy
+"""
 type Post {
   id: ID! @unique
   postedBy: User!
   title: String!
+  title_normalized: String!
   createdAt: DateTime!
   updatedAt: DateTime!
   startsAt: DateTime!
   endsAt: DateTime!
-  geolocation: Geolocation
+  geolocation: Geolocation @relation(name: "PostGeolocation", onDelete: CASCADE)
   bookmarks: [Bookmark!]!
   photos: [Photo!]!
-  tags: [String!]!
+  # tags: [String!]!
 }
 
 type Photo {
