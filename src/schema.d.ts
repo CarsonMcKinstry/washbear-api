@@ -45,6 +45,7 @@ export interface GQLPost {
 export type GQLDateTime = any;
 
 export interface GQLGeolocation {
+  post: GQLPost;
   lat: number;
   long: number;
 }
@@ -228,6 +229,7 @@ export interface GQLPostWhereInput {
 }
 
 export interface GQLGeolocationWhereInput {
+  post?: GQLPostWhereInput;
   lat?: number;
   lat_not?: number;
   lat_in?: Array<number>;
@@ -362,6 +364,21 @@ export interface GQLPhoto {
   currency?: GQLCurrencyEnum;
 }
 
+export enum GQLPostOrderByInput {
+  id_ASC = 'id_ASC',
+  id_DESC = 'id_DESC',
+  title_ASC = 'title_ASC',
+  title_DESC = 'title_DESC',
+  createdAt_ASC = 'createdAt_ASC',
+  createdAt_DESC = 'createdAt_DESC',
+  updatedAt_ASC = 'updatedAt_ASC',
+  updatedAt_DESC = 'updatedAt_DESC',
+  startsAt_ASC = 'startsAt_ASC',
+  startsAt_DESC = 'startsAt_DESC',
+  endsAt_ASC = 'endsAt_ASC',
+  endsAt_DESC = 'endsAt_DESC'
+}
+
 export interface GQLFeed {
   posts: Array<GQLPost>;
   count: number;
@@ -371,7 +388,7 @@ export interface GQLMutation {
   createPost: GQLPost;
 }
 
-export interface GQLGeolocationCreateInput {
+export interface GQLGeolocationCreateWithoutPostInput {
   lat: number;
   long: number;
 }
@@ -439,8 +456,18 @@ export interface QueryToPostResolver<TParent = any, TResult = any> {
   (parent: TParent, args: QueryToPostArgs, context: any, info: GraphQLResolveInfo): TResult;
 }
 
+export interface QueryToFeedArgs {
+  g: GQLGeolocationWhereInput;
+  d?: number;
+  q?: string;
+  startsAt?: GQLDateTime;
+  endsAt?: GQLDateTime;
+  first?: number;
+  skip?: number;
+  orderBy?: GQLPostOrderByInput;
+}
 export interface QueryToFeedResolver<TParent = any, TResult = any> {
-  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+  (parent: TParent, args: QueryToFeedArgs, context: any, info: GraphQLResolveInfo): TResult;
 }
 
 export interface GQLUserTypeResolver<TParent = any> {
@@ -553,8 +580,13 @@ export interface PostToPhotosResolver<TParent = any, TResult = any> {
 }
 
 export interface GQLGeolocationTypeResolver<TParent = any> {
+  post?: GeolocationToPostResolver<TParent>;
   lat?: GeolocationToLatResolver<TParent>;
   long?: GeolocationToLongResolver<TParent>;
+}
+
+export interface GeolocationToPostResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
 export interface GeolocationToLatResolver<TParent = any, TResult = any> {
@@ -637,7 +669,7 @@ export interface MutationToCreatePostArgs {
   title: string;
   startsAt: GQLDateTime;
   endsAt: GQLDateTime;
-  geolocation?: GQLGeolocationCreateInput;
+  geolocation?: GQLGeolocationCreateWithoutPostInput;
   photos?: Array<GQLCreatePhotoInput | null>;
 }
 export interface MutationToCreatePostResolver<TParent = any, TResult = any> {

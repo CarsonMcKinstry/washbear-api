@@ -1,5 +1,7 @@
 # import Post, Bookmark from './generated/prisma.graphql'
-# import GeolocationCreateInput, CurrencyEnum from './generated/prisma.graphql'
+# import GeolocationCreateWithoutPostInput, CurrencyEnum from './generated/prisma.graphql'
+# import GeolocationWhereInput from './generated/prisma.graphql'
+# import PostOrderByInput from './generated/prisma.graphql'
 
 scalar Upload
 
@@ -8,12 +10,16 @@ type Query {
   userProfile(id: ID!): User
   users: [User!]!
   post(id: ID!): Post
-  feed: Feed!
-}
-
-type Feed {
-  posts: [Post!]!
-  count: Int!
+  feed( 
+    g: GeolocationWhereInput!,
+    d: Int,
+    q: String,
+    startsAt: DateTime,
+    endsAt: DateTime
+    first: Int,
+    skip: Int,
+    orderBy: PostOrderByInput
+  ): Feed!
 }
 
 type Mutation {
@@ -21,9 +27,14 @@ type Mutation {
     title: String!
     startsAt: DateTime!
     endsAt: DateTime!
-    geolocation: GeolocationCreateInput
+    geolocation: GeolocationCreateWithoutPostInput
     photos: [CreatePhotoInput]
   ): Post!
+}
+
+type Feed {
+  posts: [Post!]!
+  count: Int!
 }
 
 type User {

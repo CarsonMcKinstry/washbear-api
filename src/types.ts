@@ -4,7 +4,7 @@ import { Prisma } from './generated/prisma-client/';
 export interface ApolloContext {
   ctx: Context;
   db: Prisma;
-  user: AuthPayload;
+  user: AuthPayload | null;
 }
 
 export type ContextFn = (req: Context) => ApolloContext;
@@ -22,3 +22,15 @@ export type Resolver<T,R = any,A = any,C = any> = (
   context: C,
   info: string,
 ) => Promise<T>;
+
+export interface Geolocation {
+  lat: number;
+  long: number;
+}
+
+export interface GeolocationBoundary {
+  latMin: number;
+  latMax: number;
+  longMin: number;
+  longMax: number;
+}
