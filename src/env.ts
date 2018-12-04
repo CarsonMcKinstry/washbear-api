@@ -17,4 +17,4 @@ export default {
   awsAccessKeyId: (process.env.AWS_ACCESS_KEY_ID as string),
   awsSecretAccessKey: (process.env.AWS_SECRET_ACCESS_KEY as string),
   port: undefined
-}
+};

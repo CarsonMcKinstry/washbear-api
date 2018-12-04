@@ -1,5 +1,5 @@
 import { ApolloContext } from '../types';
-import { PostToPhotosResolver, PostToGeolocationResolver } from '../schema';
+import { PostToPhotosResolver, PostToGeolocationResolver, PostToTagsResolver } from '../schema';
 
 export const photos: PostToPhotosResolver = async (root, _, context: ApolloContext) => {
   const queriedPhotos = await context.db.photos({
@@ -23,4 +23,9 @@ export const geolocation: PostToGeolocationResolver = async (root, _, context: A
   });
 
   return queriedGeolocation[0];
+}
+
+export const tags: PostToTagsResolver = async (root, _, context: ApolloContext) => {
+  const foundTags = await context.db.post({ id: root.id}).tags();
+  return foundTags;
 }

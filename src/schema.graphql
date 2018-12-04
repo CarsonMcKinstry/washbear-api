@@ -1,4 +1,4 @@
-# import Post, Bookmark from './generated/prisma.graphql'
+# import Post, Bookmark, Tag from './generated/prisma.graphql'
 # import GeolocationCreateWithoutPostInput, CurrencyEnum from './generated/prisma.graphql'
 # import GeolocationWhereInput from './generated/prisma.graphql'
 # import PostOrderByInput from './generated/prisma.graphql'

@@ -1,26 +1,42 @@
-import { PhotoCreateWithoutPostInput } from '../generated/prisma-client';
-import { ApolloContext } from '../types';
-import { MutationToCreatePostResolver, GQLCreatePhotoInput, GQLPhoto } from '../schema';
+import { compose, deburr, map, split, toLower } from 'lodash/fp';
 import { uploadFile } from '../aws';
-import { split, deburr, compose, toLower, concat } from 'lodash/fp';
+import { PhotoCreateWithoutPostInput } from '../generated/prisma-client';
+import { GQLCreatePhotoInput, MutationToCreatePostResolver } from '../schema';
+import { ApolloContext } from '../types';
 
-async function formatPhoto (userId: string, postTitle: string, photo: GQLCreatePhotoInput | null): Promise<PhotoCreateWithoutPostInput> {
-  const { url, file, title, description, price, currency } = <GQLCreatePhotoInput>photo;
+async function formatPhoto(
+  userId: string,
+  postTitle: string,
+  photo: GQLCreatePhotoInput | null
+): Promise<PhotoCreateWithoutPostInput> {
+  const { url, file, title, description, price, currency } = photo as GQLCreatePhotoInput;
 
   const newPost = {
-    url: file 
-      ? await uploadFile(userId, postTitle, await file)
-      : <string>url,
-    title: <string>title,
-    description: <string>description,
-    price: <number>price,
-    currency: currency,
+    currency,
+    description,
     postedBy: {
       connect: { id: userId }
-    }
+    },
+    price,
+    title,
+    url: file
+      ? await uploadFile(userId, postTitle, await file)
+      : url as string,
   };
 
   return newPost;
+}
+
+function titleToTags(title: string) {
+  return compose(
+    split(' '),
+    toLower,
+    deburr,
+  )(title);
+}
+
+function formatTags(tags: string[]) {
+  return map((tag) => ({ name: tag }), tags);
 }
 
 export const createPost: MutationToCreatePostResolver = async (_: any, args, context: ApolloContext) => {
@@ -36,42 +52,43 @@ export const createPost: MutationToCreatePostResolver = async (_: any, args, con
     geolocation,
     tags = []
   } = args;
-  
-  const formatedPhotos = await Promise.all(photos.map(photo => formatPhoto(context.user!.id, title, photo)));
+
+  const formatedPhotos = await Promise
+  .all(
+    photos
+      .map((photo) => formatPhoto(context.user!.id, title, photo))
+  );
+
+  const newTags = formatTags(titleToTags(title).concat(tags));
+  console.log(newTags);
 
   const post = await context.db.createPost({
-    title: title,
+    endsAt,
+    photos: {
+      create: formatedPhotos
+    },
+    postedBy: {
+      connect: { id: context.user.id }
+    },
+    startsAt,
+    tags: {
+      create: formatTags(titleToTags(title).concat(tags))
+    },
+    title,
     title_normalized: compose(
       deburr,
       toLower
     )(title),
-    startsAt: startsAt,
-    endsAt: endsAt,
-    postedBy: {
-      connect: { id: context.user.id }
-    },
-    photos: {
-      create: formatedPhotos
-    },
-    tags: {
-      set: compose(
-        concat(tags),
-        split(' '),
-        toLower,
-        deburr,
-      )(title)
-    }
   });
 
   const newGeolocation = await context.db.createGeolocation({
-    post: { connect: { id: post.id }},
     lat: geolocation ? geolocation.lat : 0.0,
     long: geolocation ? geolocation.long : 0.0,
+    post: { connect: { id: post.id }},
   });
-
 
   return {
     ...post,
     geolocation: newGeolocation
   };
-}
+};

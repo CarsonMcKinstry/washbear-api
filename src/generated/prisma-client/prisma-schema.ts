@@ -14,6 +14,10 @@ type AggregatePost {
   count: Int!
 }
 
+type AggregateTag {
+  count: Int!
+}
+
 type AggregateUser {
   count: Int!
 }
@@ -242,6 +246,9 @@ type Mutation {
   upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
   deletePost(where: PostWhereUniqueInput!): Post
   deleteManyPosts(where: PostWhereInput): BatchPayload!
+  createTag(data: TagCreateInput!): Tag!
+  updateManyTags(data: TagUpdateManyMutationInput!, where: TagWhereInput): BatchPayload!
+  deleteManyTags(where: TagWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -442,7 +449,7 @@ type Post {
   geolocation: Geolocation
   bookmarks(where: BookmarkWhereInput, orderBy: BookmarkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Bookmark!]
   photos(where: PhotoWhereInput, orderBy: PhotoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Photo!]
-  tags: [String!]!
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
 }
 
 type PostConnection {
@@ -460,7 +467,7 @@ input PostCreateInput {
   geolocation: GeolocationCreateOneWithoutPostInput
   bookmarks: BookmarkCreateManyWithoutPostInput
   photos: PhotoCreateManyWithoutPostInput
-  tags: PostCreatetagsInput
+  tags: TagCreateManyInput
 }
 
 input PostCreateManyWithoutPostedByInput {
@@ -483,10 +490,6 @@ input PostCreateOneWithoutPhotosInput {
   connect: PostWhereUniqueInput
 }
 
-input PostCreatetagsInput {
-  set: [String!]
-}
-
 input PostCreateWithoutBookmarksInput {
   postedBy: UserCreateOneWithoutPostsInput!
   title: String!
@@ -495,7 +498,7 @@ input PostCreateWithoutBookmarksInput {
   endsAt: DateTime!
   geolocation: GeolocationCreateOneWithoutPostInput
   photos: PhotoCreateManyWithoutPostInput
-  tags: PostCreatetagsInput
+  tags: TagCreateManyInput
 }
 
 input PostCreateWithoutGeolocationInput {
@@ -506,7 +509,7 @@ input PostCreateWithoutGeolocationInput {
   endsAt: DateTime!
   bookmarks: BookmarkCreateManyWithoutPostInput
   photos: PhotoCreateManyWithoutPostInput
-  tags: PostCreatetagsInput
+  tags: TagCreateManyInput
 }
 
 input PostCreateWithoutPhotosInput {
@@ -517,7 +520,7 @@ input PostCreateWithoutPhotosInput {
   endsAt: DateTime!
   geolocation: GeolocationCreateOneWithoutPostInput
   bookmarks: BookmarkCreateManyWithoutPostInput
-  tags: PostCreatetagsInput
+  tags: TagCreateManyInput
 }
 
 input PostCreateWithoutPostedByInput {
@@ -528,7 +531,7 @@ input PostCreateWithoutPostedByInput {
   geolocation: GeolocationCreateOneWithoutPostInput
   bookmarks: BookmarkCreateManyWithoutPostInput
   photos: PhotoCreateManyWithoutPostInput
-  tags: PostCreatetagsInput
+  tags: TagCreateManyInput
 }
 
 type PostEdge {
@@ -561,7 +564,6 @@ type PostPreviousValues {
   updatedAt: DateTime!
   startsAt: DateTime!
   endsAt: DateTime!
-  tags: [String!]!
 }
 
 type PostSubscriptionPayload {
@@ -591,7 +593,7 @@ input PostUpdateInput {
   geolocation: GeolocationUpdateOneWithoutPostInput
   bookmarks: BookmarkUpdateManyWithoutPostInput
   photos: PhotoUpdateManyWithoutPostInput
-  tags: PostUpdatetagsInput
+  tags: TagUpdateManyInput
 }
 
 input PostUpdateManyMutationInput {
@@ -599,7 +601,6 @@ input PostUpdateManyMutationInput {
   title_normalized: String
   startsAt: DateTime
   endsAt: DateTime
-  tags: PostUpdatetagsInput
 }
 
 input PostUpdateManyWithoutPostedByInput {
@@ -611,10 +612,6 @@ input PostUpdateManyWithoutPostedByInput {
   upsert: [PostUpsertWithWhereUniqueWithoutPostedByInput!]
 }
 
-input PostUpdatetagsInput {
-  set: [String!]
-}
-
 input PostUpdateWithoutPostedByDataInput {
   title: String
   title_normalized: String
@@ -623,7 +620,7 @@ input PostUpdateWithoutPostedByDataInput {
   geolocation: GeolocationUpdateOneWithoutPostInput
   bookmarks: BookmarkUpdateManyWithoutPostInput
   photos: PhotoUpdateManyWithoutPostInput
-  tags: PostUpdatetagsInput
+  tags: TagUpdateManyInput
 }
 
 input PostUpdateWithWhereUniqueWithoutPostedByInput {
@@ -720,6 +717,9 @@ input PostWhereInput {
   photos_every: PhotoWhereInput
   photos_some: PhotoWhereInput
   photos_none: PhotoWhereInput
+  tags_every: TagWhereInput
+  tags_some: TagWhereInput
+  tags_none: TagWhereInput
   AND: [PostWhereInput!]
   OR: [PostWhereInput!]
   NOT: [PostWhereInput!]
@@ -739,6 +739,8 @@ type Query {
   post(where: PostWhereUniqueInput!): Post
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag]!
+  tagsConnection(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TagConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -750,7 +752,92 @@ type Subscription {
   geolocation(where: GeolocationSubscriptionWhereInput): GeolocationSubscriptionPayload
   photo(where: PhotoSubscriptionWhereInput): PhotoSubscriptionPayload
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
+  tag(where: TagSubscriptionWhereInput): TagSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+type Tag {
+  name: String!
+}
+
+type TagConnection {
+  pageInfo: PageInfo!
+  edges: [TagEdge]!
+  aggregate: AggregateTag!
+}
+
+input TagCreateInput {
+  name: String!
+}
+
+input TagCreateManyInput {
+  create: [TagCreateInput!]
+}
+
+type TagEdge {
+  node: Tag!
+  cursor: String!
+}
+
+enum TagOrderByInput {
+  name_ASC
+  name_DESC
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type TagPreviousValues {
+  name: String!
+}
+
+type TagSubscriptionPayload {
+  mutation: MutationType!
+  node: Tag
+  updatedFields: [String!]
+  previousValues: TagPreviousValues
+}
+
+input TagSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: TagWhereInput
+  AND: [TagSubscriptionWhereInput!]
+  OR: [TagSubscriptionWhereInput!]
+  NOT: [TagSubscriptionWhereInput!]
+}
+
+input TagUpdateManyInput {
+  create: [TagCreateInput!]
+}
+
+input TagUpdateManyMutationInput {
+  name: String
+}
+
+input TagWhereInput {
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [TagWhereInput!]
+  OR: [TagWhereInput!]
+  NOT: [TagWhereInput!]
 }
 
 type User {

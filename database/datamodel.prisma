@@ -32,7 +32,11 @@ type Post {
   geolocation: Geolocation @relation(name: "PostGeolocation", onDelete: CASCADE)
   bookmarks: [Bookmark!]!
   photos: [Photo!]!
-  tags: [String!]!
+  tags: [Tag!]!
+}
+
+type Tag {
+  name: String!
 }
 
 type Photo {
