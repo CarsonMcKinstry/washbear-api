@@ -29,7 +29,7 @@ const localHandler: LocalVerifyFunction = async (email, password, next) => {
   } catch (err) {
     return next(err, null);
   }
-}
+};
 
 export const localStrategy = new LocalStrategy({
   passwordField: 'password',

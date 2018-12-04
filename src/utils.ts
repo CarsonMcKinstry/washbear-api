@@ -1,7 +1,7 @@
+import jwt from 'jsonwebtoken';
+import { Context } from 'koa';
 import { pick } from 'lodash/fp';
 import { User } from './generated/prisma-client/';
-import { Context } from 'koa';
-import jwt from 'jsonwebtoken';
 import { ApolloContext, AuthPayload } from './types';
 
 import env from './env';
@@ -23,8 +23,6 @@ export const authRedirect = (ctx: Context) => (err: Error | null, user: User) =>
 
   ctx.redirect(finalRedirect);
 };
-
-
 
 export function getUserId(context: ApolloContext) {
   const Authorization = context.ctx.request.get('Authorization');

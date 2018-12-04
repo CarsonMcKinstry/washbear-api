@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { Middleware } from 'koa';
 import md5 from 'md5';
 import { prisma, User } from '../generated/prisma-client/index';
-import { getPayload, authRedirect } from '../utils';
+import { authRedirect, getPayload } from '../utils';
 import passport from './passport';
 
 import env from '../env';

@@ -1,12 +1,12 @@
 import { omit } from 'lodash/fp';
-import { User, UserWhereInput, Post, PostWhereInput } from '../generated/prisma-client';
-import { ApolloContext, Resolver } from "../types";
-import { getUserId } from '../utils';
+import { Post, PostWhereInput, User, UserWhereInput } from '../generated/prisma-client';
 import {
-  QueryToPostResolver, QueryToUsersResolver, QueryToUserProfileResolver, QueryToMeResolver, QueryToFeedResolver,
-  GQLPost
+  GQLPost, QueryToFeedResolver, QueryToMeResolver, QueryToPostResolver, QueryToUserProfileResolver,
+  QueryToUsersResolver
 } from '../schema';
+import { ApolloContext, Resolver } from "../types";
 import { Geolocation, GeolocationBoundary } from '../types';
+import { getUserId } from '../utils';
 
 export const me: QueryToMeResolver = async (_, __, context: ApolloContext) => {
   if (!context.user) {
@@ -15,31 +15,31 @@ export const me: QueryToMeResolver = async (_, __, context: ApolloContext) => {
   const user = await context.db.user({ id: context.user.id });
 
   return omit(['password'], user);
-}
+};
 
 export const userProfile: QueryToUserProfileResolver = async (_, args, context: ApolloContext) => {
   const { id } = args;
   const user = await context.db.user({ id });
 
   return omit(['password'], user);
-}
+};
 
 export const users: QueryToUsersResolver = async (_, args, context: ApolloContext) => {
   const queriedUsers = await context.db.users();
   return queriedUsers.map<User>(omit(['password']));
-}
+};
 
 export const post: QueryToPostResolver = async (_, args, context: ApolloContext) => {
   const { id } = args;
-  const post = await context.db.post({ id });
+  const queriedPosts = await context.db.post({ id });
 
-  return post;
-}
+  return queriedPosts;
+};
 
 function getGeoBounds(d: number, g: Geolocation): GeolocationBoundary {
   const rEarth = 3959;
 
-  const MILES_PER_DEGREE = (2*Math.PI/360) * rEarth;
+  const MILES_PER_DEGREE = (2 * Math.PI / 360) * rEarth;
 
   const latMax = g.lat + (d / MILES_PER_DEGREE);
   const longMax = g.long + (d / MILES_PER_DEGREE);
@@ -47,16 +47,16 @@ function getGeoBounds(d: number, g: Geolocation): GeolocationBoundary {
   const longMin = g.long - (d / MILES_PER_DEGREE);
 
   return {
-    latMin,
     latMax,
-    longMin,
+    latMin,
     longMax,
-  }
+    longMin,
+  };
 }
 
 export const feed: QueryToFeedResolver = async (_, args, context: ApolloContext) => {
   const { g, d = 10, q, skip, first, orderBy } = args;
-  const geoBounds = getGeoBounds(d, <Geolocation>g);
+  const geoBounds = getGeoBounds(d, g as Geolocation);
 
   let OR: PostWhereInput[] = [];
   let AND: PostWhereInput[] = [];
@@ -75,7 +75,7 @@ export const feed: QueryToFeedResolver = async (_, args, context: ApolloContext)
           ]
         }
       }
-    ]
+    ];
   }
 
   if (args.startsAt) {
@@ -89,7 +89,7 @@ export const feed: QueryToFeedResolver = async (_, args, context: ApolloContext)
     AND = [
       ...AND,
       { endsAt_lte: args.endsAt }
-    ]
+    ];
   }
 
   const where: PostWhereInput = {
@@ -99,7 +99,7 @@ export const feed: QueryToFeedResolver = async (_, args, context: ApolloContext)
       long_gte: geoBounds.longMin,
       long_lte: geoBounds.longMax,
     },
-  }
+  };
 
   if (OR.length > 0) {
     where.OR = OR;
@@ -109,17 +109,17 @@ export const feed: QueryToFeedResolver = async (_, args, context: ApolloContext)
     where.AND = AND;
   }
 
-  const queriedPosts = await context.db.posts({ 
-    where,
-    skip,
+  const queriedPosts = await context.db.posts({
     first,
-    orderBy
+    orderBy,
+    skip,
+    where,
   });
 
   const postsCount = await context.db.postsConnection({ where }).aggregate().count();
 
   return {
     count: postsCount,
-    postIds: queriedPosts.map(post => post.id)
-  }
-}
+    postIds: queriedPosts.map((p) => p.id)
+  };
+};

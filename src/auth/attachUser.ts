@@ -1,7 +1,7 @@
-import { prisma } from '../generated/prisma-client';
-import { Middleware } from 'koa';
 import jwt from 'jsonwebtoken';
+import { Middleware } from 'koa';
 import env from '../env';
+import { prisma } from '../generated/prisma-client';
 
 const attachUser: Middleware = (ctx, next) => {
   const authorization = ctx.request.get('Authorization');
@@ -18,6 +18,6 @@ const attachUser: Middleware = (ctx, next) => {
   } catch (err) {
     return next();
   }
-}
+};
 
 export default attachUser;

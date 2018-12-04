@@ -18,7 +18,7 @@ const rejectUntrustedStrategies: Middleware = (ctx, next) => {
   }
 
   return next();
-}
+};
 
 const addRedirectCookie: Middleware = (ctx, next) => {
   let { query: { r } } = ctx;
@@ -39,12 +39,12 @@ const addRedirectCookie: Middleware = (ctx, next) => {
 const startAuth: Middleware = (ctx, next) => {
   const { params: { strategy } } = ctx;
   return passport.authenticate(strategy)(ctx, next);
-}
+};
 
 const handleCallback: Middleware = (ctx, next) => {
   const { params: { strategy } } = ctx;
   return passport.authenticate(strategy, authRedirect(ctx))(ctx, next);
-}
+};
 
 authRouter
   .use(addRedirectCookie)

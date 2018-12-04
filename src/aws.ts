@@ -1,13 +1,13 @@
 import * as AWS from 'aws-sdk';
-import md5 from 'md5';
 import { Stream } from 'aws-sdk/clients/glacier';
+import md5 from 'md5';
 import env from './env';
 
 export interface File {
   filename: string;
   mimetype: string;
   encoding: string;
-  stream: Stream
+  stream: Stream;
 }
 
 export interface UploadReturnInterface {
@@ -34,25 +34,25 @@ export const uploadFile: UploadFn = async (userId, postTitle, file) => {
   }
 
   const [name, extension] = file.filename.split('.');
-  
+
   const hashedName = md5(name);
   const hashedTitle = md5(postTitle);
 
   const s3 = new AWS.S3({
-    endpoint: `https://s3.amazonaws.com/${bucket}`,
     accessKeyId: env.awsAccessKeyId,
-    secretAccessKey: env.awsSecretAccessKey,
+    endpoint: `https://s3.amazonaws.com/${bucket}`,
+    maxRetries: 10,
     s3BucketEndpoint: true,
-    maxRetries: 10
+    secretAccessKey: env.awsSecretAccessKey,
   });
 
   const params = {
-    Bucket: bucket,
-    Key: `${userId}/${hashedTitle}/${hashedName}.${extension}`,
+    ACL: 'public-read',
     Body: file.stream,
-    ContentType: file.mimetype,
+    Bucket: bucket,
     ContentEncoding: file.encoding,
-    ACL: 'public-read'
+    ContentType: file.mimetype,
+    Key: `${userId}/${hashedTitle}/${hashedName}.${extension}`,
   };
 
   try {
@@ -63,4 +63,4 @@ export const uploadFile: UploadFn = async (userId, postTitle, file) => {
     console.log(err);
     throw err;
   }
-}
+};

@@ -16,7 +16,7 @@ export interface AuthPayload {
   iat: number;
 }
 
-export type Resolver<T,R = any,A = any,C = any> = (
+export type Resolver<T, R = any, A = any, C = any> = (
   root: R,
   args: A,
   context: C,

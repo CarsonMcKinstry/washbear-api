@@ -8,5 +8,5 @@ export const posts: FeedToPostsResolver = (root, _, context: ApolloContext) => {
         id_in: root.postIds
       }
     }
-  )
-}
+  );
+};

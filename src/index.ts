@@ -1,6 +1,6 @@
-import { default as Koa } from 'koa';
 import { ApolloServer, gql } from 'apollo-server-koa';
 import { importSchema } from 'graphql-import';
+import { default as Koa } from 'koa';
 
 import cors from '@koa/cors';
 import bodyParser from 'koa-bodyparser';

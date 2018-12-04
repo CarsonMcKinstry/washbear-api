@@ -5,7 +5,7 @@
  */
 
 // import dotenv from 'dotenv';
-// import { 
+// import {
 //   Strategy as TwitterStrategy,
 //   Profile as TwitterProfile
 // } from 'passport-twitter';
@@ -14,21 +14,19 @@
 //   dotenv.config();
 // }
 
-
 // const twitterHandler = async (
-//   accessToken: any, 
-//   refreshToken: any, 
-//   profile: TwitterProfile, 
+//   accessToken: any,
+//   refreshToken: any,
+//   profile: TwitterProfile,
 //   done: any,
 // ) => {
-//   const { 
+//   const {
 //     _json
 //   } = profile;
 //   console.log(profile);
 
 //   return done(null, null);
 // }
-
 
 // export const twitterStrategy = new TwitterStrategy({
 //   callbackURL: (process.env.TWITTER_CALLBACK as string),
