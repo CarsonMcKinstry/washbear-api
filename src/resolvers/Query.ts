@@ -65,14 +65,19 @@ export const feed: QueryToFeedResolver = async (_, args, context: ApolloContext)
     OR = [
       ...OR,
       {
-        title_normalized_contains: q
+        title_normalized_contains: q,
+      },
+      {
+        tags_some: {
+          name_contains: q,
+        },
       },
       {
         photos_some: {
           OR: [
             { title_contains: q },
-            { description_contains: q}
-          ]
+            { description_contains: q},
+          ],
         }
       }
     ];
