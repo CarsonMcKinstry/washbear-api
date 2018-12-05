@@ -9,16 +9,6 @@ type User {
   posts: [Post!]!
 }
 
-type Geolocation {
-  lat: Float!
-  long: Float!
-}
-
-type Bookmark {
-  user: User!
-  post: Post!
-}
-
 type Post {
   id: ID! @unique
   postedBy: User!
@@ -35,10 +25,24 @@ type Post {
 }
 
 type Tag {
+  id: ID! @unique
   name: String!
 }
 
+type Geolocation {
+  id: ID! @unique
+  lat: Float!
+  long: Float!
+}
+
+type Bookmark {
+  id: ID! @unique
+  user: User!
+  post: Post!
+}
+
 type Photo {
+  id: ID! @unique
   url: String!
   postedBy: User!
   post: Post!

@@ -1,7 +1,12 @@
 import { compose, deburr, map, split, toLower } from 'lodash/fp';
 import { uploadFile } from '../aws';
 import { PhotoCreateWithoutPostInput, Tag} from '../generated/prisma-client';
-import { GQLCreatePhotoInput, MutationToCreatePostResolver } from '../schema';
+import {
+  GQLCreatePhotoInput,
+  MutationToCreateBookmarkResolver,
+  MutationToCreatePostResolver,
+  MutationToRemoveBookmarkResolver,
+} from '../schema';
 import { ApolloContext } from '../types';
 
 const formatPhoto = async (
@@ -33,7 +38,7 @@ const titleToTags = (title: string): string[] => compose(
   deburr,
 )(title);
 
-const formatTags = (tags: string[]): Tag[] => map((tag) => ({ name: tag }), tags);
+const formatTags = (tags: string[]) => map((tag) => ({ name: tag }), tags);
 
 export const createPost: MutationToCreatePostResolver = async (_: any, args, context: ApolloContext) => {
   if (!context.user) {
@@ -58,7 +63,7 @@ export const createPost: MutationToCreatePostResolver = async (_: any, args, con
   const newTags = formatTags(titleToTags(title).concat(tags));
   console.log(newTags);
 
-  const post = await context.db.createPost({
+  const newPost = await context.db.createPost({
     endsAt,
     geolocation: {
       create: {
@@ -83,5 +88,57 @@ export const createPost: MutationToCreatePostResolver = async (_: any, args, con
     )(title),
   });
 
-  return post;
+  return newPost;
+};
+
+export const createBookmark: MutationToCreateBookmarkResolver = async (_, args, context: ApolloContext, info ) => {
+  const { user } = context;
+  const { postId } = args;
+
+  if (!user) {
+    throw new Error('You must be authenticated to do that');
+  }
+
+  const exists = await context.db.$exists.bookmark({
+    post: { id: postId },
+    user: { id: user!.id },
+  });
+
+  if (exists) {
+    throw new Error('This bookmark already exists');
+  }
+
+  try {
+    const newBookmark = await context.db.createBookmark({
+      post: { connect: { id: postId } },
+      user: { connect: { id: user!.id  }},
+    });
+
+    return newBookmark;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const removeBookmark: MutationToRemoveBookmarkResolver = async (_, args, context: ApolloContext) => {
+  const { user } = context;
+  const { bookmarkId } = args;
+
+  if (!user) {
+    throw new Error('You must be authenticated to do that');
+  }
+
+  const exists = await context.db.$exists.bookmark({ id: bookmarkId });
+
+  if (!exists) {
+    throw new Error('Bookmark doesn\'t exist');
+  }
+
+  try {
+    const deletedBookmark = await context.db.deleteBookmark({ id: bookmarkId, });
+
+    return deletedBookmark;
+  } catch (err) {
+    throw err;
+  }
 };

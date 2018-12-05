@@ -1,7 +1,7 @@
 # import Post, Bookmark, Tag from './generated/prisma.graphql'
 # import CurrencyEnum from './generated/prisma.graphql'
 # import GeolocationWhereInput, GeolocationCreateInput from './generated/prisma.graphql'
-# import PostOrderByInput from './generated/prisma.graphql'
+# import PostOrderByInput, PostUpdateInput from './generated/prisma.graphql'
 
 scalar Upload
 
@@ -31,7 +31,13 @@ type Mutation {
     photos: [CreatePhotoInput]
     tags: [String!]
   ): Post!
-}
+  createBookmark (
+    postId: ID!
+  ): Bookmark!
+  removeBookmark (
+    bookmarkId: ID!
+  ): Bookmark
+} 
 
 type Feed {
   posts: [Post!]!

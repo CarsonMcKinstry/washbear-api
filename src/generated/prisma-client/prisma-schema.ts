@@ -27,6 +27,7 @@ type BatchPayload {
 }
 
 type Bookmark {
+  id: ID!
   user: User!
   post: Post!
 }
@@ -44,10 +45,12 @@ input BookmarkCreateInput {
 
 input BookmarkCreateManyWithoutPostInput {
   create: [BookmarkCreateWithoutPostInput!]
+  connect: [BookmarkWhereUniqueInput!]
 }
 
 input BookmarkCreateManyWithoutUserInput {
   create: [BookmarkCreateWithoutUserInput!]
+  connect: [BookmarkWhereUniqueInput!]
 }
 
 input BookmarkCreateWithoutPostInput {
@@ -72,10 +75,15 @@ enum BookmarkOrderByInput {
   updatedAt_DESC
 }
 
+type BookmarkPreviousValues {
+  id: ID!
+}
+
 type BookmarkSubscriptionPayload {
   mutation: MutationType!
   node: Bookmark
   updatedFields: [String!]
+  previousValues: BookmarkPreviousValues
 }
 
 input BookmarkSubscriptionWhereInput {
@@ -89,20 +97,83 @@ input BookmarkSubscriptionWhereInput {
   NOT: [BookmarkSubscriptionWhereInput!]
 }
 
+input BookmarkUpdateInput {
+  user: UserUpdateOneRequiredWithoutBookmarksInput
+  post: PostUpdateOneRequiredWithoutBookmarksInput
+}
+
 input BookmarkUpdateManyWithoutPostInput {
   create: [BookmarkCreateWithoutPostInput!]
+  delete: [BookmarkWhereUniqueInput!]
+  connect: [BookmarkWhereUniqueInput!]
+  disconnect: [BookmarkWhereUniqueInput!]
+  update: [BookmarkUpdateWithWhereUniqueWithoutPostInput!]
+  upsert: [BookmarkUpsertWithWhereUniqueWithoutPostInput!]
 }
 
 input BookmarkUpdateManyWithoutUserInput {
   create: [BookmarkCreateWithoutUserInput!]
+  delete: [BookmarkWhereUniqueInput!]
+  connect: [BookmarkWhereUniqueInput!]
+  disconnect: [BookmarkWhereUniqueInput!]
+  update: [BookmarkUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [BookmarkUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input BookmarkUpdateWithoutPostDataInput {
+  user: UserUpdateOneRequiredWithoutBookmarksInput
+}
+
+input BookmarkUpdateWithoutUserDataInput {
+  post: PostUpdateOneRequiredWithoutBookmarksInput
+}
+
+input BookmarkUpdateWithWhereUniqueWithoutPostInput {
+  where: BookmarkWhereUniqueInput!
+  data: BookmarkUpdateWithoutPostDataInput!
+}
+
+input BookmarkUpdateWithWhereUniqueWithoutUserInput {
+  where: BookmarkWhereUniqueInput!
+  data: BookmarkUpdateWithoutUserDataInput!
+}
+
+input BookmarkUpsertWithWhereUniqueWithoutPostInput {
+  where: BookmarkWhereUniqueInput!
+  update: BookmarkUpdateWithoutPostDataInput!
+  create: BookmarkCreateWithoutPostInput!
+}
+
+input BookmarkUpsertWithWhereUniqueWithoutUserInput {
+  where: BookmarkWhereUniqueInput!
+  update: BookmarkUpdateWithoutUserDataInput!
+  create: BookmarkCreateWithoutUserInput!
 }
 
 input BookmarkWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
   user: UserWhereInput
   post: PostWhereInput
   AND: [BookmarkWhereInput!]
   OR: [BookmarkWhereInput!]
   NOT: [BookmarkWhereInput!]
+}
+
+input BookmarkWhereUniqueInput {
+  id: ID
 }
 
 enum CurrencyEnum {
@@ -116,6 +187,7 @@ enum CurrencyEnum {
 scalar DateTime
 
 type Geolocation {
+  id: ID!
   lat: Float!
   long: Float!
 }
@@ -133,6 +205,7 @@ input GeolocationCreateInput {
 
 input GeolocationCreateOneInput {
   create: GeolocationCreateInput
+  connect: GeolocationWhereUniqueInput
 }
 
 type GeolocationEdge {
@@ -141,12 +214,12 @@ type GeolocationEdge {
 }
 
 enum GeolocationOrderByInput {
+  id_ASC
+  id_DESC
   lat_ASC
   lat_DESC
   long_ASC
   long_DESC
-  id_ASC
-  id_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -154,6 +227,7 @@ enum GeolocationOrderByInput {
 }
 
 type GeolocationPreviousValues {
+  id: ID!
   lat: Float!
   long: Float!
 }
@@ -181,6 +255,11 @@ input GeolocationUpdateDataInput {
   long: Float
 }
 
+input GeolocationUpdateInput {
+  lat: Float
+  long: Float
+}
+
 input GeolocationUpdateManyMutationInput {
   lat: Float
   long: Float
@@ -192,6 +271,7 @@ input GeolocationUpdateOneInput {
   upsert: GeolocationUpsertNestedInput
   delete: Boolean
   disconnect: Boolean
+  connect: GeolocationWhereUniqueInput
 }
 
 input GeolocationUpsertNestedInput {
@@ -200,6 +280,20 @@ input GeolocationUpsertNestedInput {
 }
 
 input GeolocationWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
   lat: Float
   lat_not: Float
   lat_in: [Float!]
@@ -221,16 +315,29 @@ input GeolocationWhereInput {
   NOT: [GeolocationWhereInput!]
 }
 
+input GeolocationWhereUniqueInput {
+  id: ID
+}
+
 scalar Long
 
 type Mutation {
   createBookmark(data: BookmarkCreateInput!): Bookmark!
+  updateBookmark(data: BookmarkUpdateInput!, where: BookmarkWhereUniqueInput!): Bookmark
+  upsertBookmark(where: BookmarkWhereUniqueInput!, create: BookmarkCreateInput!, update: BookmarkUpdateInput!): Bookmark!
+  deleteBookmark(where: BookmarkWhereUniqueInput!): Bookmark
   deleteManyBookmarks(where: BookmarkWhereInput): BatchPayload!
   createGeolocation(data: GeolocationCreateInput!): Geolocation!
+  updateGeolocation(data: GeolocationUpdateInput!, where: GeolocationWhereUniqueInput!): Geolocation
   updateManyGeolocations(data: GeolocationUpdateManyMutationInput!, where: GeolocationWhereInput): BatchPayload!
+  upsertGeolocation(where: GeolocationWhereUniqueInput!, create: GeolocationCreateInput!, update: GeolocationUpdateInput!): Geolocation!
+  deleteGeolocation(where: GeolocationWhereUniqueInput!): Geolocation
   deleteManyGeolocations(where: GeolocationWhereInput): BatchPayload!
   createPhoto(data: PhotoCreateInput!): Photo!
+  updatePhoto(data: PhotoUpdateInput!, where: PhotoWhereUniqueInput!): Photo
   updateManyPhotos(data: PhotoUpdateManyMutationInput!, where: PhotoWhereInput): BatchPayload!
+  upsertPhoto(where: PhotoWhereUniqueInput!, create: PhotoCreateInput!, update: PhotoUpdateInput!): Photo!
+  deletePhoto(where: PhotoWhereUniqueInput!): Photo
   deleteManyPhotos(where: PhotoWhereInput): BatchPayload!
   createPost(data: PostCreateInput!): Post!
   updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
@@ -239,7 +346,10 @@ type Mutation {
   deletePost(where: PostWhereUniqueInput!): Post
   deleteManyPosts(where: PostWhereInput): BatchPayload!
   createTag(data: TagCreateInput!): Tag!
+  updateTag(data: TagUpdateInput!, where: TagWhereUniqueInput!): Tag
   updateManyTags(data: TagUpdateManyMutationInput!, where: TagWhereInput): BatchPayload!
+  upsertTag(where: TagWhereUniqueInput!, create: TagCreateInput!, update: TagUpdateInput!): Tag!
+  deleteTag(where: TagWhereUniqueInput!): Tag
   deleteManyTags(where: TagWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
@@ -267,6 +377,7 @@ type PageInfo {
 }
 
 type Photo {
+  id: ID!
   url: String!
   postedBy: User!
   post: Post!
@@ -294,6 +405,7 @@ input PhotoCreateInput {
 
 input PhotoCreateManyWithoutPostInput {
   create: [PhotoCreateWithoutPostInput!]
+  connect: [PhotoWhereUniqueInput!]
 }
 
 input PhotoCreateWithoutPostInput {
@@ -311,6 +423,8 @@ type PhotoEdge {
 }
 
 enum PhotoOrderByInput {
+  id_ASC
+  id_DESC
   url_ASC
   url_DESC
   title_ASC
@@ -321,8 +435,6 @@ enum PhotoOrderByInput {
   price_DESC
   currency_ASC
   currency_DESC
-  id_ASC
-  id_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -330,6 +442,7 @@ enum PhotoOrderByInput {
 }
 
 type PhotoPreviousValues {
+  id: ID!
   url: String!
   title: String
   description: String
@@ -355,6 +468,16 @@ input PhotoSubscriptionWhereInput {
   NOT: [PhotoSubscriptionWhereInput!]
 }
 
+input PhotoUpdateInput {
+  url: String
+  postedBy: UserUpdateOneRequiredInput
+  post: PostUpdateOneRequiredWithoutPhotosInput
+  title: String
+  description: String
+  price: Int
+  currency: CurrencyEnum
+}
+
 input PhotoUpdateManyMutationInput {
   url: String
   title: String
@@ -365,9 +488,48 @@ input PhotoUpdateManyMutationInput {
 
 input PhotoUpdateManyWithoutPostInput {
   create: [PhotoCreateWithoutPostInput!]
+  delete: [PhotoWhereUniqueInput!]
+  connect: [PhotoWhereUniqueInput!]
+  disconnect: [PhotoWhereUniqueInput!]
+  update: [PhotoUpdateWithWhereUniqueWithoutPostInput!]
+  upsert: [PhotoUpsertWithWhereUniqueWithoutPostInput!]
+}
+
+input PhotoUpdateWithoutPostDataInput {
+  url: String
+  postedBy: UserUpdateOneRequiredInput
+  title: String
+  description: String
+  price: Int
+  currency: CurrencyEnum
+}
+
+input PhotoUpdateWithWhereUniqueWithoutPostInput {
+  where: PhotoWhereUniqueInput!
+  data: PhotoUpdateWithoutPostDataInput!
+}
+
+input PhotoUpsertWithWhereUniqueWithoutPostInput {
+  where: PhotoWhereUniqueInput!
+  update: PhotoUpdateWithoutPostDataInput!
+  create: PhotoCreateWithoutPostInput!
 }
 
 input PhotoWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
   url: String
   url_not: String
   url_in: [String!]
@@ -427,6 +589,10 @@ input PhotoWhereInput {
   AND: [PhotoWhereInput!]
   OR: [PhotoWhereInput!]
   NOT: [PhotoWhereInput!]
+}
+
+input PhotoWhereUniqueInput {
+  id: ID
 }
 
 type Post {
@@ -588,6 +754,42 @@ input PostUpdateManyWithoutPostedByInput {
   upsert: [PostUpsertWithWhereUniqueWithoutPostedByInput!]
 }
 
+input PostUpdateOneRequiredWithoutBookmarksInput {
+  create: PostCreateWithoutBookmarksInput
+  update: PostUpdateWithoutBookmarksDataInput
+  upsert: PostUpsertWithoutBookmarksInput
+  connect: PostWhereUniqueInput
+}
+
+input PostUpdateOneRequiredWithoutPhotosInput {
+  create: PostCreateWithoutPhotosInput
+  update: PostUpdateWithoutPhotosDataInput
+  upsert: PostUpsertWithoutPhotosInput
+  connect: PostWhereUniqueInput
+}
+
+input PostUpdateWithoutBookmarksDataInput {
+  postedBy: UserUpdateOneRequiredWithoutPostsInput
+  title: String
+  title_normalized: String
+  startsAt: DateTime
+  endsAt: DateTime
+  geolocation: GeolocationUpdateOneInput
+  photos: PhotoUpdateManyWithoutPostInput
+  tags: TagUpdateManyInput
+}
+
+input PostUpdateWithoutPhotosDataInput {
+  postedBy: UserUpdateOneRequiredWithoutPostsInput
+  title: String
+  title_normalized: String
+  startsAt: DateTime
+  endsAt: DateTime
+  geolocation: GeolocationUpdateOneInput
+  bookmarks: BookmarkUpdateManyWithoutPostInput
+  tags: TagUpdateManyInput
+}
+
 input PostUpdateWithoutPostedByDataInput {
   title: String
   title_normalized: String
@@ -602,6 +804,16 @@ input PostUpdateWithoutPostedByDataInput {
 input PostUpdateWithWhereUniqueWithoutPostedByInput {
   where: PostWhereUniqueInput!
   data: PostUpdateWithoutPostedByDataInput!
+}
+
+input PostUpsertWithoutBookmarksInput {
+  update: PostUpdateWithoutBookmarksDataInput!
+  create: PostCreateWithoutBookmarksInput!
+}
+
+input PostUpsertWithoutPhotosInput {
+  update: PostUpdateWithoutPhotosDataInput!
+  create: PostCreateWithoutPhotosInput!
 }
 
 input PostUpsertWithWhereUniqueWithoutPostedByInput {
@@ -706,15 +918,19 @@ input PostWhereUniqueInput {
 }
 
 type Query {
+  bookmark(where: BookmarkWhereUniqueInput!): Bookmark
   bookmarks(where: BookmarkWhereInput, orderBy: BookmarkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Bookmark]!
   bookmarksConnection(where: BookmarkWhereInput, orderBy: BookmarkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BookmarkConnection!
+  geolocation(where: GeolocationWhereUniqueInput!): Geolocation
   geolocations(where: GeolocationWhereInput, orderBy: GeolocationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Geolocation]!
   geolocationsConnection(where: GeolocationWhereInput, orderBy: GeolocationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): GeolocationConnection!
+  photo(where: PhotoWhereUniqueInput!): Photo
   photos(where: PhotoWhereInput, orderBy: PhotoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Photo]!
   photosConnection(where: PhotoWhereInput, orderBy: PhotoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PhotoConnection!
   post(where: PostWhereUniqueInput!): Post
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
+  tag(where: TagWhereUniqueInput!): Tag
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag]!
   tagsConnection(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TagConnection!
   user(where: UserWhereUniqueInput!): User
@@ -733,6 +949,7 @@ type Subscription {
 }
 
 type Tag {
+  id: ID!
   name: String!
 }
 
@@ -748,6 +965,7 @@ input TagCreateInput {
 
 input TagCreateManyInput {
   create: [TagCreateInput!]
+  connect: [TagWhereUniqueInput!]
 }
 
 type TagEdge {
@@ -756,10 +974,10 @@ type TagEdge {
 }
 
 enum TagOrderByInput {
-  name_ASC
-  name_DESC
   id_ASC
   id_DESC
+  name_ASC
+  name_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -767,6 +985,7 @@ enum TagOrderByInput {
 }
 
 type TagPreviousValues {
+  id: ID!
   name: String!
 }
 
@@ -788,15 +1007,53 @@ input TagSubscriptionWhereInput {
   NOT: [TagSubscriptionWhereInput!]
 }
 
+input TagUpdateDataInput {
+  name: String
+}
+
+input TagUpdateInput {
+  name: String
+}
+
 input TagUpdateManyInput {
   create: [TagCreateInput!]
+  update: [TagUpdateWithWhereUniqueNestedInput!]
+  upsert: [TagUpsertWithWhereUniqueNestedInput!]
+  delete: [TagWhereUniqueInput!]
+  connect: [TagWhereUniqueInput!]
+  disconnect: [TagWhereUniqueInput!]
 }
 
 input TagUpdateManyMutationInput {
   name: String
 }
 
+input TagUpdateWithWhereUniqueNestedInput {
+  where: TagWhereUniqueInput!
+  data: TagUpdateDataInput!
+}
+
+input TagUpsertWithWhereUniqueNestedInput {
+  where: TagWhereUniqueInput!
+  update: TagUpdateDataInput!
+  create: TagCreateInput!
+}
+
 input TagWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
   name: String
   name_not: String
   name_in: [String!]
@@ -814,6 +1071,10 @@ input TagWhereInput {
   AND: [TagWhereInput!]
   OR: [TagWhereInput!]
   NOT: [TagWhereInput!]
+}
+
+input TagWhereUniqueInput {
+  id: ID
 }
 
 type User {
@@ -927,6 +1188,16 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  avatar: String
+  email: String
+  name: String
+  password: String
+  facebookId: String
+  bookmarks: BookmarkUpdateManyWithoutUserInput
+  posts: PostUpdateManyWithoutPostedByInput
+}
+
 input UserUpdateInput {
   avatar: String
   email: String
@@ -945,11 +1216,34 @@ input UserUpdateManyMutationInput {
   facebookId: String
 }
 
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateOneRequiredWithoutBookmarksInput {
+  create: UserCreateWithoutBookmarksInput
+  update: UserUpdateWithoutBookmarksDataInput
+  upsert: UserUpsertWithoutBookmarksInput
+  connect: UserWhereUniqueInput
+}
+
 input UserUpdateOneRequiredWithoutPostsInput {
   create: UserCreateWithoutPostsInput
   update: UserUpdateWithoutPostsDataInput
   upsert: UserUpsertWithoutPostsInput
   connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutBookmarksDataInput {
+  avatar: String
+  email: String
+  name: String
+  password: String
+  facebookId: String
+  posts: PostUpdateManyWithoutPostedByInput
 }
 
 input UserUpdateWithoutPostsDataInput {
@@ -959,6 +1253,16 @@ input UserUpdateWithoutPostsDataInput {
   password: String
   facebookId: String
   bookmarks: BookmarkUpdateManyWithoutUserInput
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
+}
+
+input UserUpsertWithoutBookmarksInput {
+  update: UserUpdateWithoutBookmarksDataInput!
+  create: UserCreateWithoutBookmarksInput!
 }
 
 input UserUpsertWithoutPostsInput {

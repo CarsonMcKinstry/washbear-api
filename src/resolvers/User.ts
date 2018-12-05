@@ -1,4 +1,7 @@
-import { UserToPostsResolver } from "../schema";
+import {
+  UserToBookmarksResolver,
+  UserToPostsResolver,
+} from "../schema";
 import { ApolloContext } from "../types";
 
 export const posts: UserToPostsResolver = async (root, args, context: ApolloContext ) => {
@@ -11,4 +14,16 @@ export const posts: UserToPostsResolver = async (root, args, context: ApolloCont
   });
 
   return queriedPosts;
+};
+
+export const bookmarks: UserToBookmarksResolver = async (root, __, context: ApolloContext) => {
+  const foundBookmarks = await context.db.bookmarks({
+    where: {
+      user: {
+        id: root.id
+      }
+    }
+  });
+
+  return foundBookmarks;
 };

@@ -1,3 +1,4 @@
+import * as Bookmark from './Bookmark';
 import * as Feed from './Feed';
 import * as Mutation from './Mutation';
 import * as Post from './Post';
@@ -5,6 +6,7 @@ import * as Query from './Query';
 import * as User from './User';
 
 const resolvers = {
+  Bookmark,
   Feed,
   Mutation,
   Post,
