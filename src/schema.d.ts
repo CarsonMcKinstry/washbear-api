@@ -41,13 +41,12 @@ export interface GQLPost {
   geolocation?: GQLGeolocation;
   bookmarks?: Array<GQLBookmark>;
   photos?: Array<GQLPhoto>;
-  tags: Array<string>;
+  tags?: Array<GQLTag>;
 }
 
 export type GQLDateTime = any;
 
 export interface GQLGeolocation {
-  post: GQLPost;
   lat: number;
   long: number;
 }
@@ -239,13 +238,15 @@ export interface GQLPostWhereInput {
   photos_every?: GQLPhotoWhereInput;
   photos_some?: GQLPhotoWhereInput;
   photos_none?: GQLPhotoWhereInput;
+  tags_every?: GQLTagWhereInput;
+  tags_some?: GQLTagWhereInput;
+  tags_none?: GQLTagWhereInput;
   AND?: Array<GQLPostWhereInput>;
   OR?: Array<GQLPostWhereInput>;
   NOT?: Array<GQLPostWhereInput>;
 }
 
 export interface GQLGeolocationWhereInput {
-  post?: GQLPostWhereInput;
   lat?: number;
   lat_not?: number;
   lat_in?: Array<number>;
@@ -337,6 +338,26 @@ export enum GQLCurrencyEnum {
   AUD = 'AUD'
 }
 
+export interface GQLTagWhereInput {
+  name?: string;
+  name_not?: string;
+  name_in?: Array<string>;
+  name_not_in?: Array<string>;
+  name_lt?: string;
+  name_lte?: string;
+  name_gt?: string;
+  name_gte?: string;
+  name_contains?: string;
+  name_not_contains?: string;
+  name_starts_with?: string;
+  name_not_starts_with?: string;
+  name_ends_with?: string;
+  name_not_ends_with?: string;
+  AND?: Array<GQLTagWhereInput>;
+  OR?: Array<GQLTagWhereInput>;
+  NOT?: Array<GQLTagWhereInput>;
+}
+
 export enum GQLBookmarkOrderByInput {
   id_ASC = 'id_ASC',
   id_DESC = 'id_DESC',
@@ -380,6 +401,21 @@ export interface GQLPhoto {
   currency?: GQLCurrencyEnum;
 }
 
+export enum GQLTagOrderByInput {
+  name_ASC = 'name_ASC',
+  name_DESC = 'name_DESC',
+  id_ASC = 'id_ASC',
+  id_DESC = 'id_DESC',
+  createdAt_ASC = 'createdAt_ASC',
+  createdAt_DESC = 'createdAt_DESC',
+  updatedAt_ASC = 'updatedAt_ASC',
+  updatedAt_DESC = 'updatedAt_DESC'
+}
+
+export interface GQLTag {
+  name: string;
+}
+
 export enum GQLPostOrderByInput {
   id_ASC = 'id_ASC',
   id_DESC = 'id_DESC',
@@ -406,7 +442,7 @@ export interface GQLMutation {
   createPost: GQLPost;
 }
 
-export interface GQLGeolocationCreateWithoutPostInput {
+export interface GQLGeolocationCreateInput {
   lat: number;
   long: number;
 }
@@ -440,6 +476,7 @@ export interface GQLResolver {
   Geolocation?: GQLGeolocationTypeResolver;
   Bookmark?: GQLBookmarkTypeResolver;
   Photo?: GQLPhotoTypeResolver;
+  Tag?: GQLTagTypeResolver;
   Feed?: GQLFeedTypeResolver;
   Mutation?: GQLMutationTypeResolver;
   Upload?: GraphQLScalarType;
@@ -603,18 +640,22 @@ export interface PostToPhotosResolver<TParent = any, TResult = any> {
   (parent: TParent, args: PostToPhotosArgs, context: any, info: GraphQLResolveInfo): TResult;
 }
 
+export interface PostToTagsArgs {
+  where?: GQLTagWhereInput;
+  orderBy?: GQLTagOrderByInput;
+  skip?: number;
+  after?: string;
+  before?: string;
+  first?: number;
+  last?: number;
+}
 export interface PostToTagsResolver<TParent = any, TResult = any> {
-  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+  (parent: TParent, args: PostToTagsArgs, context: any, info: GraphQLResolveInfo): TResult;
 }
 
 export interface GQLGeolocationTypeResolver<TParent = any> {
-  post?: GeolocationToPostResolver<TParent>;
   lat?: GeolocationToLatResolver<TParent>;
   long?: GeolocationToLongResolver<TParent>;
-}
-
-export interface GeolocationToPostResolver<TParent = any, TResult = any> {
-  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
 export interface GeolocationToLatResolver<TParent = any, TResult = any> {
@@ -676,6 +717,14 @@ export interface PhotoToCurrencyResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
+export interface GQLTagTypeResolver<TParent = any> {
+  name?: TagToNameResolver<TParent>;
+}
+
+export interface TagToNameResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
 export interface GQLFeedTypeResolver<TParent = any> {
   posts?: FeedToPostsResolver<TParent>;
   count?: FeedToCountResolver<TParent>;
@@ -697,7 +746,7 @@ export interface MutationToCreatePostArgs {
   title: string;
   startsAt: GQLDateTime;
   endsAt: GQLDateTime;
-  geolocation?: GQLGeolocationCreateWithoutPostInput;
+  geolocation?: GQLGeolocationCreateInput;
   photos?: Array<GQLCreatePhotoInput | null>;
   tags?: Array<string>;
 }

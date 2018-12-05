@@ -354,9 +354,8 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface UserCreateOneInput {
-  create?: UserCreateInput;
-  connect?: UserWhereUniqueInput;
+export interface PhotoCreateManyWithoutPostInput {
+  create?: PhotoCreateWithoutPostInput[] | PhotoCreateWithoutPostInput;
 }
 
 export interface BookmarkWhereInput {
@@ -367,56 +366,42 @@ export interface BookmarkWhereInput {
   NOT?: BookmarkWhereInput[] | BookmarkWhereInput;
 }
 
+export interface PostUpdateInput {
+  postedBy?: UserUpdateOneRequiredWithoutPostsInput;
+  title?: String;
+  title_normalized?: String;
+  startsAt?: DateTimeInput;
+  endsAt?: DateTimeInput;
+  geolocation?: GeolocationUpdateOneInput;
+  bookmarks?: BookmarkUpdateManyWithoutPostInput;
+  photos?: PhotoUpdateManyWithoutPostInput;
+  tags?: TagUpdateManyInput;
+}
+
+export interface GeolocationUpdateManyMutationInput {
+  lat?: Float;
+  long?: Float;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  email: String;
+  id?: ID_Input;
+  facebookId?: String;
+}>;
+
+export interface BookmarkCreateWithoutUserInput {
+  post: PostCreateOneWithoutBookmarksInput;
+}
+
 export interface PostCreateInput {
   postedBy: UserCreateOneWithoutPostsInput;
   title: String;
   title_normalized: String;
   startsAt: DateTimeInput;
   endsAt: DateTimeInput;
-  geolocation?: GeolocationCreateOneWithoutPostInput;
+  geolocation?: GeolocationCreateOneInput;
   bookmarks?: BookmarkCreateManyWithoutPostInput;
   photos?: PhotoCreateManyWithoutPostInput;
-  tags?: TagCreateManyInput;
-}
-
-export interface PostCreateWithoutGeolocationInput {
-  postedBy: UserCreateOneWithoutPostsInput;
-  title: String;
-  title_normalized: String;
-  startsAt: DateTimeInput;
-  endsAt: DateTimeInput;
-  bookmarks?: BookmarkCreateManyWithoutPostInput;
-  photos?: PhotoCreateManyWithoutPostInput;
-  tags?: TagCreateManyInput;
-}
-
-export interface PhotoUpdateManyMutationInput {
-  url?: String;
-  title?: String;
-  description?: String;
-  price?: Int;
-  currency?: CurrencyEnum;
-}
-
-export interface PostCreateWithoutBookmarksInput {
-  postedBy: UserCreateOneWithoutPostsInput;
-  title: String;
-  title_normalized: String;
-  startsAt: DateTimeInput;
-  endsAt: DateTimeInput;
-  geolocation?: GeolocationCreateOneWithoutPostInput;
-  photos?: PhotoCreateManyWithoutPostInput;
-  tags?: TagCreateManyInput;
-}
-
-export interface PostCreateWithoutPhotosInput {
-  postedBy: UserCreateOneWithoutPostsInput;
-  title: String;
-  title_normalized: String;
-  startsAt: DateTimeInput;
-  endsAt: DateTimeInput;
-  geolocation?: GeolocationCreateOneWithoutPostInput;
-  bookmarks?: BookmarkCreateManyWithoutPostInput;
   tags?: TagCreateManyInput;
 }
 
@@ -431,9 +416,12 @@ export interface UserSubscriptionWhereInput {
   NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
 }
 
-export interface PostCreateOneWithoutPhotosInput {
-  create?: PostCreateWithoutPhotosInput;
-  connect?: PostWhereUniqueInput;
+export interface PhotoUpdateManyMutationInput {
+  url?: String;
+  title?: String;
+  description?: String;
+  price?: Int;
+  currency?: CurrencyEnum;
 }
 
 export interface PostSubscriptionWhereInput {
@@ -447,6 +435,17 @@ export interface PostSubscriptionWhereInput {
   NOT?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
 }
 
+export interface PostCreateWithoutPhotosInput {
+  postedBy: UserCreateOneWithoutPostsInput;
+  title: String;
+  title_normalized: String;
+  startsAt: DateTimeInput;
+  endsAt: DateTimeInput;
+  geolocation?: GeolocationCreateOneInput;
+  bookmarks?: BookmarkCreateManyWithoutPostInput;
+  tags?: TagCreateManyInput;
+}
+
 export interface GeolocationSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
@@ -456,6 +455,11 @@ export interface GeolocationSubscriptionWhereInput {
   AND?: GeolocationSubscriptionWhereInput[] | GeolocationSubscriptionWhereInput;
   OR?: GeolocationSubscriptionWhereInput[] | GeolocationSubscriptionWhereInput;
   NOT?: GeolocationSubscriptionWhereInput[] | GeolocationSubscriptionWhereInput;
+}
+
+export interface PostCreateOneWithoutPhotosInput {
+  create?: PostCreateWithoutPhotosInput;
+  connect?: PostWhereUniqueInput;
 }
 
 export interface BookmarkSubscriptionWhereInput {
@@ -469,20 +473,10 @@ export interface BookmarkSubscriptionWhereInput {
   NOT?: BookmarkSubscriptionWhereInput[] | BookmarkSubscriptionWhereInput;
 }
 
-export interface BookmarkCreateInput {
-  user: UserCreateOneWithoutBookmarksInput;
-  post: PostCreateOneWithoutBookmarksInput;
-}
-
 export interface PostUpsertWithWhereUniqueWithoutPostedByInput {
   where: PostWhereUniqueInput;
   update: PostUpdateWithoutPostedByDataInput;
   create: PostCreateWithoutPostedByInput;
-}
-
-export interface UserCreateOneWithoutBookmarksInput {
-  create?: UserCreateWithoutBookmarksInput;
-  connect?: UserWhereUniqueInput;
 }
 
 export interface PostUpdateWithWhereUniqueWithoutPostedByInput {
@@ -490,13 +484,9 @@ export interface PostUpdateWithWhereUniqueWithoutPostedByInput {
   data: PostUpdateWithoutPostedByDataInput;
 }
 
-export interface UserCreateWithoutBookmarksInput {
-  avatar?: String;
-  email?: String;
-  name: String;
-  password?: String;
-  facebookId?: String;
-  posts?: PostCreateManyWithoutPostedByInput;
+export interface BookmarkCreateInput {
+  user: UserCreateOneWithoutBookmarksInput;
+  post: PostCreateOneWithoutBookmarksInput;
 }
 
 export interface UserUpdateInput {
@@ -509,9 +499,9 @@ export interface UserUpdateInput {
   posts?: PostUpdateManyWithoutPostedByInput;
 }
 
-export interface PostCreateManyWithoutPostedByInput {
-  create?: PostCreateWithoutPostedByInput[] | PostCreateWithoutPostedByInput;
-  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput;
+export interface UserCreateOneWithoutBookmarksInput {
+  create?: UserCreateWithoutBookmarksInput;
+  connect?: UserWhereUniqueInput;
 }
 
 export interface PostWhereInput {
@@ -605,61 +595,67 @@ export interface PostWhereInput {
   NOT?: PostWhereInput[] | PostWhereInput;
 }
 
-export interface PostCreateWithoutPostedByInput {
-  title: String;
-  title_normalized: String;
-  startsAt: DateTimeInput;
-  endsAt: DateTimeInput;
-  geolocation?: GeolocationCreateOneWithoutPostInput;
-  bookmarks?: BookmarkCreateManyWithoutPostInput;
-  photos?: PhotoCreateManyWithoutPostInput;
-  tags?: TagCreateManyInput;
+export interface UserCreateWithoutBookmarksInput {
+  avatar?: String;
+  email?: String;
+  name: String;
+  password?: String;
+  facebookId?: String;
+  posts?: PostCreateManyWithoutPostedByInput;
 }
 
 export interface TagUpdateManyInput {
   create?: TagCreateInput[] | TagCreateInput;
 }
 
-export interface GeolocationCreateOneWithoutPostInput {
-  create?: GeolocationCreateWithoutPostInput;
+export interface PostCreateManyWithoutPostedByInput {
+  create?: PostCreateWithoutPostedByInput[] | PostCreateWithoutPostedByInput;
+  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput;
 }
 
 export interface BookmarkUpdateManyWithoutPostInput {
   create?: BookmarkCreateWithoutPostInput[] | BookmarkCreateWithoutPostInput;
 }
 
-export interface GeolocationCreateWithoutPostInput {
-  lat: Float;
-  long: Float;
+export interface PostCreateWithoutPostedByInput {
+  title: String;
+  title_normalized: String;
+  startsAt: DateTimeInput;
+  endsAt: DateTimeInput;
+  geolocation?: GeolocationCreateOneInput;
+  bookmarks?: BookmarkCreateManyWithoutPostInput;
+  photos?: PhotoCreateManyWithoutPostInput;
+  tags?: TagCreateManyInput;
 }
 
-export interface GeolocationUpdateWithoutPostDataInput {
+export interface GeolocationUpdateDataInput {
   lat?: Float;
   long?: Float;
 }
 
-export interface BookmarkCreateManyWithoutPostInput {
-  create?: BookmarkCreateWithoutPostInput[] | BookmarkCreateWithoutPostInput;
+export interface GeolocationCreateOneInput {
+  create?: GeolocationCreateInput;
 }
 
-export interface GeolocationUpdateOneWithoutPostInput {
-  create?: GeolocationCreateWithoutPostInput;
-  update?: GeolocationUpdateWithoutPostDataInput;
-  upsert?: GeolocationUpsertWithoutPostInput;
+export interface GeolocationUpdateOneInput {
+  create?: GeolocationCreateInput;
+  update?: GeolocationUpdateDataInput;
+  upsert?: GeolocationUpsertNestedInput;
   delete?: Boolean;
   disconnect?: Boolean;
 }
 
-export interface BookmarkCreateWithoutPostInput {
-  user: UserCreateOneWithoutBookmarksInput;
+export interface GeolocationCreateInput {
+  lat: Float;
+  long: Float;
 }
 
 export interface BookmarkUpdateManyWithoutUserInput {
   create?: BookmarkCreateWithoutUserInput[] | BookmarkCreateWithoutUserInput;
 }
 
-export interface PhotoCreateManyWithoutPostInput {
-  create?: PhotoCreateWithoutPostInput[] | PhotoCreateWithoutPostInput;
+export interface BookmarkCreateManyWithoutPostInput {
+  create?: BookmarkCreateWithoutPostInput[] | BookmarkCreateWithoutPostInput;
 }
 
 export interface UserUpdateOneRequiredWithoutPostsInput {
@@ -669,20 +665,20 @@ export interface UserUpdateOneRequiredWithoutPostsInput {
   connect?: UserWhereUniqueInput;
 }
 
-export interface PhotoCreateWithoutPostInput {
-  url: String;
-  postedBy: UserCreateOneInput;
-  title?: String;
-  description?: String;
-  price?: Int;
-  currency?: CurrencyEnum;
+export interface BookmarkCreateWithoutPostInput {
+  user: UserCreateOneWithoutBookmarksInput;
 }
 
-export type UserWhereUniqueInput = AtLeastOne<{
-  email: String;
-  id?: ID_Input;
-  facebookId?: String;
-}>;
+export interface TagSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: TagWhereInput;
+  AND?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
+  OR?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
+  NOT?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
+}
 
 export interface UserWhereInput {
   avatar?: String;
@@ -780,29 +776,7 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
-export interface TagSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: TagWhereInput;
-  AND?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
-  OR?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
-  NOT?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
-}
-
-export interface UserCreateInput {
-  avatar?: String;
-  email?: String;
-  name: String;
-  password?: String;
-  facebookId?: String;
-  bookmarks?: BookmarkCreateManyWithoutUserInput;
-  posts?: PostCreateManyWithoutPostedByInput;
-}
-
 export interface GeolocationWhereInput {
-  post?: PostWhereInput;
   lat?: Float;
   lat_not?: Float;
   lat_in?: Float[] | Float;
@@ -824,8 +798,13 @@ export interface GeolocationWhereInput {
   NOT?: GeolocationWhereInput[] | GeolocationWhereInput;
 }
 
-export interface BookmarkCreateManyWithoutUserInput {
-  create?: BookmarkCreateWithoutUserInput[] | BookmarkCreateWithoutUserInput;
+export interface PhotoCreateWithoutPostInput {
+  url: String;
+  postedBy: UserCreateOneInput;
+  title?: String;
+  description?: String;
+  price?: Int;
+  currency?: CurrencyEnum;
 }
 
 export interface PostUpdateWithoutPostedByDataInput {
@@ -833,28 +812,42 @@ export interface PostUpdateWithoutPostedByDataInput {
   title_normalized?: String;
   startsAt?: DateTimeInput;
   endsAt?: DateTimeInput;
-  geolocation?: GeolocationUpdateOneWithoutPostInput;
+  geolocation?: GeolocationUpdateOneInput;
   bookmarks?: BookmarkUpdateManyWithoutPostInput;
   photos?: PhotoUpdateManyWithoutPostInput;
   tags?: TagUpdateManyInput;
 }
 
-export interface BookmarkCreateWithoutUserInput {
-  post: PostCreateOneWithoutBookmarksInput;
+export interface UserCreateOneInput {
+  create?: UserCreateInput;
+  connect?: UserWhereUniqueInput;
 }
 
 export interface TagUpdateManyMutationInput {
   name?: String;
 }
 
-export interface PostCreateOneWithoutBookmarksInput {
-  create?: PostCreateWithoutBookmarksInput;
-  connect?: PostWhereUniqueInput;
+export interface UserCreateInput {
+  avatar?: String;
+  email?: String;
+  name: String;
+  password?: String;
+  facebookId?: String;
+  bookmarks?: BookmarkCreateManyWithoutUserInput;
+  posts?: PostCreateManyWithoutPostedByInput;
 }
 
 export interface PhotoUpdateManyWithoutPostInput {
   create?: PhotoCreateWithoutPostInput[] | PhotoCreateWithoutPostInput;
 }
+
+export interface BookmarkCreateManyWithoutUserInput {
+  create?: BookmarkCreateWithoutUserInput[] | BookmarkCreateWithoutUserInput;
+}
+
+export type PostWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
 
 export interface TagWhereInput {
   name?: String;
@@ -876,15 +869,6 @@ export interface TagWhereInput {
   NOT?: TagWhereInput[] | TagWhereInput;
 }
 
-export type PostWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface UserCreateOneWithoutPostsInput {
-  create?: UserCreateWithoutPostsInput;
-  connect?: UserWhereUniqueInput;
-}
-
 export interface UserUpdateWithoutPostsDataInput {
   avatar?: String;
   email?: String;
@@ -894,6 +878,74 @@ export interface UserUpdateWithoutPostsDataInput {
   bookmarks?: BookmarkUpdateManyWithoutUserInput;
 }
 
+export interface PostCreateOneWithoutBookmarksInput {
+  create?: PostCreateWithoutBookmarksInput;
+  connect?: PostWhereUniqueInput;
+}
+
+export interface PhotoSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: PhotoWhereInput;
+  AND?: PhotoSubscriptionWhereInput[] | PhotoSubscriptionWhereInput;
+  OR?: PhotoSubscriptionWhereInput[] | PhotoSubscriptionWhereInput;
+  NOT?: PhotoSubscriptionWhereInput[] | PhotoSubscriptionWhereInput;
+}
+
+export interface PostCreateWithoutBookmarksInput {
+  postedBy: UserCreateOneWithoutPostsInput;
+  title: String;
+  title_normalized: String;
+  startsAt: DateTimeInput;
+  endsAt: DateTimeInput;
+  geolocation?: GeolocationCreateOneInput;
+  photos?: PhotoCreateManyWithoutPostInput;
+  tags?: TagCreateManyInput;
+}
+
+export interface PostUpdateManyWithoutPostedByInput {
+  create?: PostCreateWithoutPostedByInput[] | PostCreateWithoutPostedByInput;
+  delete?: PostWhereUniqueInput[] | PostWhereUniqueInput;
+  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput;
+  disconnect?: PostWhereUniqueInput[] | PostWhereUniqueInput;
+  update?:
+    | PostUpdateWithWhereUniqueWithoutPostedByInput[]
+    | PostUpdateWithWhereUniqueWithoutPostedByInput;
+  upsert?:
+    | PostUpsertWithWhereUniqueWithoutPostedByInput[]
+    | PostUpsertWithWhereUniqueWithoutPostedByInput;
+}
+
+export interface UserCreateOneWithoutPostsInput {
+  create?: UserCreateWithoutPostsInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface GeolocationUpsertNestedInput {
+  update: GeolocationUpdateDataInput;
+  create: GeolocationCreateInput;
+}
+
+export interface PhotoCreateInput {
+  url: String;
+  postedBy: UserCreateOneInput;
+  post: PostCreateOneWithoutPhotosInput;
+  title?: String;
+  description?: String;
+  price?: Int;
+  currency?: CurrencyEnum;
+}
+
+export interface TagCreateInput {
+  name: String;
+}
+
+export interface TagCreateManyInput {
+  create?: TagCreateInput[] | TagCreateInput;
+}
+
 export interface UserCreateWithoutPostsInput {
   avatar?: String;
   email?: String;
@@ -901,6 +953,26 @@ export interface UserCreateWithoutPostsInput {
   password?: String;
   facebookId?: String;
   bookmarks?: BookmarkCreateManyWithoutUserInput;
+}
+
+export interface UserUpsertWithoutPostsInput {
+  update: UserUpdateWithoutPostsDataInput;
+  create: UserCreateWithoutPostsInput;
+}
+
+export interface PostUpdateManyMutationInput {
+  title?: String;
+  title_normalized?: String;
+  startsAt?: DateTimeInput;
+  endsAt?: DateTimeInput;
+}
+
+export interface UserUpdateManyMutationInput {
+  avatar?: String;
+  email?: String;
+  name?: String;
+  password?: String;
+  facebookId?: String;
 }
 
 export interface PhotoWhereInput {
@@ -963,101 +1035,6 @@ export interface PhotoWhereInput {
   AND?: PhotoWhereInput[] | PhotoWhereInput;
   OR?: PhotoWhereInput[] | PhotoWhereInput;
   NOT?: PhotoWhereInput[] | PhotoWhereInput;
-}
-
-export interface TagCreateManyInput {
-  create?: TagCreateInput[] | TagCreateInput;
-}
-
-export interface UserUpdateManyMutationInput {
-  avatar?: String;
-  email?: String;
-  name?: String;
-  password?: String;
-  facebookId?: String;
-}
-
-export interface TagCreateInput {
-  name: String;
-}
-
-export interface PostUpdateManyMutationInput {
-  title?: String;
-  title_normalized?: String;
-  startsAt?: DateTimeInput;
-  endsAt?: DateTimeInput;
-}
-
-export interface PostCreateOneWithoutGeolocationInput {
-  create?: PostCreateWithoutGeolocationInput;
-  connect?: PostWhereUniqueInput;
-}
-
-export interface GeolocationCreateInput {
-  post: PostCreateOneWithoutGeolocationInput;
-  lat: Float;
-  long: Float;
-}
-
-export interface GeolocationUpdateManyMutationInput {
-  lat?: Float;
-  long?: Float;
-}
-
-export interface PhotoCreateInput {
-  url: String;
-  postedBy: UserCreateOneInput;
-  post: PostCreateOneWithoutPhotosInput;
-  title?: String;
-  description?: String;
-  price?: Int;
-  currency?: CurrencyEnum;
-}
-
-export interface GeolocationUpsertWithoutPostInput {
-  update: GeolocationUpdateWithoutPostDataInput;
-  create: GeolocationCreateWithoutPostInput;
-}
-
-export interface PostUpdateManyWithoutPostedByInput {
-  create?: PostCreateWithoutPostedByInput[] | PostCreateWithoutPostedByInput;
-  delete?: PostWhereUniqueInput[] | PostWhereUniqueInput;
-  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput;
-  disconnect?: PostWhereUniqueInput[] | PostWhereUniqueInput;
-  update?:
-    | PostUpdateWithWhereUniqueWithoutPostedByInput[]
-    | PostUpdateWithWhereUniqueWithoutPostedByInput;
-  upsert?:
-    | PostUpsertWithWhereUniqueWithoutPostedByInput[]
-    | PostUpsertWithWhereUniqueWithoutPostedByInput;
-}
-
-export interface PhotoSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: PhotoWhereInput;
-  AND?: PhotoSubscriptionWhereInput[] | PhotoSubscriptionWhereInput;
-  OR?: PhotoSubscriptionWhereInput[] | PhotoSubscriptionWhereInput;
-  NOT?: PhotoSubscriptionWhereInput[] | PhotoSubscriptionWhereInput;
-}
-
-export interface PostUpdateInput {
-  postedBy?: UserUpdateOneRequiredWithoutPostsInput;
-  title?: String;
-  title_normalized?: String;
-  startsAt?: DateTimeInput;
-  endsAt?: DateTimeInput;
-  geolocation?: GeolocationUpdateOneWithoutPostInput;
-  bookmarks?: BookmarkUpdateManyWithoutPostInput;
-  photos?: PhotoUpdateManyWithoutPostInput;
-  tags?: TagUpdateManyInput;
-}
-
-export interface UserUpsertWithoutPostsInput {
-  update: UserUpdateWithoutPostsDataInput;
-  create: UserCreateWithoutPostsInput;
 }
 
 export interface NodeNode {
@@ -1449,7 +1426,6 @@ export interface Geolocation {
 }
 
 export interface GeolocationPromise extends Promise<Geolocation>, Fragmentable {
-  post: <T = PostPromise>() => T;
   lat: () => Promise<Float>;
   long: () => Promise<Float>;
 }
@@ -1457,7 +1433,6 @@ export interface GeolocationPromise extends Promise<Geolocation>, Fragmentable {
 export interface GeolocationSubscription
   extends Promise<AsyncIterator<Geolocation>>,
     Fragmentable {
-  post: <T = PostSubscription>() => T;
   lat: () => Promise<AsyncIterator<Float>>;
   long: () => Promise<AsyncIterator<Float>>;
 }

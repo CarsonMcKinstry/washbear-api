@@ -1,14 +1,14 @@
 import { compose, deburr, map, split, toLower } from 'lodash/fp';
 import { uploadFile } from '../aws';
-import { PhotoCreateWithoutPostInput } from '../generated/prisma-client';
+import { PhotoCreateWithoutPostInput, Tag} from '../generated/prisma-client';
 import { GQLCreatePhotoInput, MutationToCreatePostResolver } from '../schema';
 import { ApolloContext } from '../types';
 
-async function formatPhoto(
+const formatPhoto = async (
   userId: string,
   postTitle: string,
   photo: GQLCreatePhotoInput | null
-): Promise<PhotoCreateWithoutPostInput> {
+): Promise<PhotoCreateWithoutPostInput> => {
   const { url, file, title, description, price, currency } = photo as GQLCreatePhotoInput;
 
   const newPost = {
@@ -25,19 +25,15 @@ async function formatPhoto(
   };
 
   return newPost;
-}
+};
 
-function titleToTags(title: string) {
-  return compose(
-    split(' '),
-    toLower,
-    deburr,
-  )(title);
-}
+const titleToTags = (title: string): string[] => compose(
+  split(' '),
+  toLower,
+  deburr,
+)(title);
 
-function formatTags(tags: string[]) {
-  return map((tag) => ({ name: tag }), tags);
-}
+const formatTags = (tags: string[]): Tag[] => map((tag) => ({ name: tag }), tags);
 
 export const createPost: MutationToCreatePostResolver = async (_: any, args, context: ApolloContext) => {
   if (!context.user) {
@@ -64,6 +60,12 @@ export const createPost: MutationToCreatePostResolver = async (_: any, args, con
 
   const post = await context.db.createPost({
     endsAt,
+    geolocation: {
+      create: {
+        lat: geolocation ? geolocation.lat : 0.0,
+        long: geolocation ? geolocation.long : 0.0,
+      }
+    },
     photos: {
       create: formatedPhotos
     },
@@ -81,14 +83,5 @@ export const createPost: MutationToCreatePostResolver = async (_: any, args, con
     )(title),
   });
 
-  const newGeolocation = await context.db.createGeolocation({
-    lat: geolocation ? geolocation.lat : 0.0,
-    long: geolocation ? geolocation.long : 0.0,
-    post: { connect: { id: post.id }},
-  });
-
-  return {
-    ...post,
-    geolocation: newGeolocation
-  };
+  return post;
 };

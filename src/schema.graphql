@@ -1,6 +1,6 @@
 # import Post, Bookmark, Tag from './generated/prisma.graphql'
-# import GeolocationCreateWithoutPostInput, CurrencyEnum from './generated/prisma.graphql'
-# import GeolocationWhereInput from './generated/prisma.graphql'
+# import CurrencyEnum from './generated/prisma.graphql'
+# import GeolocationWhereInput, GeolocationCreateInput from './generated/prisma.graphql'
 # import PostOrderByInput from './generated/prisma.graphql'
 
 scalar Upload
@@ -27,7 +27,7 @@ type Mutation {
     title: String!
     startsAt: DateTime!
     endsAt: DateTime!
-    geolocation: GeolocationCreateWithoutPostInput
+    geolocation: GeolocationCreateInput
     photos: [CreatePhotoInput]
     tags: [String!]
   ): Post!

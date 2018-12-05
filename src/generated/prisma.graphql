@@ -116,7 +116,6 @@ enum CurrencyEnum {
 scalar DateTime
 
 type Geolocation {
-  post: Post!
   lat: Float!
   long: Float!
 }
@@ -128,18 +127,12 @@ type GeolocationConnection {
 }
 
 input GeolocationCreateInput {
-  post: PostCreateOneWithoutGeolocationInput!
   lat: Float!
   long: Float!
 }
 
-input GeolocationCreateOneWithoutPostInput {
-  create: GeolocationCreateWithoutPostInput
-}
-
-input GeolocationCreateWithoutPostInput {
-  lat: Float!
-  long: Float!
+input GeolocationCreateOneInput {
+  create: GeolocationCreateInput
 }
 
 type GeolocationEdge {
@@ -183,31 +176,30 @@ input GeolocationSubscriptionWhereInput {
   NOT: [GeolocationSubscriptionWhereInput!]
 }
 
+input GeolocationUpdateDataInput {
+  lat: Float
+  long: Float
+}
+
 input GeolocationUpdateManyMutationInput {
   lat: Float
   long: Float
 }
 
-input GeolocationUpdateOneWithoutPostInput {
-  create: GeolocationCreateWithoutPostInput
-  update: GeolocationUpdateWithoutPostDataInput
-  upsert: GeolocationUpsertWithoutPostInput
+input GeolocationUpdateOneInput {
+  create: GeolocationCreateInput
+  update: GeolocationUpdateDataInput
+  upsert: GeolocationUpsertNestedInput
   delete: Boolean
   disconnect: Boolean
 }
 
-input GeolocationUpdateWithoutPostDataInput {
-  lat: Float
-  long: Float
-}
-
-input GeolocationUpsertWithoutPostInput {
-  update: GeolocationUpdateWithoutPostDataInput!
-  create: GeolocationCreateWithoutPostInput!
+input GeolocationUpsertNestedInput {
+  update: GeolocationUpdateDataInput!
+  create: GeolocationCreateInput!
 }
 
 input GeolocationWhereInput {
-  post: PostWhereInput
   lat: Float
   lat_not: Float
   lat_in: [Float!]
@@ -464,7 +456,7 @@ input PostCreateInput {
   title_normalized: String!
   startsAt: DateTime!
   endsAt: DateTime!
-  geolocation: GeolocationCreateOneWithoutPostInput
+  geolocation: GeolocationCreateOneInput
   bookmarks: BookmarkCreateManyWithoutPostInput
   photos: PhotoCreateManyWithoutPostInput
   tags: TagCreateManyInput
@@ -480,11 +472,6 @@ input PostCreateOneWithoutBookmarksInput {
   connect: PostWhereUniqueInput
 }
 
-input PostCreateOneWithoutGeolocationInput {
-  create: PostCreateWithoutGeolocationInput
-  connect: PostWhereUniqueInput
-}
-
 input PostCreateOneWithoutPhotosInput {
   create: PostCreateWithoutPhotosInput
   connect: PostWhereUniqueInput
@@ -496,18 +483,7 @@ input PostCreateWithoutBookmarksInput {
   title_normalized: String!
   startsAt: DateTime!
   endsAt: DateTime!
-  geolocation: GeolocationCreateOneWithoutPostInput
-  photos: PhotoCreateManyWithoutPostInput
-  tags: TagCreateManyInput
-}
-
-input PostCreateWithoutGeolocationInput {
-  postedBy: UserCreateOneWithoutPostsInput!
-  title: String!
-  title_normalized: String!
-  startsAt: DateTime!
-  endsAt: DateTime!
-  bookmarks: BookmarkCreateManyWithoutPostInput
+  geolocation: GeolocationCreateOneInput
   photos: PhotoCreateManyWithoutPostInput
   tags: TagCreateManyInput
 }
@@ -518,7 +494,7 @@ input PostCreateWithoutPhotosInput {
   title_normalized: String!
   startsAt: DateTime!
   endsAt: DateTime!
-  geolocation: GeolocationCreateOneWithoutPostInput
+  geolocation: GeolocationCreateOneInput
   bookmarks: BookmarkCreateManyWithoutPostInput
   tags: TagCreateManyInput
 }
@@ -528,7 +504,7 @@ input PostCreateWithoutPostedByInput {
   title_normalized: String!
   startsAt: DateTime!
   endsAt: DateTime!
-  geolocation: GeolocationCreateOneWithoutPostInput
+  geolocation: GeolocationCreateOneInput
   bookmarks: BookmarkCreateManyWithoutPostInput
   photos: PhotoCreateManyWithoutPostInput
   tags: TagCreateManyInput
@@ -590,7 +566,7 @@ input PostUpdateInput {
   title_normalized: String
   startsAt: DateTime
   endsAt: DateTime
-  geolocation: GeolocationUpdateOneWithoutPostInput
+  geolocation: GeolocationUpdateOneInput
   bookmarks: BookmarkUpdateManyWithoutPostInput
   photos: PhotoUpdateManyWithoutPostInput
   tags: TagUpdateManyInput
@@ -617,7 +593,7 @@ input PostUpdateWithoutPostedByDataInput {
   title_normalized: String
   startsAt: DateTime
   endsAt: DateTime
-  geolocation: GeolocationUpdateOneWithoutPostInput
+  geolocation: GeolocationUpdateOneInput
   bookmarks: BookmarkUpdateManyWithoutPostInput
   photos: PhotoUpdateManyWithoutPostInput
   tags: TagUpdateManyInput

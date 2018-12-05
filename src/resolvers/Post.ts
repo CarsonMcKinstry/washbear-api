@@ -14,15 +14,9 @@ export const photos: PostToPhotosResolver = async (root, _, context: ApolloConte
 };
 
 export const geolocation: PostToGeolocationResolver = async (root, _, context: ApolloContext) => {
-  const queriedGeolocation = await context.db.geolocations({
-    where: {
-      post: {
-        id: root.id
-      }
-    }
-  });
+  const queriedGeolocation = await context.db.post({ id: root.id }).geolocation();
 
-  return queriedGeolocation[0];
+  return queriedGeolocation;
 };
 
 export const tags: PostToTagsResolver = async (root, _, context: ApolloContext) => {

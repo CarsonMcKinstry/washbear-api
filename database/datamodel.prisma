@@ -10,7 +10,6 @@ type User {
 }
 
 type Geolocation {
-  post: Post! @relation(name: "PostGeolocation")
   lat: Float!
   long: Float!
 }
@@ -29,7 +28,7 @@ type Post {
   updatedAt: DateTime!
   startsAt: DateTime!
   endsAt: DateTime!
-  geolocation: Geolocation @relation(name: "PostGeolocation", onDelete: CASCADE)
+  geolocation: Geolocation
   bookmarks: [Bookmark!]!
   photos: [Photo!]!
   tags: [Tag!]!
