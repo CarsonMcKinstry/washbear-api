@@ -35,7 +35,7 @@ type Mutation {
     postId: ID!
   ): Bookmark!
   removeBookmark (
-    bookmarkId: ID!
+    postId: ID!
   ): Bookmark
 } 
 

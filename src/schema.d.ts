@@ -53,20 +53,6 @@ export interface GQLGeolocation {
 }
 
 export interface GQLBookmarkWhereInput {
-  id?: string;
-  id_not?: string;
-  id_in?: Array<string>;
-  id_not_in?: Array<string>;
-  id_lt?: string;
-  id_lte?: string;
-  id_gt?: string;
-  id_gte?: string;
-  id_contains?: string;
-  id_not_contains?: string;
-  id_starts_with?: string;
-  id_not_starts_with?: string;
-  id_ends_with?: string;
-  id_not_ends_with?: string;
   user?: GQLUserWhereInput;
   post?: GQLPostWhereInput;
   AND?: Array<GQLBookmarkWhereInput>;
@@ -425,7 +411,6 @@ export enum GQLBookmarkOrderByInput {
 }
 
 export interface GQLBookmark {
-  id: string;
   user: GQLUser;
   post: GQLPost;
 }
@@ -538,7 +523,6 @@ export interface GQLUserCreateWithoutPostsInput {
 
 export interface GQLBookmarkCreateManyWithoutUserInput {
   create?: Array<GQLBookmarkCreateWithoutUserInput>;
-  connect?: Array<GQLBookmarkWhereUniqueInput>;
 }
 
 export interface GQLBookmarkCreateWithoutUserInput {
@@ -628,7 +612,6 @@ export interface GQLPostCreateWithoutPostedByInput {
 
 export interface GQLBookmarkCreateManyWithoutPostInput {
   create?: Array<GQLBookmarkCreateWithoutPostInput>;
-  connect?: Array<GQLBookmarkWhereUniqueInput>;
 }
 
 export interface GQLBookmarkCreateWithoutPostInput {
@@ -647,10 +630,6 @@ export interface GQLUserCreateWithoutBookmarksInput {
   password?: string;
   facebookId?: string;
   posts?: GQLPostCreateManyWithoutPostedByInput;
-}
-
-export interface GQLBookmarkWhereUniqueInput {
-  id?: string;
 }
 
 export interface GQLTagCreateManyInput {
@@ -685,38 +664,11 @@ export interface GQLUserUpdateWithoutPostsDataInput {
 
 export interface GQLBookmarkUpdateManyWithoutUserInput {
   create?: Array<GQLBookmarkCreateWithoutUserInput>;
-  delete?: Array<GQLBookmarkWhereUniqueInput>;
-  connect?: Array<GQLBookmarkWhereUniqueInput>;
-  disconnect?: Array<GQLBookmarkWhereUniqueInput>;
-  update?: Array<GQLBookmarkUpdateWithWhereUniqueWithoutUserInput>;
-  upsert?: Array<GQLBookmarkUpsertWithWhereUniqueWithoutUserInput>;
 }
 
-export interface GQLBookmarkUpdateWithWhereUniqueWithoutUserInput {
-  where: GQLBookmarkWhereUniqueInput;
-  data: GQLBookmarkUpdateWithoutUserDataInput;
-}
-
-export interface GQLBookmarkUpdateWithoutUserDataInput {
-  post?: GQLPostUpdateOneRequiredWithoutBookmarksInput;
-}
-
-export interface GQLPostUpdateOneRequiredWithoutBookmarksInput {
-  create?: GQLPostCreateWithoutBookmarksInput;
-  update?: GQLPostUpdateWithoutBookmarksDataInput;
-  upsert?: GQLPostUpsertWithoutBookmarksInput;
-  connect?: GQLPostWhereUniqueInput;
-}
-
-export interface GQLPostUpdateWithoutBookmarksDataInput {
-  postedBy?: GQLUserUpdateOneRequiredWithoutPostsInput;
-  title?: string;
-  title_normalized?: string;
-  startsAt?: GQLDateTime;
-  endsAt?: GQLDateTime;
-  geolocation?: GQLGeolocationUpdateOneInput;
-  photos?: GQLPhotoUpdateManyWithoutPostInput;
-  tags?: GQLTagUpdateManyInput;
+export interface GQLUserUpsertWithoutPostsInput {
+  update: GQLUserUpdateWithoutPostsDataInput;
+  create: GQLUserCreateWithoutPostsInput;
 }
 
 export interface GQLGeolocationUpdateOneInput {
@@ -736,6 +688,10 @@ export interface GQLGeolocationUpdateDataInput {
 export interface GQLGeolocationUpsertNestedInput {
   update: GQLGeolocationUpdateDataInput;
   create: GQLGeolocationCreateInput;
+}
+
+export interface GQLBookmarkUpdateManyWithoutPostInput {
+  create?: Array<GQLBookmarkCreateWithoutPostInput>;
 }
 
 export interface GQLPhotoUpdateManyWithoutPostInput {
@@ -803,51 +759,6 @@ export interface GQLPostUpdateWithoutPostedByDataInput {
   tags?: GQLTagUpdateManyInput;
 }
 
-export interface GQLBookmarkUpdateManyWithoutPostInput {
-  create?: Array<GQLBookmarkCreateWithoutPostInput>;
-  delete?: Array<GQLBookmarkWhereUniqueInput>;
-  connect?: Array<GQLBookmarkWhereUniqueInput>;
-  disconnect?: Array<GQLBookmarkWhereUniqueInput>;
-  update?: Array<GQLBookmarkUpdateWithWhereUniqueWithoutPostInput>;
-  upsert?: Array<GQLBookmarkUpsertWithWhereUniqueWithoutPostInput>;
-}
-
-export interface GQLBookmarkUpdateWithWhereUniqueWithoutPostInput {
-  where: GQLBookmarkWhereUniqueInput;
-  data: GQLBookmarkUpdateWithoutPostDataInput;
-}
-
-export interface GQLBookmarkUpdateWithoutPostDataInput {
-  user?: GQLUserUpdateOneRequiredWithoutBookmarksInput;
-}
-
-export interface GQLUserUpdateOneRequiredWithoutBookmarksInput {
-  create?: GQLUserCreateWithoutBookmarksInput;
-  update?: GQLUserUpdateWithoutBookmarksDataInput;
-  upsert?: GQLUserUpsertWithoutBookmarksInput;
-  connect?: GQLUserWhereUniqueInput;
-}
-
-export interface GQLUserUpdateWithoutBookmarksDataInput {
-  avatar?: string;
-  email?: string;
-  name?: string;
-  password?: string;
-  facebookId?: string;
-  posts?: GQLPostUpdateManyWithoutPostedByInput;
-}
-
-export interface GQLUserUpsertWithoutBookmarksInput {
-  update: GQLUserUpdateWithoutBookmarksDataInput;
-  create: GQLUserCreateWithoutBookmarksInput;
-}
-
-export interface GQLBookmarkUpsertWithWhereUniqueWithoutPostInput {
-  where: GQLBookmarkWhereUniqueInput;
-  update: GQLBookmarkUpdateWithoutPostDataInput;
-  create: GQLBookmarkCreateWithoutPostInput;
-}
-
 export interface GQLTagUpdateManyInput {
   create?: Array<GQLTagCreateInput>;
   update?: Array<GQLTagUpdateWithWhereUniqueNestedInput>;
@@ -887,22 +798,6 @@ export interface GQLPhotoUpsertWithWhereUniqueWithoutPostInput {
   where: GQLPhotoWhereUniqueInput;
   update: GQLPhotoUpdateWithoutPostDataInput;
   create: GQLPhotoCreateWithoutPostInput;
-}
-
-export interface GQLPostUpsertWithoutBookmarksInput {
-  update: GQLPostUpdateWithoutBookmarksDataInput;
-  create: GQLPostCreateWithoutBookmarksInput;
-}
-
-export interface GQLBookmarkUpsertWithWhereUniqueWithoutUserInput {
-  where: GQLBookmarkWhereUniqueInput;
-  update: GQLBookmarkUpdateWithoutUserDataInput;
-  create: GQLBookmarkCreateWithoutUserInput;
-}
-
-export interface GQLUserUpsertWithoutPostsInput {
-  update: GQLUserUpdateWithoutPostsDataInput;
-  create: GQLUserCreateWithoutPostsInput;
 }
 
 /*********************************
@@ -1119,13 +1014,8 @@ export interface GeolocationToLongResolver<TParent = any, TResult = any> {
 }
 
 export interface GQLBookmarkTypeResolver<TParent = any> {
-  id?: BookmarkToIdResolver<TParent>;
   user?: BookmarkToUserResolver<TParent>;
   post?: BookmarkToPostResolver<TParent>;
-}
-
-export interface BookmarkToIdResolver<TParent = any, TResult = any> {
-  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
 export interface BookmarkToUserResolver<TParent = any, TResult = any> {
@@ -1231,7 +1121,7 @@ export interface MutationToCreateBookmarkResolver<TParent = any, TResult = any> 
 }
 
 export interface MutationToRemoveBookmarkArgs {
-  bookmarkId: string;
+  postId: string;
 }
 export interface MutationToRemoveBookmarkResolver<TParent = any, TResult = any> {
   (parent: TParent, args: MutationToRemoveBookmarkArgs, context: any, info: GraphQLResolveInfo): TResult;
