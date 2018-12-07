@@ -1,3 +1,221 @@
+type Address {
+  post: Post!
+  singleLine: String!
+  streetAddress: String!
+  city: String!
+  stateProvince: String!
+  postalCode: String!
+  country: String!
+}
+
+type AddressConnection {
+  pageInfo: PageInfo!
+  edges: [AddressEdge]!
+  aggregate: AggregateAddress!
+}
+
+input AddressCreateInput {
+  post: PostCreateOneWithoutAddressInput!
+  singleLine: String!
+  streetAddress: String!
+  city: String!
+  stateProvince: String!
+  postalCode: String!
+  country: String!
+}
+
+input AddressCreateOneWithoutPostInput {
+  create: AddressCreateWithoutPostInput
+}
+
+input AddressCreateWithoutPostInput {
+  singleLine: String!
+  streetAddress: String!
+  city: String!
+  stateProvince: String!
+  postalCode: String!
+  country: String!
+}
+
+type AddressEdge {
+  node: Address!
+  cursor: String!
+}
+
+enum AddressOrderByInput {
+  singleLine_ASC
+  singleLine_DESC
+  streetAddress_ASC
+  streetAddress_DESC
+  city_ASC
+  city_DESC
+  stateProvince_ASC
+  stateProvince_DESC
+  postalCode_ASC
+  postalCode_DESC
+  country_ASC
+  country_DESC
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type AddressPreviousValues {
+  singleLine: String!
+  streetAddress: String!
+  city: String!
+  stateProvince: String!
+  postalCode: String!
+  country: String!
+}
+
+type AddressSubscriptionPayload {
+  mutation: MutationType!
+  node: Address
+  updatedFields: [String!]
+  previousValues: AddressPreviousValues
+}
+
+input AddressSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: AddressWhereInput
+  AND: [AddressSubscriptionWhereInput!]
+  OR: [AddressSubscriptionWhereInput!]
+  NOT: [AddressSubscriptionWhereInput!]
+}
+
+input AddressUpdateManyMutationInput {
+  singleLine: String
+  streetAddress: String
+  city: String
+  stateProvince: String
+  postalCode: String
+  country: String
+}
+
+input AddressUpdateOneWithoutPostInput {
+  create: AddressCreateWithoutPostInput
+  update: AddressUpdateWithoutPostDataInput
+  upsert: AddressUpsertWithoutPostInput
+  delete: Boolean
+  disconnect: Boolean
+}
+
+input AddressUpdateWithoutPostDataInput {
+  singleLine: String
+  streetAddress: String
+  city: String
+  stateProvince: String
+  postalCode: String
+  country: String
+}
+
+input AddressUpsertWithoutPostInput {
+  update: AddressUpdateWithoutPostDataInput!
+  create: AddressCreateWithoutPostInput!
+}
+
+input AddressWhereInput {
+  post: PostWhereInput
+  singleLine: String
+  singleLine_not: String
+  singleLine_in: [String!]
+  singleLine_not_in: [String!]
+  singleLine_lt: String
+  singleLine_lte: String
+  singleLine_gt: String
+  singleLine_gte: String
+  singleLine_contains: String
+  singleLine_not_contains: String
+  singleLine_starts_with: String
+  singleLine_not_starts_with: String
+  singleLine_ends_with: String
+  singleLine_not_ends_with: String
+  streetAddress: String
+  streetAddress_not: String
+  streetAddress_in: [String!]
+  streetAddress_not_in: [String!]
+  streetAddress_lt: String
+  streetAddress_lte: String
+  streetAddress_gt: String
+  streetAddress_gte: String
+  streetAddress_contains: String
+  streetAddress_not_contains: String
+  streetAddress_starts_with: String
+  streetAddress_not_starts_with: String
+  streetAddress_ends_with: String
+  streetAddress_not_ends_with: String
+  city: String
+  city_not: String
+  city_in: [String!]
+  city_not_in: [String!]
+  city_lt: String
+  city_lte: String
+  city_gt: String
+  city_gte: String
+  city_contains: String
+  city_not_contains: String
+  city_starts_with: String
+  city_not_starts_with: String
+  city_ends_with: String
+  city_not_ends_with: String
+  stateProvince: String
+  stateProvince_not: String
+  stateProvince_in: [String!]
+  stateProvince_not_in: [String!]
+  stateProvince_lt: String
+  stateProvince_lte: String
+  stateProvince_gt: String
+  stateProvince_gte: String
+  stateProvince_contains: String
+  stateProvince_not_contains: String
+  stateProvince_starts_with: String
+  stateProvince_not_starts_with: String
+  stateProvince_ends_with: String
+  stateProvince_not_ends_with: String
+  postalCode: String
+  postalCode_not: String
+  postalCode_in: [String!]
+  postalCode_not_in: [String!]
+  postalCode_lt: String
+  postalCode_lte: String
+  postalCode_gt: String
+  postalCode_gte: String
+  postalCode_contains: String
+  postalCode_not_contains: String
+  postalCode_starts_with: String
+  postalCode_not_starts_with: String
+  postalCode_ends_with: String
+  postalCode_not_ends_with: String
+  country: String
+  country_not: String
+  country_in: [String!]
+  country_not_in: [String!]
+  country_lt: String
+  country_lte: String
+  country_gt: String
+  country_gte: String
+  country_contains: String
+  country_not_contains: String
+  country_starts_with: String
+  country_not_starts_with: String
+  country_ends_with: String
+  country_not_ends_with: String
+  AND: [AddressWhereInput!]
+  OR: [AddressWhereInput!]
+  NOT: [AddressWhereInput!]
+}
+
+type AggregateAddress {
+  count: Int!
+}
+
 type AggregateBookmark {
   count: Int!
 }
@@ -322,6 +540,9 @@ input GeolocationWhereUniqueInput {
 scalar Long
 
 type Mutation {
+  createAddress(data: AddressCreateInput!): Address!
+  updateManyAddresses(data: AddressUpdateManyMutationInput!, where: AddressWhereInput): BatchPayload!
+  deleteManyAddresses(where: AddressWhereInput): BatchPayload!
   createBookmark(data: BookmarkCreateInput!): Bookmark!
   updateBookmark(data: BookmarkUpdateInput!, where: BookmarkWhereUniqueInput!): Bookmark
   upsertBookmark(where: BookmarkWhereUniqueInput!, create: BookmarkCreateInput!, update: BookmarkUpdateInput!): Bookmark!
@@ -597,6 +818,7 @@ input PhotoWhereUniqueInput {
 
 type Post {
   id: ID!
+  address: Address
   postedBy: User!
   title: String!
   title_normalized: String!
@@ -617,6 +839,7 @@ type PostConnection {
 }
 
 input PostCreateInput {
+  address: AddressCreateOneWithoutPostInput
   postedBy: UserCreateOneWithoutPostsInput!
   title: String!
   title_normalized: String!
@@ -633,6 +856,11 @@ input PostCreateManyWithoutPostedByInput {
   connect: [PostWhereUniqueInput!]
 }
 
+input PostCreateOneWithoutAddressInput {
+  create: PostCreateWithoutAddressInput
+  connect: PostWhereUniqueInput
+}
+
 input PostCreateOneWithoutBookmarksInput {
   create: PostCreateWithoutBookmarksInput
   connect: PostWhereUniqueInput
@@ -643,7 +871,20 @@ input PostCreateOneWithoutPhotosInput {
   connect: PostWhereUniqueInput
 }
 
+input PostCreateWithoutAddressInput {
+  postedBy: UserCreateOneWithoutPostsInput!
+  title: String!
+  title_normalized: String!
+  startsAt: DateTime!
+  endsAt: DateTime!
+  geolocation: GeolocationCreateOneInput
+  bookmarks: BookmarkCreateManyWithoutPostInput
+  photos: PhotoCreateManyWithoutPostInput
+  tags: TagCreateManyInput
+}
+
 input PostCreateWithoutBookmarksInput {
+  address: AddressCreateOneWithoutPostInput
   postedBy: UserCreateOneWithoutPostsInput!
   title: String!
   title_normalized: String!
@@ -655,6 +896,7 @@ input PostCreateWithoutBookmarksInput {
 }
 
 input PostCreateWithoutPhotosInput {
+  address: AddressCreateOneWithoutPostInput
   postedBy: UserCreateOneWithoutPostsInput!
   title: String!
   title_normalized: String!
@@ -666,6 +908,7 @@ input PostCreateWithoutPhotosInput {
 }
 
 input PostCreateWithoutPostedByInput {
+  address: AddressCreateOneWithoutPostInput
   title: String!
   title_normalized: String!
   startsAt: DateTime!
@@ -727,6 +970,7 @@ input PostSubscriptionWhereInput {
 }
 
 input PostUpdateInput {
+  address: AddressUpdateOneWithoutPostInput
   postedBy: UserUpdateOneRequiredWithoutPostsInput
   title: String
   title_normalized: String
@@ -769,6 +1013,7 @@ input PostUpdateOneRequiredWithoutPhotosInput {
 }
 
 input PostUpdateWithoutBookmarksDataInput {
+  address: AddressUpdateOneWithoutPostInput
   postedBy: UserUpdateOneRequiredWithoutPostsInput
   title: String
   title_normalized: String
@@ -780,6 +1025,7 @@ input PostUpdateWithoutBookmarksDataInput {
 }
 
 input PostUpdateWithoutPhotosDataInput {
+  address: AddressUpdateOneWithoutPostInput
   postedBy: UserUpdateOneRequiredWithoutPostsInput
   title: String
   title_normalized: String
@@ -791,6 +1037,7 @@ input PostUpdateWithoutPhotosDataInput {
 }
 
 input PostUpdateWithoutPostedByDataInput {
+  address: AddressUpdateOneWithoutPostInput
   title: String
   title_normalized: String
   startsAt: DateTime
@@ -837,6 +1084,7 @@ input PostWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  address: AddressWhereInput
   postedBy: UserWhereInput
   title: String
   title_not: String
@@ -918,6 +1166,8 @@ input PostWhereUniqueInput {
 }
 
 type Query {
+  addresses(where: AddressWhereInput, orderBy: AddressOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Address]!
+  addressesConnection(where: AddressWhereInput, orderBy: AddressOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AddressConnection!
   bookmark(where: BookmarkWhereUniqueInput!): Bookmark
   bookmarks(where: BookmarkWhereInput, orderBy: BookmarkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Bookmark]!
   bookmarksConnection(where: BookmarkWhereInput, orderBy: BookmarkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BookmarkConnection!
@@ -940,6 +1190,7 @@ type Query {
 }
 
 type Subscription {
+  address(where: AddressSubscriptionWhereInput): AddressSubscriptionPayload
   bookmark(where: BookmarkSubscriptionWhereInput): BookmarkSubscriptionPayload
   geolocation(where: GeolocationSubscriptionWhereInput): GeolocationSubscriptionPayload
   photo(where: PhotoSubscriptionWhereInput): PhotoSubscriptionPayload

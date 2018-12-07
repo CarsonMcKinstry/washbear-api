@@ -11,6 +11,7 @@ type User {
 
 type Post {
   id: ID! @unique
+  address: Address
   postedBy: User!
   title: String!
   title_normalized: String!
@@ -50,6 +51,16 @@ type Photo {
   description: String
   price: Int
   currency: CurrencyEnum
+}
+
+type Address {
+  post: Post!
+  singleLine: String!
+  streetAddress: String!
+  city: String!
+  stateProvince: String!
+  postalCode: String!
+  country: String!
 }
 
 enum CurrencyEnum {

@@ -31,6 +31,7 @@ export interface GQLUser {
 
 export interface GQLPost {
   id: string;
+  address?: GQLAddress;
   postedBy: GQLUser;
   title: string;
   title_normalized: string;
@@ -44,6 +45,16 @@ export interface GQLPost {
   tags?: Array<GQLTag>;
 }
 
+export interface GQLAddress {
+  post: GQLPost;
+  singleLine: string;
+  streetAddress: string;
+  city: string;
+  stateProvince: string;
+  postalCode: string;
+  country: string;
+}
+
 export type GQLDateTime = any;
 
 export interface GQLGeolocation {
@@ -53,6 +64,20 @@ export interface GQLGeolocation {
 }
 
 export interface GQLBookmarkWhereInput {
+  id?: string;
+  id_not?: string;
+  id_in?: Array<string>;
+  id_not_in?: Array<string>;
+  id_lt?: string;
+  id_lte?: string;
+  id_gt?: string;
+  id_gte?: string;
+  id_contains?: string;
+  id_not_contains?: string;
+  id_starts_with?: string;
+  id_not_starts_with?: string;
+  id_ends_with?: string;
+  id_not_ends_with?: string;
   user?: GQLUserWhereInput;
   post?: GQLPostWhereInput;
   AND?: Array<GQLBookmarkWhereInput>;
@@ -171,6 +196,7 @@ export interface GQLPostWhereInput {
   id_not_starts_with?: string;
   id_ends_with?: string;
   id_not_ends_with?: string;
+  address?: GQLAddressWhereInput;
   postedBy?: GQLUserWhereInput;
   title?: string;
   title_not?: string;
@@ -245,6 +271,97 @@ export interface GQLPostWhereInput {
   AND?: Array<GQLPostWhereInput>;
   OR?: Array<GQLPostWhereInput>;
   NOT?: Array<GQLPostWhereInput>;
+}
+
+export interface GQLAddressWhereInput {
+  post?: GQLPostWhereInput;
+  singleLine?: string;
+  singleLine_not?: string;
+  singleLine_in?: Array<string>;
+  singleLine_not_in?: Array<string>;
+  singleLine_lt?: string;
+  singleLine_lte?: string;
+  singleLine_gt?: string;
+  singleLine_gte?: string;
+  singleLine_contains?: string;
+  singleLine_not_contains?: string;
+  singleLine_starts_with?: string;
+  singleLine_not_starts_with?: string;
+  singleLine_ends_with?: string;
+  singleLine_not_ends_with?: string;
+  streetAddress?: string;
+  streetAddress_not?: string;
+  streetAddress_in?: Array<string>;
+  streetAddress_not_in?: Array<string>;
+  streetAddress_lt?: string;
+  streetAddress_lte?: string;
+  streetAddress_gt?: string;
+  streetAddress_gte?: string;
+  streetAddress_contains?: string;
+  streetAddress_not_contains?: string;
+  streetAddress_starts_with?: string;
+  streetAddress_not_starts_with?: string;
+  streetAddress_ends_with?: string;
+  streetAddress_not_ends_with?: string;
+  city?: string;
+  city_not?: string;
+  city_in?: Array<string>;
+  city_not_in?: Array<string>;
+  city_lt?: string;
+  city_lte?: string;
+  city_gt?: string;
+  city_gte?: string;
+  city_contains?: string;
+  city_not_contains?: string;
+  city_starts_with?: string;
+  city_not_starts_with?: string;
+  city_ends_with?: string;
+  city_not_ends_with?: string;
+  stateProvince?: string;
+  stateProvince_not?: string;
+  stateProvince_in?: Array<string>;
+  stateProvince_not_in?: Array<string>;
+  stateProvince_lt?: string;
+  stateProvince_lte?: string;
+  stateProvince_gt?: string;
+  stateProvince_gte?: string;
+  stateProvince_contains?: string;
+  stateProvince_not_contains?: string;
+  stateProvince_starts_with?: string;
+  stateProvince_not_starts_with?: string;
+  stateProvince_ends_with?: string;
+  stateProvince_not_ends_with?: string;
+  postalCode?: string;
+  postalCode_not?: string;
+  postalCode_in?: Array<string>;
+  postalCode_not_in?: Array<string>;
+  postalCode_lt?: string;
+  postalCode_lte?: string;
+  postalCode_gt?: string;
+  postalCode_gte?: string;
+  postalCode_contains?: string;
+  postalCode_not_contains?: string;
+  postalCode_starts_with?: string;
+  postalCode_not_starts_with?: string;
+  postalCode_ends_with?: string;
+  postalCode_not_ends_with?: string;
+  country?: string;
+  country_not?: string;
+  country_in?: Array<string>;
+  country_not_in?: Array<string>;
+  country_lt?: string;
+  country_lte?: string;
+  country_gt?: string;
+  country_gte?: string;
+  country_contains?: string;
+  country_not_contains?: string;
+  country_starts_with?: string;
+  country_not_starts_with?: string;
+  country_ends_with?: string;
+  country_not_ends_with?: string;
+  AND?: Array<GQLAddressWhereInput>;
+  OR?: Array<GQLAddressWhereInput>;
+  NOT?: Array<GQLAddressWhereInput>;
 }
 
 export interface GQLGeolocationWhereInput {
@@ -411,6 +528,7 @@ export enum GQLBookmarkOrderByInput {
 }
 
 export interface GQLBookmark {
+  id: string;
   user: GQLUser;
   post: GQLPost;
 }
@@ -505,6 +623,37 @@ export interface GQLCreatePhotoInput {
 
 export type GQLUpload = any;
 
+export interface GQLAddressCreateWithoutPostInput {
+  singleLine: string;
+  streetAddress: string;
+  city: string;
+  stateProvince: string;
+  postalCode: string;
+  country: string;
+}
+
+export interface GQLAddressUpdateOneWithoutPostInput {
+  create?: GQLAddressCreateWithoutPostInput;
+  update?: GQLAddressUpdateWithoutPostDataInput;
+  upsert?: GQLAddressUpsertWithoutPostInput;
+  delete?: boolean;
+  disconnect?: boolean;
+}
+
+export interface GQLAddressUpdateWithoutPostDataInput {
+  singleLine?: string;
+  streetAddress?: string;
+  city?: string;
+  stateProvince?: string;
+  postalCode?: string;
+  country?: string;
+}
+
+export interface GQLAddressUpsertWithoutPostInput {
+  update: GQLAddressUpdateWithoutPostDataInput;
+  create: GQLAddressCreateWithoutPostInput;
+}
+
 export interface GQLUserUpdateOneRequiredWithoutPostsInput {
   create?: GQLUserCreateWithoutPostsInput;
   update?: GQLUserUpdateWithoutPostsDataInput;
@@ -523,6 +672,7 @@ export interface GQLUserCreateWithoutPostsInput {
 
 export interface GQLBookmarkCreateManyWithoutUserInput {
   create?: Array<GQLBookmarkCreateWithoutUserInput>;
+  connect?: Array<GQLBookmarkWhereUniqueInput>;
 }
 
 export interface GQLBookmarkCreateWithoutUserInput {
@@ -535,6 +685,7 @@ export interface GQLPostCreateOneWithoutBookmarksInput {
 }
 
 export interface GQLPostCreateWithoutBookmarksInput {
+  address?: GQLAddressCreateOneWithoutPostInput;
   postedBy: GQLUserCreateOneWithoutPostsInput;
   title: string;
   title_normalized: string;
@@ -543,6 +694,10 @@ export interface GQLPostCreateWithoutBookmarksInput {
   geolocation?: GQLGeolocationCreateOneInput;
   photos?: GQLPhotoCreateManyWithoutPostInput;
   tags?: GQLTagCreateManyInput;
+}
+
+export interface GQLAddressCreateOneWithoutPostInput {
+  create?: GQLAddressCreateWithoutPostInput;
 }
 
 export interface GQLUserCreateOneWithoutPostsInput {
@@ -600,6 +755,7 @@ export interface GQLPostCreateManyWithoutPostedByInput {
 }
 
 export interface GQLPostCreateWithoutPostedByInput {
+  address?: GQLAddressCreateOneWithoutPostInput;
   title: string;
   title_normalized: string;
   startsAt: GQLDateTime;
@@ -612,6 +768,7 @@ export interface GQLPostCreateWithoutPostedByInput {
 
 export interface GQLBookmarkCreateManyWithoutPostInput {
   create?: Array<GQLBookmarkCreateWithoutPostInput>;
+  connect?: Array<GQLBookmarkWhereUniqueInput>;
 }
 
 export interface GQLBookmarkCreateWithoutPostInput {
@@ -630,6 +787,10 @@ export interface GQLUserCreateWithoutBookmarksInput {
   password?: string;
   facebookId?: string;
   posts?: GQLPostCreateManyWithoutPostedByInput;
+}
+
+export interface GQLBookmarkWhereUniqueInput {
+  id?: string;
 }
 
 export interface GQLTagCreateManyInput {
@@ -664,11 +825,39 @@ export interface GQLUserUpdateWithoutPostsDataInput {
 
 export interface GQLBookmarkUpdateManyWithoutUserInput {
   create?: Array<GQLBookmarkCreateWithoutUserInput>;
+  delete?: Array<GQLBookmarkWhereUniqueInput>;
+  connect?: Array<GQLBookmarkWhereUniqueInput>;
+  disconnect?: Array<GQLBookmarkWhereUniqueInput>;
+  update?: Array<GQLBookmarkUpdateWithWhereUniqueWithoutUserInput>;
+  upsert?: Array<GQLBookmarkUpsertWithWhereUniqueWithoutUserInput>;
 }
 
-export interface GQLUserUpsertWithoutPostsInput {
-  update: GQLUserUpdateWithoutPostsDataInput;
-  create: GQLUserCreateWithoutPostsInput;
+export interface GQLBookmarkUpdateWithWhereUniqueWithoutUserInput {
+  where: GQLBookmarkWhereUniqueInput;
+  data: GQLBookmarkUpdateWithoutUserDataInput;
+}
+
+export interface GQLBookmarkUpdateWithoutUserDataInput {
+  post?: GQLPostUpdateOneRequiredWithoutBookmarksInput;
+}
+
+export interface GQLPostUpdateOneRequiredWithoutBookmarksInput {
+  create?: GQLPostCreateWithoutBookmarksInput;
+  update?: GQLPostUpdateWithoutBookmarksDataInput;
+  upsert?: GQLPostUpsertWithoutBookmarksInput;
+  connect?: GQLPostWhereUniqueInput;
+}
+
+export interface GQLPostUpdateWithoutBookmarksDataInput {
+  address?: GQLAddressUpdateOneWithoutPostInput;
+  postedBy?: GQLUserUpdateOneRequiredWithoutPostsInput;
+  title?: string;
+  title_normalized?: string;
+  startsAt?: GQLDateTime;
+  endsAt?: GQLDateTime;
+  geolocation?: GQLGeolocationUpdateOneInput;
+  photos?: GQLPhotoUpdateManyWithoutPostInput;
+  tags?: GQLTagUpdateManyInput;
 }
 
 export interface GQLGeolocationUpdateOneInput {
@@ -688,10 +877,6 @@ export interface GQLGeolocationUpdateDataInput {
 export interface GQLGeolocationUpsertNestedInput {
   update: GQLGeolocationUpdateDataInput;
   create: GQLGeolocationCreateInput;
-}
-
-export interface GQLBookmarkUpdateManyWithoutPostInput {
-  create?: Array<GQLBookmarkCreateWithoutPostInput>;
 }
 
 export interface GQLPhotoUpdateManyWithoutPostInput {
@@ -749,6 +934,7 @@ export interface GQLPostUpdateWithWhereUniqueWithoutPostedByInput {
 }
 
 export interface GQLPostUpdateWithoutPostedByDataInput {
+  address?: GQLAddressUpdateOneWithoutPostInput;
   title?: string;
   title_normalized?: string;
   startsAt?: GQLDateTime;
@@ -757,6 +943,51 @@ export interface GQLPostUpdateWithoutPostedByDataInput {
   bookmarks?: GQLBookmarkUpdateManyWithoutPostInput;
   photos?: GQLPhotoUpdateManyWithoutPostInput;
   tags?: GQLTagUpdateManyInput;
+}
+
+export interface GQLBookmarkUpdateManyWithoutPostInput {
+  create?: Array<GQLBookmarkCreateWithoutPostInput>;
+  delete?: Array<GQLBookmarkWhereUniqueInput>;
+  connect?: Array<GQLBookmarkWhereUniqueInput>;
+  disconnect?: Array<GQLBookmarkWhereUniqueInput>;
+  update?: Array<GQLBookmarkUpdateWithWhereUniqueWithoutPostInput>;
+  upsert?: Array<GQLBookmarkUpsertWithWhereUniqueWithoutPostInput>;
+}
+
+export interface GQLBookmarkUpdateWithWhereUniqueWithoutPostInput {
+  where: GQLBookmarkWhereUniqueInput;
+  data: GQLBookmarkUpdateWithoutPostDataInput;
+}
+
+export interface GQLBookmarkUpdateWithoutPostDataInput {
+  user?: GQLUserUpdateOneRequiredWithoutBookmarksInput;
+}
+
+export interface GQLUserUpdateOneRequiredWithoutBookmarksInput {
+  create?: GQLUserCreateWithoutBookmarksInput;
+  update?: GQLUserUpdateWithoutBookmarksDataInput;
+  upsert?: GQLUserUpsertWithoutBookmarksInput;
+  connect?: GQLUserWhereUniqueInput;
+}
+
+export interface GQLUserUpdateWithoutBookmarksDataInput {
+  avatar?: string;
+  email?: string;
+  name?: string;
+  password?: string;
+  facebookId?: string;
+  posts?: GQLPostUpdateManyWithoutPostedByInput;
+}
+
+export interface GQLUserUpsertWithoutBookmarksInput {
+  update: GQLUserUpdateWithoutBookmarksDataInput;
+  create: GQLUserCreateWithoutBookmarksInput;
+}
+
+export interface GQLBookmarkUpsertWithWhereUniqueWithoutPostInput {
+  where: GQLBookmarkWhereUniqueInput;
+  update: GQLBookmarkUpdateWithoutPostDataInput;
+  create: GQLBookmarkCreateWithoutPostInput;
 }
 
 export interface GQLTagUpdateManyInput {
@@ -800,6 +1031,22 @@ export interface GQLPhotoUpsertWithWhereUniqueWithoutPostInput {
   create: GQLPhotoCreateWithoutPostInput;
 }
 
+export interface GQLPostUpsertWithoutBookmarksInput {
+  update: GQLPostUpdateWithoutBookmarksDataInput;
+  create: GQLPostCreateWithoutBookmarksInput;
+}
+
+export interface GQLBookmarkUpsertWithWhereUniqueWithoutUserInput {
+  where: GQLBookmarkWhereUniqueInput;
+  update: GQLBookmarkUpdateWithoutUserDataInput;
+  create: GQLBookmarkCreateWithoutUserInput;
+}
+
+export interface GQLUserUpsertWithoutPostsInput {
+  update: GQLUserUpdateWithoutPostsDataInput;
+  create: GQLUserCreateWithoutPostsInput;
+}
+
 /*********************************
  *                               *
  *         TYPE RESOLVERS        *
@@ -814,6 +1061,7 @@ export interface GQLResolver {
   Query?: GQLQueryTypeResolver;
   User?: GQLUserTypeResolver;
   Post?: GQLPostTypeResolver;
+  Address?: GQLAddressTypeResolver;
   DateTime?: GraphQLScalarType;
   Geolocation?: GQLGeolocationTypeResolver;
   Bookmark?: GQLBookmarkTypeResolver;
@@ -907,6 +1155,7 @@ export interface UserToBookmarksResolver<TParent = any, TResult = any> {
 
 export interface GQLPostTypeResolver<TParent = any> {
   id?: PostToIdResolver<TParent>;
+  address?: PostToAddressResolver<TParent>;
   postedBy?: PostToPostedByResolver<TParent>;
   title?: PostToTitleResolver<TParent>;
   title_normalized?: PostToTitle_normalizedResolver<TParent>;
@@ -921,6 +1170,10 @@ export interface GQLPostTypeResolver<TParent = any> {
 }
 
 export interface PostToIdResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface PostToAddressResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
@@ -995,6 +1248,44 @@ export interface PostToTagsResolver<TParent = any, TResult = any> {
   (parent: TParent, args: PostToTagsArgs, context: any, info: GraphQLResolveInfo): TResult;
 }
 
+export interface GQLAddressTypeResolver<TParent = any> {
+  post?: AddressToPostResolver<TParent>;
+  singleLine?: AddressToSingleLineResolver<TParent>;
+  streetAddress?: AddressToStreetAddressResolver<TParent>;
+  city?: AddressToCityResolver<TParent>;
+  stateProvince?: AddressToStateProvinceResolver<TParent>;
+  postalCode?: AddressToPostalCodeResolver<TParent>;
+  country?: AddressToCountryResolver<TParent>;
+}
+
+export interface AddressToPostResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface AddressToSingleLineResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface AddressToStreetAddressResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface AddressToCityResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface AddressToStateProvinceResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface AddressToPostalCodeResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface AddressToCountryResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
 export interface GQLGeolocationTypeResolver<TParent = any> {
   id?: GeolocationToIdResolver<TParent>;
   lat?: GeolocationToLatResolver<TParent>;
@@ -1014,8 +1305,13 @@ export interface GeolocationToLongResolver<TParent = any, TResult = any> {
 }
 
 export interface GQLBookmarkTypeResolver<TParent = any> {
+  id?: BookmarkToIdResolver<TParent>;
   user?: BookmarkToUserResolver<TParent>;
   post?: BookmarkToPostResolver<TParent>;
+}
+
+export interface BookmarkToIdResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
 export interface BookmarkToUserResolver<TParent = any, TResult = any> {
@@ -1108,6 +1404,7 @@ export interface MutationToCreatePostArgs {
   geolocation?: GQLGeolocationCreateInput;
   photos?: Array<GQLCreatePhotoInput | null>;
   tags?: Array<string>;
+  address?: GQLAddressCreateWithoutPostInput;
 }
 export interface MutationToCreatePostResolver<TParent = any, TResult = any> {
   (parent: TParent, args: MutationToCreatePostArgs, context: any, info: GraphQLResolveInfo): TResult;

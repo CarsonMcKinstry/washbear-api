@@ -2,6 +2,7 @@
 # import CurrencyEnum from './generated/prisma.graphql'
 # import GeolocationWhereInput, GeolocationCreateInput from './generated/prisma.graphql'
 # import PostOrderByInput, PostUpdateInput from './generated/prisma.graphql'
+# import AddressCreateWithoutPostInput from './generated/prisma.graphql'
 
 scalar Upload
 
@@ -30,6 +31,7 @@ type Mutation {
     geolocation: GeolocationCreateInput
     photos: [CreatePhotoInput]
     tags: [String!]
+    address: AddressCreateWithoutPostInput
   ): Post!
   createBookmark (
     postId: ID!

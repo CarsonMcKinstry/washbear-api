@@ -51,7 +51,8 @@ export const createPost: MutationToCreatePostResolver = async (_: any, args, con
     endsAt,
     photos = [],
     geolocation,
-    tags = []
+    tags = [],
+    address
   } = args;
 
   const formatedPhotos = await Promise
@@ -64,6 +65,9 @@ export const createPost: MutationToCreatePostResolver = async (_: any, args, con
   console.log(newTags);
 
   const newPost = await context.db.createPost({
+    address: {
+      create: address
+    },
     endsAt,
     geolocation: {
       create: {

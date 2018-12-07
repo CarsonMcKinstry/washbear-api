@@ -1,4 +1,5 @@
 import {
+  PostToAddressResolver,
   PostToBookmarksResolver,
   PostToGeolocationResolver,
   PostToPhotosResolver,
@@ -39,4 +40,16 @@ export const bookmarks: PostToBookmarksResolver = async (root, _, context: Apoll
   });
 
   return foundBookmarks;
+};
+
+export const address: PostToAddressResolver = async (root, _, context: ApolloContext) => {
+  const [foundAddress] = await context.db.addresses({
+    where: {
+      post: {
+        id: root.id
+      }
+    }
+  });
+
+  return foundAddress;
 };
