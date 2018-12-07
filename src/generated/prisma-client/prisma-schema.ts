@@ -606,6 +606,7 @@ type Photo {
   description: String
   price: Int
   currency: CurrencyEnum
+  active: Boolean!
 }
 
 type PhotoConnection {
@@ -622,6 +623,7 @@ input PhotoCreateInput {
   description: String
   price: Int
   currency: CurrencyEnum
+  active: Boolean
 }
 
 input PhotoCreateManyWithoutPostInput {
@@ -636,6 +638,7 @@ input PhotoCreateWithoutPostInput {
   description: String
   price: Int
   currency: CurrencyEnum
+  active: Boolean
 }
 
 type PhotoEdge {
@@ -656,6 +659,8 @@ enum PhotoOrderByInput {
   price_DESC
   currency_ASC
   currency_DESC
+  active_ASC
+  active_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -669,6 +674,7 @@ type PhotoPreviousValues {
   description: String
   price: Int
   currency: CurrencyEnum
+  active: Boolean!
 }
 
 type PhotoSubscriptionPayload {
@@ -697,6 +703,7 @@ input PhotoUpdateInput {
   description: String
   price: Int
   currency: CurrencyEnum
+  active: Boolean
 }
 
 input PhotoUpdateManyMutationInput {
@@ -705,6 +712,7 @@ input PhotoUpdateManyMutationInput {
   description: String
   price: Int
   currency: CurrencyEnum
+  active: Boolean
 }
 
 input PhotoUpdateManyWithoutPostInput {
@@ -723,6 +731,7 @@ input PhotoUpdateWithoutPostDataInput {
   description: String
   price: Int
   currency: CurrencyEnum
+  active: Boolean
 }
 
 input PhotoUpdateWithWhereUniqueWithoutPostInput {
@@ -807,6 +816,8 @@ input PhotoWhereInput {
   currency_not: CurrencyEnum
   currency_in: [CurrencyEnum!]
   currency_not_in: [CurrencyEnum!]
+  active: Boolean
+  active_not: Boolean
   AND: [PhotoWhereInput!]
   OR: [PhotoWhereInput!]
   NOT: [PhotoWhereInput!]

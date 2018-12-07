@@ -44,10 +44,11 @@ type Mutation {
     address: AddressCreateWithoutPostInput
   ): Post!
   deletePost (postId: ID!): Post!
+  deletePhoto (photoId: ID!): Photo!
   createBookmark (
     postId: ID!
   ): Bookmark!
-  removeBookmark (
+  deleteBookmark (
     postId: ID!
   ): Bookmark
 } 

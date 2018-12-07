@@ -52,6 +52,7 @@ type Photo {
   description: String
   price: Int
   currency: CurrencyEnum
+  active: Boolean! @default(value: "true")
 }
 
 type Address {

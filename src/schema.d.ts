@@ -43,6 +43,7 @@ export interface GQLPost {
   bookmarks?: Array<GQLBookmark>;
   photos?: Array<GQLPhoto>;
   tags?: Array<GQLTag>;
+  active: boolean;
 }
 
 export interface GQLAddress {
@@ -268,6 +269,8 @@ export interface GQLPostWhereInput {
   tags_every?: GQLTagWhereInput;
   tags_some?: GQLTagWhereInput;
   tags_none?: GQLTagWhereInput;
+  active?: boolean;
+  active_not?: boolean;
   AND?: Array<GQLPostWhereInput>;
   OR?: Array<GQLPostWhereInput>;
   NOT?: Array<GQLPostWhereInput>;
@@ -471,6 +474,8 @@ export interface GQLPhotoWhereInput {
   currency_not?: GQLCurrencyEnum;
   currency_in?: Array<GQLCurrencyEnum>;
   currency_not_in?: Array<GQLCurrencyEnum>;
+  active?: boolean;
+  active_not?: boolean;
   AND?: Array<GQLPhotoWhereInput>;
   OR?: Array<GQLPhotoWhereInput>;
   NOT?: Array<GQLPhotoWhereInput>;
@@ -546,6 +551,8 @@ export enum GQLPhotoOrderByInput {
   price_DESC = 'price_DESC',
   currency_ASC = 'currency_ASC',
   currency_DESC = 'currency_DESC',
+  active_ASC = 'active_ASC',
+  active_DESC = 'active_DESC',
   createdAt_ASC = 'createdAt_ASC',
   createdAt_DESC = 'createdAt_DESC',
   updatedAt_ASC = 'updatedAt_ASC',
@@ -561,6 +568,7 @@ export interface GQLPhoto {
   description?: string;
   price?: number;
   currency?: GQLCurrencyEnum;
+  active: boolean;
 }
 
 export enum GQLTagOrderByInput {
@@ -593,7 +601,9 @@ export enum GQLPostOrderByInput {
   startsAt_ASC = 'startsAt_ASC',
   startsAt_DESC = 'startsAt_DESC',
   endsAt_ASC = 'endsAt_ASC',
-  endsAt_DESC = 'endsAt_DESC'
+  endsAt_DESC = 'endsAt_DESC',
+  active_ASC = 'active_ASC',
+  active_DESC = 'active_DESC'
 }
 
 export interface GQLFeed {
@@ -605,8 +615,9 @@ export interface GQLMutation {
   createPost: GQLPost;
   editPost: GQLPost;
   deletePost: GQLPost;
+  deletePhoto: GQLPhoto;
   createBookmark: GQLBookmark;
-  removeBookmark?: GQLBookmark;
+  deleteBookmark?: GQLBookmark;
 }
 
 export interface GQLGeolocationCreateInput {
@@ -696,6 +707,7 @@ export interface GQLPostCreateWithoutBookmarksInput {
   geolocation?: GQLGeolocationCreateOneInput;
   photos?: GQLPhotoCreateManyWithoutPostInput;
   tags?: GQLTagCreateManyInput;
+  active?: boolean;
 }
 
 export interface GQLAddressCreateOneWithoutPostInput {
@@ -734,6 +746,7 @@ export interface GQLPhotoCreateWithoutPostInput {
   description?: string;
   price?: number;
   currency?: GQLCurrencyEnum;
+  active?: boolean;
 }
 
 export interface GQLUserCreateOneInput {
@@ -766,6 +779,7 @@ export interface GQLPostCreateWithoutPostedByInput {
   bookmarks?: GQLBookmarkCreateManyWithoutPostInput;
   photos?: GQLPhotoCreateManyWithoutPostInput;
   tags?: GQLTagCreateManyInput;
+  active?: boolean;
 }
 
 export interface GQLBookmarkCreateManyWithoutPostInput {
@@ -860,6 +874,7 @@ export interface GQLPostUpdateWithoutBookmarksDataInput {
   geolocation?: GQLGeolocationUpdateOneInput;
   photos?: GQLPhotoUpdateManyWithoutPostInput;
   tags?: GQLTagUpdateManyInput;
+  active?: boolean;
 }
 
 export interface GQLGeolocationUpdateOneInput {
@@ -902,6 +917,7 @@ export interface GQLPhotoUpdateWithoutPostDataInput {
   description?: string;
   price?: number;
   currency?: GQLCurrencyEnum;
+  active?: boolean;
 }
 
 export interface GQLUserUpdateOneRequiredInput {
@@ -945,6 +961,7 @@ export interface GQLPostUpdateWithoutPostedByDataInput {
   bookmarks?: GQLBookmarkUpdateManyWithoutPostInput;
   photos?: GQLPhotoUpdateManyWithoutPostInput;
   tags?: GQLTagUpdateManyInput;
+  active?: boolean;
 }
 
 export interface GQLBookmarkUpdateManyWithoutPostInput {
@@ -1169,6 +1186,7 @@ export interface GQLPostTypeResolver<TParent = any> {
   bookmarks?: PostToBookmarksResolver<TParent>;
   photos?: PostToPhotosResolver<TParent>;
   tags?: PostToTagsResolver<TParent>;
+  active?: PostToActiveResolver<TParent>;
 }
 
 export interface PostToIdResolver<TParent = any, TResult = any> {
@@ -1248,6 +1266,10 @@ export interface PostToTagsArgs {
 }
 export interface PostToTagsResolver<TParent = any, TResult = any> {
   (parent: TParent, args: PostToTagsArgs, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface PostToActiveResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
 export interface GQLAddressTypeResolver<TParent = any> {
@@ -1333,6 +1355,7 @@ export interface GQLPhotoTypeResolver<TParent = any> {
   description?: PhotoToDescriptionResolver<TParent>;
   price?: PhotoToPriceResolver<TParent>;
   currency?: PhotoToCurrencyResolver<TParent>;
+  active?: PhotoToActiveResolver<TParent>;
 }
 
 export interface PhotoToIdResolver<TParent = any, TResult = any> {
@@ -1367,6 +1390,10 @@ export interface PhotoToCurrencyResolver<TParent = any, TResult = any> {
   (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
 }
 
+export interface PhotoToActiveResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: {}, context: any, info: GraphQLResolveInfo): TResult;
+}
+
 export interface GQLTagTypeResolver<TParent = any> {
   id?: TagToIdResolver<TParent>;
   name?: TagToNameResolver<TParent>;
@@ -1397,8 +1424,9 @@ export interface GQLMutationTypeResolver<TParent = any> {
   createPost?: MutationToCreatePostResolver<TParent>;
   editPost?: MutationToEditPostResolver<TParent>;
   deletePost?: MutationToDeletePostResolver<TParent>;
+  deletePhoto?: MutationToDeletePhotoResolver<TParent>;
   createBookmark?: MutationToCreateBookmarkResolver<TParent>;
-  removeBookmark?: MutationToRemoveBookmarkResolver<TParent>;
+  deleteBookmark?: MutationToDeleteBookmarkResolver<TParent>;
 }
 
 export interface MutationToCreatePostArgs {
@@ -1435,6 +1463,13 @@ export interface MutationToDeletePostResolver<TParent = any, TResult = any> {
   (parent: TParent, args: MutationToDeletePostArgs, context: any, info: GraphQLResolveInfo): TResult;
 }
 
+export interface MutationToDeletePhotoArgs {
+  photoId: string;
+}
+export interface MutationToDeletePhotoResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: MutationToDeletePhotoArgs, context: any, info: GraphQLResolveInfo): TResult;
+}
+
 export interface MutationToCreateBookmarkArgs {
   postId: string;
 }
@@ -1442,9 +1477,9 @@ export interface MutationToCreateBookmarkResolver<TParent = any, TResult = any> 
   (parent: TParent, args: MutationToCreateBookmarkArgs, context: any, info: GraphQLResolveInfo): TResult;
 }
 
-export interface MutationToRemoveBookmarkArgs {
+export interface MutationToDeleteBookmarkArgs {
   postId: string;
 }
-export interface MutationToRemoveBookmarkResolver<TParent = any, TResult = any> {
-  (parent: TParent, args: MutationToRemoveBookmarkArgs, context: any, info: GraphQLResolveInfo): TResult;
+export interface MutationToDeleteBookmarkResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: MutationToDeleteBookmarkArgs, context: any, info: GraphQLResolveInfo): TResult;
 }

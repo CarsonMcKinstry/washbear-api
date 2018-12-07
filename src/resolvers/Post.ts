@@ -10,9 +10,10 @@ import { ApolloContext } from '../types';
 export const photos: PostToPhotosResolver = async (root, _, context: ApolloContext) => {
   const queriedPhotos = await context.db.photos({
     where: {
+      active_not: false,
       post: {
         id: root.id
-      }
+      },
     }
   });
 

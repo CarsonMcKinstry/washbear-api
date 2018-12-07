@@ -5,9 +5,10 @@ import {
   GQLCreatePhotoInput,
   MutationToCreateBookmarkResolver,
   MutationToCreatePostResolver,
+  MutationToDeleteBookmarkResolver,
+  MutationToDeletePhotoResolver,
   MutationToDeletePostResolver,
   MutationToEditPostResolver,
-  MutationToRemoveBookmarkResolver,
 } from '../schema';
 import { ApolloContext } from '../types';
 
@@ -18,7 +19,7 @@ const formatPhoto = async (
 ): Promise<PhotoCreateWithoutPostInput> => {
   const { url, file, title, description, price, currency } = photo as GQLCreatePhotoInput;
 
-  const newPost = {
+  const newPhoto = {
     currency,
     description,
     postedBy: {
@@ -31,7 +32,7 @@ const formatPhoto = async (
       : url as string,
   };
 
-  return newPost;
+  return newPhoto;
 };
 
 const titleToTags = (title: string): string[] => compose(
@@ -219,7 +220,7 @@ export const createBookmark: MutationToCreateBookmarkResolver = async (_, args, 
   }
 };
 
-export const removeBookmark: MutationToRemoveBookmarkResolver = async (_, args, context: ApolloContext) => {
+export const deleteBookmark: MutationToDeleteBookmarkResolver = async (_, args, context: ApolloContext) => {
   const { user } = context;
   const { postId } = args;
 
@@ -249,4 +250,32 @@ export const removeBookmark: MutationToRemoveBookmarkResolver = async (_, args, 
   } catch (err) {
     throw err;
   }
+};
+
+export const deletePhoto: MutationToDeletePhotoResolver = async (_, args, context: ApolloContext) => {
+  const { photoId } = args;
+  const { user } = context;
+
+  if (!user) {
+    throw new Error('You must be authenticated to do that');
+  }
+
+  const photo = context.db.photo({ id: photoId });
+
+  if (!photo) {
+    throw new Error('That post doesn\'t exist');
+  }
+
+  const postedBy = await photo.postedBy();
+
+  if (postedBy.id !== user!.id) {
+    return context.ctx.throw(403, 'This is not your post');
+  }
+
+  return context.db.updatePhoto({
+    data: {
+      active: false
+    },
+    where: { id: photoId },
+  });
 };
