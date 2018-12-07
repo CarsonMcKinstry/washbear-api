@@ -5,6 +5,8 @@ import {
   GQLCreatePhotoInput,
   MutationToCreateBookmarkResolver,
   MutationToCreatePostResolver,
+  MutationToDeletePostResolver,
+  MutationToEditPostResolver,
   MutationToRemoveBookmarkResolver,
 } from '../schema';
 import { ApolloContext } from '../types';
@@ -61,9 +63,6 @@ export const createPost: MutationToCreatePostResolver = async (_: any, args, con
       .map((photo) => formatPhoto(context.user!.id, title, photo))
   );
 
-  const newTags = formatTags(titleToTags(title).concat(tags));
-  console.log(newTags);
-
   const newPost = await context.db.createPost({
     address: {
       create: address
@@ -93,6 +92,102 @@ export const createPost: MutationToCreatePostResolver = async (_: any, args, con
   });
 
   return newPost;
+};
+
+export const editPost: MutationToEditPostResolver = async (_, args, context: ApolloContext) => {
+  const { postId } = args;
+  const { user } = context;
+
+  if (!user) {
+    throw new Error('You must be authenticated to do that');
+  }
+
+  const post = context.db.post({ id: postId });
+
+  if (!post) {
+    throw new Error('That post doesn\'t exist');
+  }
+
+  const postedBy = await post.postedBy();
+
+  if (postedBy.id !== user!.id) {
+    return context.ctx.throw(403, 'This is not your post');
+  }
+
+  const resolvedPost = await post;
+
+  const {
+    title,
+    startsAt,
+    endsAt,
+    photos = [],
+    geolocation,
+    tags = [],
+    address
+  } = args;
+
+  const formatedPhotos = await Promise
+  .all(
+    photos
+      .map((photo) => formatPhoto(context.user!.id, title || resolvedPost.title, photo))
+  );
+
+  const updatedPost = await context.db.updatePost({
+    data: {
+      address: {
+        update: address
+      },
+      endsAt,
+      geolocation: {
+        update: geolocation
+      },
+      photos: {
+        create: formatedPhotos
+      },
+      startsAt,
+      tags: {
+        create: formatTags(titleToTags(title || resolvedPost.title).concat(tags as string[]))
+      },
+      title,
+      title_normalized: compose(
+        deburr,
+        toLower
+      )(title || resolvedPost.title),
+    },
+    where: { id: postId},
+  });
+
+  return updatedPost;
+};
+
+export const deletePost: MutationToDeletePostResolver = async (_, args, context: ApolloContext) => {
+  const { postId } = args;
+  const { user } = context;
+
+  if (!user) {
+    throw new Error('You must be authenticated to do that');
+  }
+
+  const post = context.db.post({ id: postId });
+
+  if (!post) {
+    throw new Error('That post doesn\'t exist');
+  }
+
+  const postedBy = await post.postedBy();
+
+  if (postedBy.id !== user!.id) {
+    return context.ctx.throw(403, 'This is not your post');
+  }
+
+  return context.db.updatePost({
+    data: {
+      active: false
+    },
+    where: {
+      id: postId
+    }
+  });
 };
 
 export const createBookmark: MutationToCreateBookmarkResolver = async (_, args, context: ApolloContext, info ) => {

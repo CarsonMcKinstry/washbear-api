@@ -23,6 +23,7 @@ type Post {
   bookmarks: [Bookmark!]!
   photos: [Photo!]!
   tags: [Tag!]!
+  active: Boolean! @default(value: "true")
 }
 
 type Tag {

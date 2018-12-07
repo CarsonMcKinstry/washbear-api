@@ -391,7 +391,9 @@ export type PostOrderByInput =
   | "startsAt_ASC"
   | "startsAt_DESC"
   | "endsAt_ASC"
-  | "endsAt_DESC";
+  | "endsAt_DESC"
+  | "active_ASC"
+  | "active_DESC";
 
 export type PhotoOrderByInput =
   | "id_ASC"
@@ -588,17 +590,83 @@ export interface PostCreateWithoutBookmarksInput {
   geolocation?: GeolocationCreateOneInput;
   photos?: PhotoCreateManyWithoutPostInput;
   tags?: TagCreateManyInput;
+  active?: Boolean;
 }
 
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+export interface PhotoWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  url?: String;
+  url_not?: String;
+  url_in?: String[] | String;
+  url_not_in?: String[] | String;
+  url_lt?: String;
+  url_lte?: String;
+  url_gt?: String;
+  url_gte?: String;
+  url_contains?: String;
+  url_not_contains?: String;
+  url_starts_with?: String;
+  url_not_starts_with?: String;
+  url_ends_with?: String;
+  url_not_ends_with?: String;
+  postedBy?: UserWhereInput;
+  post?: PostWhereInput;
+  title?: String;
+  title_not?: String;
+  title_in?: String[] | String;
+  title_not_in?: String[] | String;
+  title_lt?: String;
+  title_lte?: String;
+  title_gt?: String;
+  title_gte?: String;
+  title_contains?: String;
+  title_not_contains?: String;
+  title_starts_with?: String;
+  title_not_starts_with?: String;
+  title_ends_with?: String;
+  title_not_ends_with?: String;
+  description?: String;
+  description_not?: String;
+  description_in?: String[] | String;
+  description_not_in?: String[] | String;
+  description_lt?: String;
+  description_lte?: String;
+  description_gt?: String;
+  description_gte?: String;
+  description_contains?: String;
+  description_not_contains?: String;
+  description_starts_with?: String;
+  description_not_starts_with?: String;
+  description_ends_with?: String;
+  description_not_ends_with?: String;
+  price?: Int;
+  price_not?: Int;
+  price_in?: Int[] | Int;
+  price_not_in?: Int[] | Int;
+  price_lt?: Int;
+  price_lte?: Int;
+  price_gt?: Int;
+  price_gte?: Int;
+  currency?: CurrencyEnum;
+  currency_not?: CurrencyEnum;
+  currency_in?: CurrencyEnum[] | CurrencyEnum;
+  currency_not_in?: CurrencyEnum[] | CurrencyEnum;
+  AND?: PhotoWhereInput[] | PhotoWhereInput;
+  OR?: PhotoWhereInput[] | PhotoWhereInput;
+  NOT?: PhotoWhereInput[] | PhotoWhereInput;
 }
 
 export interface AddressCreateOneWithoutPostInput {
@@ -641,15 +709,40 @@ export interface GeolocationCreateOneInput {
   connect?: GeolocationWhereUniqueInput;
 }
 
-export interface BookmarkSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: BookmarkWhereInput;
-  AND?: BookmarkSubscriptionWhereInput[] | BookmarkSubscriptionWhereInput;
-  OR?: BookmarkSubscriptionWhereInput[] | BookmarkSubscriptionWhereInput;
-  NOT?: BookmarkSubscriptionWhereInput[] | BookmarkSubscriptionWhereInput;
+export interface GeolocationWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  lat?: Float;
+  lat_not?: Float;
+  lat_in?: Float[] | Float;
+  lat_not_in?: Float[] | Float;
+  lat_lt?: Float;
+  lat_lte?: Float;
+  lat_gt?: Float;
+  lat_gte?: Float;
+  long?: Float;
+  long_not?: Float;
+  long_in?: Float[] | Float;
+  long_not_in?: Float[] | Float;
+  long_lt?: Float;
+  long_lte?: Float;
+  long_gt?: Float;
+  long_gte?: Float;
+  AND?: GeolocationWhereInput[] | GeolocationWhereInput;
+  OR?: GeolocationWhereInput[] | GeolocationWhereInput;
+  NOT?: GeolocationWhereInput[] | GeolocationWhereInput;
 }
 
 export interface GeolocationCreateInput {
@@ -670,14 +763,26 @@ export interface PhotoCreateManyWithoutPostInput {
   connect?: PhotoWhereUniqueInput[] | PhotoWhereUniqueInput;
 }
 
-export interface UserUpdateInput {
-  avatar?: String;
-  email?: String;
-  name?: String;
-  password?: String;
-  facebookId?: String;
-  bookmarks?: BookmarkUpdateManyWithoutUserInput;
-  posts?: PostUpdateManyWithoutPostedByInput;
+export interface BookmarkWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  user?: UserWhereInput;
+  post?: PostWhereInput;
+  AND?: BookmarkWhereInput[] | BookmarkWhereInput;
+  OR?: BookmarkWhereInput[] | BookmarkWhereInput;
+  NOT?: BookmarkWhereInput[] | BookmarkWhereInput;
 }
 
 export interface PhotoCreateWithoutPostInput {
@@ -709,6 +814,7 @@ export interface PostUpdateInput {
   bookmarks?: BookmarkUpdateManyWithoutPostInput;
   photos?: PhotoUpdateManyWithoutPostInput;
   tags?: TagUpdateManyInput;
+  active?: Boolean;
 }
 
 export interface UserCreateInput {
@@ -745,6 +851,7 @@ export interface PostCreateWithoutPostedByInput {
   bookmarks?: BookmarkCreateManyWithoutPostInput;
   photos?: PhotoCreateManyWithoutPostInput;
   tags?: TagCreateManyInput;
+  active?: Boolean;
 }
 
 export type GeolocationWhereUniqueInput = AtLeastOne<{
@@ -911,6 +1018,8 @@ export interface PostWhereInput {
   tags_every?: TagWhereInput;
   tags_some?: TagWhereInput;
   tags_none?: TagWhereInput;
+  active?: Boolean;
+  active_not?: Boolean;
   AND?: PostWhereInput[] | PostWhereInput;
   OR?: PostWhereInput[] | PostWhereInput;
   NOT?: PostWhereInput[] | PostWhereInput;
@@ -1141,40 +1250,15 @@ export interface PostUpdateWithWhereUniqueWithoutPostedByInput {
   data: PostUpdateWithoutPostedByDataInput;
 }
 
-export interface GeolocationWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  lat?: Float;
-  lat_not?: Float;
-  lat_in?: Float[] | Float;
-  lat_not_in?: Float[] | Float;
-  lat_lt?: Float;
-  lat_lte?: Float;
-  lat_gt?: Float;
-  lat_gte?: Float;
-  long?: Float;
-  long_not?: Float;
-  long_in?: Float[] | Float;
-  long_not_in?: Float[] | Float;
-  long_lt?: Float;
-  long_lte?: Float;
-  long_gt?: Float;
-  long_gte?: Float;
-  AND?: GeolocationWhereInput[] | GeolocationWhereInput;
-  OR?: GeolocationWhereInput[] | GeolocationWhereInput;
-  NOT?: GeolocationWhereInput[] | GeolocationWhereInput;
+export interface BookmarkSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: BookmarkWhereInput;
+  AND?: BookmarkSubscriptionWhereInput[] | BookmarkSubscriptionWhereInput;
+  OR?: BookmarkSubscriptionWhereInput[] | BookmarkSubscriptionWhereInput;
+  NOT?: BookmarkSubscriptionWhereInput[] | BookmarkSubscriptionWhereInput;
 }
 
 export interface PostUpdateWithoutPostedByDataInput {
@@ -1187,28 +1271,17 @@ export interface PostUpdateWithoutPostedByDataInput {
   bookmarks?: BookmarkUpdateManyWithoutPostInput;
   photos?: PhotoUpdateManyWithoutPostInput;
   tags?: TagUpdateManyInput;
+  active?: Boolean;
 }
 
-export interface BookmarkWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  user?: UserWhereInput;
-  post?: PostWhereInput;
-  AND?: BookmarkWhereInput[] | BookmarkWhereInput;
-  OR?: BookmarkWhereInput[] | BookmarkWhereInput;
-  NOT?: BookmarkWhereInput[] | BookmarkWhereInput;
+export interface UserUpdateInput {
+  avatar?: String;
+  email?: String;
+  name?: String;
+  password?: String;
+  facebookId?: String;
+  bookmarks?: BookmarkUpdateManyWithoutUserInput;
+  posts?: PostUpdateManyWithoutPostedByInput;
 }
 
 export interface AddressUpdateOneWithoutPostInput {
@@ -1224,6 +1297,7 @@ export interface PostUpdateManyMutationInput {
   title_normalized?: String;
   startsAt?: DateTimeInput;
   endsAt?: DateTimeInput;
+  active?: Boolean;
 }
 
 export interface AddressUpdateWithoutPostDataInput {
@@ -1329,6 +1403,7 @@ export interface PostCreateWithoutAddressInput {
   bookmarks?: BookmarkCreateManyWithoutPostInput;
   photos?: PhotoCreateManyWithoutPostInput;
   tags?: TagCreateManyInput;
+  active?: Boolean;
 }
 
 export interface BookmarkUpsertWithWhereUniqueWithoutPostInput {
@@ -1337,80 +1412,15 @@ export interface BookmarkUpsertWithWhereUniqueWithoutPostInput {
   create: BookmarkCreateWithoutPostInput;
 }
 
-export interface PhotoWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  url?: String;
-  url_not?: String;
-  url_in?: String[] | String;
-  url_not_in?: String[] | String;
-  url_lt?: String;
-  url_lte?: String;
-  url_gt?: String;
-  url_gte?: String;
-  url_contains?: String;
-  url_not_contains?: String;
-  url_starts_with?: String;
-  url_not_starts_with?: String;
-  url_ends_with?: String;
-  url_not_ends_with?: String;
-  postedBy?: UserWhereInput;
-  post?: PostWhereInput;
-  title?: String;
-  title_not?: String;
-  title_in?: String[] | String;
-  title_not_in?: String[] | String;
-  title_lt?: String;
-  title_lte?: String;
-  title_gt?: String;
-  title_gte?: String;
-  title_contains?: String;
-  title_not_contains?: String;
-  title_starts_with?: String;
-  title_not_starts_with?: String;
-  title_ends_with?: String;
-  title_not_ends_with?: String;
-  description?: String;
-  description_not?: String;
-  description_in?: String[] | String;
-  description_not_in?: String[] | String;
-  description_lt?: String;
-  description_lte?: String;
-  description_gt?: String;
-  description_gte?: String;
-  description_contains?: String;
-  description_not_contains?: String;
-  description_starts_with?: String;
-  description_not_starts_with?: String;
-  description_ends_with?: String;
-  description_not_ends_with?: String;
-  price?: Int;
-  price_not?: Int;
-  price_in?: Int[] | Int;
-  price_not_in?: Int[] | Int;
-  price_lt?: Int;
-  price_lte?: Int;
-  price_gt?: Int;
-  price_gte?: Int;
-  currency?: CurrencyEnum;
-  currency_not?: CurrencyEnum;
-  currency_in?: CurrencyEnum[] | CurrencyEnum;
-  currency_not_in?: CurrencyEnum[] | CurrencyEnum;
-  AND?: PhotoWhereInput[] | PhotoWhereInput;
-  OR?: PhotoWhereInput[] | PhotoWhereInput;
-  NOT?: PhotoWhereInput[] | PhotoWhereInput;
+export interface UserSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
 }
 
 export interface PhotoUpdateManyWithoutPostInput {
@@ -1453,6 +1463,7 @@ export interface PostCreateInput {
   bookmarks?: BookmarkCreateManyWithoutPostInput;
   photos?: PhotoCreateManyWithoutPostInput;
   tags?: TagCreateManyInput;
+  active?: Boolean;
 }
 
 export interface PhotoUpdateWithoutPostDataInput {
@@ -1474,6 +1485,7 @@ export interface PostCreateWithoutPhotosInput {
   geolocation?: GeolocationCreateOneInput;
   bookmarks?: BookmarkCreateManyWithoutPostInput;
   tags?: TagCreateManyInput;
+  active?: Boolean;
 }
 
 export interface UserUpdateOneRequiredInput {
@@ -1553,6 +1565,7 @@ export interface PostUpdateWithoutBookmarksDataInput {
   geolocation?: GeolocationUpdateOneInput;
   photos?: PhotoUpdateManyWithoutPostInput;
   tags?: TagUpdateManyInput;
+  active?: Boolean;
 }
 
 export interface PostUpdateOneRequiredWithoutBookmarksInput {
@@ -1576,6 +1589,7 @@ export interface PostUpdateWithoutPhotosDataInput {
   geolocation?: GeolocationUpdateOneInput;
   bookmarks?: BookmarkUpdateManyWithoutPostInput;
   tags?: TagUpdateManyInput;
+  active?: Boolean;
 }
 
 export interface PhotoSubscriptionWhereInput {
@@ -1669,6 +1683,7 @@ export interface PostPreviousValues {
   updatedAt: DateTimeOutput;
   startsAt: DateTimeOutput;
   endsAt: DateTimeOutput;
+  active: Boolean;
 }
 
 export interface PostPreviousValuesPromise
@@ -1681,6 +1696,7 @@ export interface PostPreviousValuesPromise
   updatedAt: () => Promise<DateTimeOutput>;
   startsAt: () => Promise<DateTimeOutput>;
   endsAt: () => Promise<DateTimeOutput>;
+  active: () => Promise<Boolean>;
 }
 
 export interface PostPreviousValuesSubscription
@@ -1693,55 +1709,7 @@ export interface PostPreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   startsAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   endsAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface Address {
-  singleLine: String;
-  streetAddress: String;
-  city: String;
-  stateProvince: String;
-  postalCode: String;
-  country: String;
-}
-
-export interface AddressPromise extends Promise<Address>, Fragmentable {
-  post: <T = PostPromise>() => T;
-  singleLine: () => Promise<String>;
-  streetAddress: () => Promise<String>;
-  city: () => Promise<String>;
-  stateProvince: () => Promise<String>;
-  postalCode: () => Promise<String>;
-  country: () => Promise<String>;
-}
-
-export interface AddressSubscription
-  extends Promise<AsyncIterator<Address>>,
-    Fragmentable {
-  post: <T = PostSubscription>() => T;
-  singleLine: () => Promise<AsyncIterator<String>>;
-  streetAddress: () => Promise<AsyncIterator<String>>;
-  city: () => Promise<AsyncIterator<String>>;
-  stateProvince: () => Promise<AsyncIterator<String>>;
-  postalCode: () => Promise<AsyncIterator<String>>;
-  country: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AddressConnection {}
-
-export interface AddressConnectionPromise
-  extends Promise<AddressConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<AddressEdge>>() => T;
-  aggregate: <T = AggregateAddressPromise>() => T;
-}
-
-export interface AddressConnectionSubscription
-  extends Promise<AsyncIterator<AddressConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<AddressEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateAddressSubscription>() => T;
+  active: () => Promise<AsyncIterator<Boolean>>;
 }
 
 export interface PageInfo {
@@ -1765,6 +1733,41 @@ export interface PageInfoSubscription
   hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
   startCursor: () => Promise<AsyncIterator<String>>;
   endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Tag {
+  id: ID_Output;
+  name: String;
+}
+
+export interface TagPromise extends Promise<Tag>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface TagSubscription
+  extends Promise<AsyncIterator<Tag>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AddressConnection {}
+
+export interface AddressConnectionPromise
+  extends Promise<AddressConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<AddressEdge>>() => T;
+  aggregate: <T = AggregateAddressPromise>() => T;
+}
+
+export interface AddressConnectionSubscription
+  extends Promise<AsyncIterator<AddressConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<AddressEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateAddressSubscription>() => T;
 }
 
 export interface UserEdge {
@@ -1815,41 +1818,6 @@ export interface AggregateTagSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface Tag {
-  id: ID_Output;
-  name: String;
-}
-
-export interface TagPromise extends Promise<Tag>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface TagSubscription
-  extends Promise<AsyncIterator<Tag>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface TagConnection {}
-
-export interface TagConnectionPromise
-  extends Promise<TagConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<TagEdge>>() => T;
-  aggregate: <T = AggregateTagPromise>() => T;
-}
-
-export interface TagConnectionSubscription
-  extends Promise<AsyncIterator<TagConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<TagEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateTagSubscription>() => T;
-}
-
 export interface Photo {
   id: ID_Output;
   url: String;
@@ -1883,20 +1851,22 @@ export interface PhotoSubscription
   currency: () => Promise<AsyncIterator<CurrencyEnum>>;
 }
 
-export interface PostEdge {
-  cursor: String;
-}
+export interface TagConnection {}
 
-export interface PostEdgePromise extends Promise<PostEdge>, Fragmentable {
-  node: <T = PostPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface PostEdgeSubscription
-  extends Promise<AsyncIterator<PostEdge>>,
+export interface TagConnectionPromise
+  extends Promise<TagConnection>,
     Fragmentable {
-  node: <T = PostSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<TagEdge>>() => T;
+  aggregate: <T = AggregateTagPromise>() => T;
+}
+
+export interface TagConnectionSubscription
+  extends Promise<AsyncIterator<TagConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<TagEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateTagSubscription>() => T;
 }
 
 export interface TagPreviousValues {
@@ -1916,6 +1886,42 @@ export interface TagPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface PostEdge {
+  cursor: String;
+}
+
+export interface PostEdgePromise extends Promise<PostEdge>, Fragmentable {
+  node: <T = PostPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface PostEdgeSubscription
+  extends Promise<AsyncIterator<PostEdge>>,
+    Fragmentable {
+  node: <T = PostSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Geolocation {
+  id: ID_Output;
+  lat: Float;
+  long: Float;
+}
+
+export interface GeolocationPromise extends Promise<Geolocation>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  lat: () => Promise<Float>;
+  long: () => Promise<Float>;
+}
+
+export interface GeolocationSubscription
+  extends Promise<AsyncIterator<Geolocation>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  lat: () => Promise<AsyncIterator<Float>>;
+  long: () => Promise<AsyncIterator<Float>>;
 }
 
 export interface AggregatePhoto {
@@ -2070,24 +2076,22 @@ export interface UserSubscriptionPayloadSubscription
   previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
-export interface Geolocation {
+export interface Bookmark {
   id: ID_Output;
-  lat: Float;
-  long: Float;
 }
 
-export interface GeolocationPromise extends Promise<Geolocation>, Fragmentable {
+export interface BookmarkPromise extends Promise<Bookmark>, Fragmentable {
   id: () => Promise<ID_Output>;
-  lat: () => Promise<Float>;
-  long: () => Promise<Float>;
+  user: <T = UserPromise>() => T;
+  post: <T = PostPromise>() => T;
 }
 
-export interface GeolocationSubscription
-  extends Promise<AsyncIterator<Geolocation>>,
+export interface BookmarkSubscription
+  extends Promise<AsyncIterator<Bookmark>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  lat: () => Promise<AsyncIterator<Float>>;
-  long: () => Promise<AsyncIterator<Float>>;
+  user: <T = UserSubscription>() => T;
+  post: <T = PostSubscription>() => T;
 }
 
 export interface BookmarkEdge {
@@ -2181,22 +2185,35 @@ export interface UserConnectionSubscription
   aggregate: <T = AggregateUserSubscription>() => T;
 }
 
-export interface Bookmark {
-  id: ID_Output;
+export interface Address {
+  singleLine: String;
+  streetAddress: String;
+  city: String;
+  stateProvince: String;
+  postalCode: String;
+  country: String;
 }
 
-export interface BookmarkPromise extends Promise<Bookmark>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  user: <T = UserPromise>() => T;
+export interface AddressPromise extends Promise<Address>, Fragmentable {
   post: <T = PostPromise>() => T;
+  singleLine: () => Promise<String>;
+  streetAddress: () => Promise<String>;
+  city: () => Promise<String>;
+  stateProvince: () => Promise<String>;
+  postalCode: () => Promise<String>;
+  country: () => Promise<String>;
 }
 
-export interface BookmarkSubscription
-  extends Promise<AsyncIterator<Bookmark>>,
+export interface AddressSubscription
+  extends Promise<AsyncIterator<Address>>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  user: <T = UserSubscription>() => T;
   post: <T = PostSubscription>() => T;
+  singleLine: () => Promise<AsyncIterator<String>>;
+  streetAddress: () => Promise<AsyncIterator<String>>;
+  city: () => Promise<AsyncIterator<String>>;
+  stateProvince: () => Promise<AsyncIterator<String>>;
+  postalCode: () => Promise<AsyncIterator<String>>;
+  country: () => Promise<AsyncIterator<String>>;
 }
 
 export interface AggregatePost {
@@ -2294,167 +2311,6 @@ export interface GeolocationConnectionSubscription
   aggregate: <T = AggregateGeolocationSubscription>() => T;
 }
 
-export interface Post {
-  id: ID_Output;
-  title: String;
-  title_normalized: String;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  startsAt: DateTimeOutput;
-  endsAt: DateTimeOutput;
-}
-
-export interface PostPromise extends Promise<Post>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  address: <T = AddressPromise>() => T;
-  postedBy: <T = UserPromise>() => T;
-  title: () => Promise<String>;
-  title_normalized: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  startsAt: () => Promise<DateTimeOutput>;
-  endsAt: () => Promise<DateTimeOutput>;
-  geolocation: <T = GeolocationPromise>() => T;
-  bookmarks: <T = FragmentableArray<Bookmark>>(
-    args?: {
-      where?: BookmarkWhereInput;
-      orderBy?: BookmarkOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  photos: <T = FragmentableArray<Photo>>(
-    args?: {
-      where?: PhotoWhereInput;
-      orderBy?: PhotoOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  tags: <T = FragmentableArray<Tag>>(
-    args?: {
-      where?: TagWhereInput;
-      orderBy?: TagOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-}
-
-export interface PostSubscription
-  extends Promise<AsyncIterator<Post>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  address: <T = AddressSubscription>() => T;
-  postedBy: <T = UserSubscription>() => T;
-  title: () => Promise<AsyncIterator<String>>;
-  title_normalized: () => Promise<AsyncIterator<String>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  startsAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  endsAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  geolocation: <T = GeolocationSubscription>() => T;
-  bookmarks: <T = Promise<AsyncIterator<BookmarkSubscription>>>(
-    args?: {
-      where?: BookmarkWhereInput;
-      orderBy?: BookmarkOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  photos: <T = Promise<AsyncIterator<PhotoSubscription>>>(
-    args?: {
-      where?: PhotoWhereInput;
-      orderBy?: PhotoOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-  tags: <T = Promise<AsyncIterator<TagSubscription>>>(
-    args?: {
-      where?: TagWhereInput;
-      orderBy?: TagOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-}
-
-export interface BookmarkConnection {}
-
-export interface BookmarkConnectionPromise
-  extends Promise<BookmarkConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<BookmarkEdge>>() => T;
-  aggregate: <T = AggregateBookmarkPromise>() => T;
-}
-
-export interface BookmarkConnectionSubscription
-  extends Promise<AsyncIterator<BookmarkConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<BookmarkEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateBookmarkSubscription>() => T;
-}
-
-export interface TagEdge {
-  cursor: String;
-}
-
-export interface TagEdgePromise extends Promise<TagEdge>, Fragmentable {
-  node: <T = TagPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface TagEdgeSubscription
-  extends Promise<AsyncIterator<TagEdge>>,
-    Fragmentable {
-  node: <T = TagSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface PostSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface PostSubscriptionPayloadPromise
-  extends Promise<PostSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = PostPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = PostPreviousValuesPromise>() => T;
-}
-
-export interface PostSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<PostSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = PostSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = PostPreviousValuesSubscription>() => T;
-}
-
 export interface User {
   avatar?: String;
   email?: String;
@@ -2526,6 +2382,170 @@ export interface UserSubscription
       last?: Int;
     }
   ) => T;
+}
+
+export interface BookmarkConnection {}
+
+export interface BookmarkConnectionPromise
+  extends Promise<BookmarkConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<BookmarkEdge>>() => T;
+  aggregate: <T = AggregateBookmarkPromise>() => T;
+}
+
+export interface BookmarkConnectionSubscription
+  extends Promise<AsyncIterator<BookmarkConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<BookmarkEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateBookmarkSubscription>() => T;
+}
+
+export interface TagEdge {
+  cursor: String;
+}
+
+export interface TagEdgePromise extends Promise<TagEdge>, Fragmentable {
+  node: <T = TagPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface TagEdgeSubscription
+  extends Promise<AsyncIterator<TagEdge>>,
+    Fragmentable {
+  node: <T = TagSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface PostSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface PostSubscriptionPayloadPromise
+  extends Promise<PostSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = PostPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = PostPreviousValuesPromise>() => T;
+}
+
+export interface PostSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<PostSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = PostSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = PostPreviousValuesSubscription>() => T;
+}
+
+export interface Post {
+  id: ID_Output;
+  title: String;
+  title_normalized: String;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  startsAt: DateTimeOutput;
+  endsAt: DateTimeOutput;
+  active: Boolean;
+}
+
+export interface PostPromise extends Promise<Post>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  address: <T = AddressPromise>() => T;
+  postedBy: <T = UserPromise>() => T;
+  title: () => Promise<String>;
+  title_normalized: () => Promise<String>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  startsAt: () => Promise<DateTimeOutput>;
+  endsAt: () => Promise<DateTimeOutput>;
+  geolocation: <T = GeolocationPromise>() => T;
+  bookmarks: <T = FragmentableArray<Bookmark>>(
+    args?: {
+      where?: BookmarkWhereInput;
+      orderBy?: BookmarkOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  photos: <T = FragmentableArray<Photo>>(
+    args?: {
+      where?: PhotoWhereInput;
+      orderBy?: PhotoOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  tags: <T = FragmentableArray<Tag>>(
+    args?: {
+      where?: TagWhereInput;
+      orderBy?: TagOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  active: () => Promise<Boolean>;
+}
+
+export interface PostSubscription
+  extends Promise<AsyncIterator<Post>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  address: <T = AddressSubscription>() => T;
+  postedBy: <T = UserSubscription>() => T;
+  title: () => Promise<AsyncIterator<String>>;
+  title_normalized: () => Promise<AsyncIterator<String>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  startsAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  endsAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  geolocation: <T = GeolocationSubscription>() => T;
+  bookmarks: <T = Promise<AsyncIterator<BookmarkSubscription>>>(
+    args?: {
+      where?: BookmarkWhereInput;
+      orderBy?: BookmarkOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  photos: <T = Promise<AsyncIterator<PhotoSubscription>>>(
+    args?: {
+      where?: PhotoWhereInput;
+      orderBy?: PhotoOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  tags: <T = Promise<AsyncIterator<TagSubscription>>>(
+    args?: {
+      where?: TagWhereInput;
+      orderBy?: TagOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  active: () => Promise<AsyncIterator<Boolean>>;
 }
 
 export interface PhotoPreviousValues {

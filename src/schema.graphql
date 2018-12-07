@@ -33,6 +33,17 @@ type Mutation {
     tags: [String!]
     address: AddressCreateWithoutPostInput
   ): Post!
+  editPost (
+    postId: ID!
+    title: String
+    startsAt: DateTime
+    endsAt: DateTime
+    geolocation: GeolocationCreateInput
+    photos: [CreatePhotoInput]
+    tags: [String]
+    address: AddressCreateWithoutPostInput
+  ): Post!
+  deletePost (postId: ID!): Post!
   createBookmark (
     postId: ID!
   ): Bookmark!

@@ -7,9 +7,10 @@ import { ApolloContext } from "../types";
 export const posts: UserToPostsResolver = async (root, args, context: ApolloContext ) => {
   const queriedPosts = await context.db.posts({
     where: {
+      active_not: true,
       postedBy: {
         id: root.id
-      }
+      },
     }
   });
 

@@ -98,6 +98,7 @@ export const feed: QueryToFeedResolver = async (_, args, context: ApolloContext)
   }
 
   const where: PostWhereInput = {
+    active_not: true,
     geolocation: {
       lat_gte: geoBounds.latMin,
       lat_lte: geoBounds.latMax,

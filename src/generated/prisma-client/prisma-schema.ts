@@ -830,6 +830,7 @@ type Post {
   bookmarks(where: BookmarkWhereInput, orderBy: BookmarkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Bookmark!]
   photos(where: PhotoWhereInput, orderBy: PhotoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Photo!]
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
+  active: Boolean!
 }
 
 type PostConnection {
@@ -849,6 +850,7 @@ input PostCreateInput {
   bookmarks: BookmarkCreateManyWithoutPostInput
   photos: PhotoCreateManyWithoutPostInput
   tags: TagCreateManyInput
+  active: Boolean
 }
 
 input PostCreateManyWithoutPostedByInput {
@@ -881,6 +883,7 @@ input PostCreateWithoutAddressInput {
   bookmarks: BookmarkCreateManyWithoutPostInput
   photos: PhotoCreateManyWithoutPostInput
   tags: TagCreateManyInput
+  active: Boolean
 }
 
 input PostCreateWithoutBookmarksInput {
@@ -893,6 +896,7 @@ input PostCreateWithoutBookmarksInput {
   geolocation: GeolocationCreateOneInput
   photos: PhotoCreateManyWithoutPostInput
   tags: TagCreateManyInput
+  active: Boolean
 }
 
 input PostCreateWithoutPhotosInput {
@@ -905,6 +909,7 @@ input PostCreateWithoutPhotosInput {
   geolocation: GeolocationCreateOneInput
   bookmarks: BookmarkCreateManyWithoutPostInput
   tags: TagCreateManyInput
+  active: Boolean
 }
 
 input PostCreateWithoutPostedByInput {
@@ -917,6 +922,7 @@ input PostCreateWithoutPostedByInput {
   bookmarks: BookmarkCreateManyWithoutPostInput
   photos: PhotoCreateManyWithoutPostInput
   tags: TagCreateManyInput
+  active: Boolean
 }
 
 type PostEdge {
@@ -939,6 +945,8 @@ enum PostOrderByInput {
   startsAt_DESC
   endsAt_ASC
   endsAt_DESC
+  active_ASC
+  active_DESC
 }
 
 type PostPreviousValues {
@@ -949,6 +957,7 @@ type PostPreviousValues {
   updatedAt: DateTime!
   startsAt: DateTime!
   endsAt: DateTime!
+  active: Boolean!
 }
 
 type PostSubscriptionPayload {
@@ -980,6 +989,7 @@ input PostUpdateInput {
   bookmarks: BookmarkUpdateManyWithoutPostInput
   photos: PhotoUpdateManyWithoutPostInput
   tags: TagUpdateManyInput
+  active: Boolean
 }
 
 input PostUpdateManyMutationInput {
@@ -987,6 +997,7 @@ input PostUpdateManyMutationInput {
   title_normalized: String
   startsAt: DateTime
   endsAt: DateTime
+  active: Boolean
 }
 
 input PostUpdateManyWithoutPostedByInput {
@@ -1022,6 +1033,7 @@ input PostUpdateWithoutBookmarksDataInput {
   geolocation: GeolocationUpdateOneInput
   photos: PhotoUpdateManyWithoutPostInput
   tags: TagUpdateManyInput
+  active: Boolean
 }
 
 input PostUpdateWithoutPhotosDataInput {
@@ -1034,6 +1046,7 @@ input PostUpdateWithoutPhotosDataInput {
   geolocation: GeolocationUpdateOneInput
   bookmarks: BookmarkUpdateManyWithoutPostInput
   tags: TagUpdateManyInput
+  active: Boolean
 }
 
 input PostUpdateWithoutPostedByDataInput {
@@ -1046,6 +1059,7 @@ input PostUpdateWithoutPostedByDataInput {
   bookmarks: BookmarkUpdateManyWithoutPostInput
   photos: PhotoUpdateManyWithoutPostInput
   tags: TagUpdateManyInput
+  active: Boolean
 }
 
 input PostUpdateWithWhereUniqueWithoutPostedByInput {
@@ -1156,6 +1170,8 @@ input PostWhereInput {
   tags_every: TagWhereInput
   tags_some: TagWhereInput
   tags_none: TagWhereInput
+  active: Boolean
+  active_not: Boolean
   AND: [PostWhereInput!]
   OR: [PostWhereInput!]
   NOT: [PostWhereInput!]

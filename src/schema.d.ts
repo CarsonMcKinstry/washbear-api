@@ -603,6 +603,8 @@ export interface GQLFeed {
 
 export interface GQLMutation {
   createPost: GQLPost;
+  editPost: GQLPost;
+  deletePost: GQLPost;
   createBookmark: GQLBookmark;
   removeBookmark?: GQLBookmark;
 }
@@ -1393,6 +1395,8 @@ export interface FeedToCountResolver<TParent = any, TResult = any> {
 
 export interface GQLMutationTypeResolver<TParent = any> {
   createPost?: MutationToCreatePostResolver<TParent>;
+  editPost?: MutationToEditPostResolver<TParent>;
+  deletePost?: MutationToDeletePostResolver<TParent>;
   createBookmark?: MutationToCreateBookmarkResolver<TParent>;
   removeBookmark?: MutationToRemoveBookmarkResolver<TParent>;
 }
@@ -1408,6 +1412,27 @@ export interface MutationToCreatePostArgs {
 }
 export interface MutationToCreatePostResolver<TParent = any, TResult = any> {
   (parent: TParent, args: MutationToCreatePostArgs, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface MutationToEditPostArgs {
+  postId: string;
+  title?: string;
+  startsAt?: GQLDateTime;
+  endsAt?: GQLDateTime;
+  geolocation?: GQLGeolocationCreateInput;
+  photos?: Array<GQLCreatePhotoInput | null>;
+  tags?: Array<string | null>;
+  address?: GQLAddressCreateWithoutPostInput;
+}
+export interface MutationToEditPostResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: MutationToEditPostArgs, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface MutationToDeletePostArgs {
+  postId: string;
+}
+export interface MutationToDeletePostResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: MutationToDeletePostArgs, context: any, info: GraphQLResolveInfo): TResult;
 }
 
 export interface MutationToCreateBookmarkArgs {
