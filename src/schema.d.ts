@@ -615,6 +615,8 @@ export interface GQLMutation {
   editProfile: GQLUser;
   createPost: GQLPost;
   editPost: GQLPost;
+  editPhoto: GQLPhoto;
+  addPhoto: GQLPhoto;
   deletePost: GQLPost;
   deletePhoto: GQLPhoto;
   createBookmark: GQLBookmark;
@@ -1425,6 +1427,8 @@ export interface GQLMutationTypeResolver<TParent = any> {
   editProfile?: MutationToEditProfileResolver<TParent>;
   createPost?: MutationToCreatePostResolver<TParent>;
   editPost?: MutationToEditPostResolver<TParent>;
+  editPhoto?: MutationToEditPhotoResolver<TParent>;
+  addPhoto?: MutationToAddPhotoResolver<TParent>;
   deletePost?: MutationToDeletePostResolver<TParent>;
   deletePhoto?: MutationToDeletePhotoResolver<TParent>;
   createBookmark?: MutationToCreateBookmarkResolver<TParent>;
@@ -1460,12 +1464,30 @@ export interface MutationToEditPostArgs {
   startsAt?: GQLDateTime;
   endsAt?: GQLDateTime;
   geolocation?: GQLGeolocationCreateInput;
-  photos?: Array<GQLCreatePhotoInput | null>;
   tags?: Array<string | null>;
   address?: GQLAddressCreateWithoutPostInput;
 }
 export interface MutationToEditPostResolver<TParent = any, TResult = any> {
   (parent: TParent, args: MutationToEditPostArgs, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface MutationToEditPhotoArgs {
+  photoId: string;
+  title?: string;
+  description?: string;
+  price?: number;
+  currency?: GQLCurrencyEnum;
+}
+export interface MutationToEditPhotoResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: MutationToEditPhotoArgs, context: any, info: GraphQLResolveInfo): TResult;
+}
+
+export interface MutationToAddPhotoArgs {
+  postId: string;
+  photo: GQLCreatePhotoInput;
+}
+export interface MutationToAddPhotoResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: MutationToAddPhotoArgs, context: any, info: GraphQLResolveInfo): TResult;
 }
 
 export interface MutationToDeletePostArgs {

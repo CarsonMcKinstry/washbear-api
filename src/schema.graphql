@@ -45,10 +45,20 @@ type Mutation {
     startsAt: DateTime
     endsAt: DateTime
     geolocation: GeolocationCreateInput
-    photos: [CreatePhotoInput]
     tags: [String]
     address: AddressCreateWithoutPostInput
   ): Post!
+  editPhoto (
+    photoId: ID!
+    title: String
+    description: String
+    price: Int
+    currency: CurrencyEnum
+  ): Photo!
+  addPhoto (
+    postId: ID!
+    photo: CreatePhotoInput!
+  ): Photo!
   deletePost (postId: ID!): Post!
   deletePhoto (photoId: ID!): Photo!
   createBookmark (
