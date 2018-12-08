@@ -1,4 +1,5 @@
 import { compose, deburr, map, split, toLower } from 'lodash/fp';
+import moment from 'moment';
 import { uploadFile } from '../aws';
 import { PhotoCreateWithoutPostInput, Tag} from '../generated/prisma-client';
 import {
@@ -9,6 +10,7 @@ import {
   MutationToDeletePhotoResolver,
   MutationToDeletePostResolver,
   MutationToEditPostResolver,
+  MutationToEditProfileResolver,
 } from '../schema';
 import { ApolloContext } from '../types';
 
@@ -35,6 +37,23 @@ const formatPhoto = async (
   return newPhoto;
 };
 
+const formatAvatar = async (
+  userId: string,
+  photo: GQLCreatePhotoInput
+) => {
+  const { url, file } = photo;
+
+  const createdAt = moment().unix();
+
+  const newPhoto = {
+    url: file
+      ? await uploadFile(userId, `${userId}-${createdAt}-avatar`, await file)
+      : url as string
+  };
+
+  return newPhoto;
+};
+
 const titleToTags = (title: string): string[] => compose(
   split(' '),
   toLower,
@@ -42,6 +61,65 @@ const titleToTags = (title: string): string[] => compose(
 )(title);
 
 const formatTags = (tags: string[]) => map((tag) => ({ name: tag }), tags);
+
+export const editProfile: MutationToEditProfileResolver = async (_, args, context: ApolloContext) => {
+  const { user } = context;
+
+  if (!user) {
+    throw new Error('You must be authenticated to do that');
+  }
+
+  const {
+    userId,
+    photo,
+    name,
+    email
+  } = args;
+
+  if (!userId) {
+    throw new Error('You must provide a user id');
+  }
+
+  if (user.id !== userId) {
+    return context.ctx.throw(403, 'This is not your profile');
+  }
+
+  let data = {};
+
+  if (photo) {
+    data = {
+      ...data,
+      avatar: {
+        update: formatAvatar(userId, photo)
+      }
+    };
+  }
+
+  if (name) {
+    data = {
+      ...data,
+      name: {
+        update: name
+      },
+    };
+  }
+
+  if (email) {
+    data = {
+      ...data,
+      email: {
+        update: name
+      },
+    };
+  }
+
+  const updatedProfile = await context.db.updateUser({
+    data,
+    where: {
+      id: userId
+    },
+  });
+};
 
 export const createPost: MutationToCreatePostResolver = async (_: any, args, context: ApolloContext) => {
   if (!context.user) {

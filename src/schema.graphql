@@ -24,6 +24,12 @@ type Query {
 }
 
 type Mutation {
+  editProfile (
+    userId: ID!
+    photo: CreatePhotoInput
+    name: String
+    email: String
+  ): User!
   createPost (
     title: String!
     startsAt: DateTime!

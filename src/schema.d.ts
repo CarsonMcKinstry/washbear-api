@@ -612,17 +612,13 @@ export interface GQLFeed {
 }
 
 export interface GQLMutation {
+  editProfile: GQLUser;
   createPost: GQLPost;
   editPost: GQLPost;
   deletePost: GQLPost;
   deletePhoto: GQLPhoto;
   createBookmark: GQLBookmark;
   deleteBookmark?: GQLBookmark;
-}
-
-export interface GQLGeolocationCreateInput {
-  lat: number;
-  long: number;
 }
 
 export interface GQLCreatePhotoInput {
@@ -635,6 +631,11 @@ export interface GQLCreatePhotoInput {
 }
 
 export type GQLUpload = any;
+
+export interface GQLGeolocationCreateInput {
+  lat: number;
+  long: number;
+}
 
 export interface GQLAddressCreateWithoutPostInput {
   singleLine: string;
@@ -1421,12 +1422,23 @@ export interface FeedToCountResolver<TParent = any, TResult = any> {
 }
 
 export interface GQLMutationTypeResolver<TParent = any> {
+  editProfile?: MutationToEditProfileResolver<TParent>;
   createPost?: MutationToCreatePostResolver<TParent>;
   editPost?: MutationToEditPostResolver<TParent>;
   deletePost?: MutationToDeletePostResolver<TParent>;
   deletePhoto?: MutationToDeletePhotoResolver<TParent>;
   createBookmark?: MutationToCreateBookmarkResolver<TParent>;
   deleteBookmark?: MutationToDeleteBookmarkResolver<TParent>;
+}
+
+export interface MutationToEditProfileArgs {
+  userId: string;
+  photo?: GQLCreatePhotoInput;
+  name?: string;
+  email?: string;
+}
+export interface MutationToEditProfileResolver<TParent = any, TResult = any> {
+  (parent: TParent, args: MutationToEditProfileArgs, context: any, info: GraphQLResolveInfo): TResult;
 }
 
 export interface MutationToCreatePostArgs {
